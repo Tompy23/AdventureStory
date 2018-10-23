@@ -78,13 +78,6 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
     }
 
     @Override
-    public void process() {
-        if (currentState != null) {
-            currentState.process();
-        }
-    }
-
-    @Override
     public void changeState(AdventureState newState) {
         if (currentState != null) {
             currentState.end();
@@ -97,8 +90,8 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
         if (currentState != null) {
             while (proceed) {
                 LOGGER.info(String.format("Start round.  Current ticks [%d]", getCurrentTicks()));
-                setActionTicks(0);
                 currentState.process();
+                endAction();
                 LOGGER.info(
                         String.format("End round.  Ticks + [%d] -> [%d]", getCurrentActionTicks(), getCurrentTicks()));
             }
@@ -113,7 +106,7 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
 
     @Override
     public void setActionTicks(int ticks) {
-        actionTicks =+ ticks;
+        actionTicks += ticks;
     }
 
     @Override
@@ -123,7 +116,7 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
 
     @Override
     public void endAction() {
-        currentTick = +actionTicks;
+        currentTick += actionTicks;
         actionTicks = 0;
     }
 }

@@ -6,11 +6,6 @@ package com.tompy.state;
 public interface StateMachine {
 
     /**
-     * Process the current state
-     */
-    void process();
-
-    /**
      * Change to a new state
      *
      * @param newState
