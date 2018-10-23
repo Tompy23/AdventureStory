@@ -1,0 +1,27 @@
+State machine
+Explore - what we have now
+Encounter - Dialogs and "menus of actions"
+Combat - Detailed combat with more detail round the character
+
+This requires moving the app loop into an ExploreState class and then creating a state machine that has state.  Likely
+we'll have a base class AdventureState.  The state machine can change state.  Each state will have a pre/post and action
+set of functions.
+
+The idea is to have events change state, such as when there is a chance to have a dialog with an NPC or when a combat
+starts.  Changing the state back to Explore would be the same way, some action or event.  Example, during a dialog,
+one option might be "Say goodbye", and that would be an action which changes state to Explore.
+
+Add a new COmmand "Talk" or "Talk to <npc name>" and that would change state from explore to Encounter with that NPC,
+starting a dialog.
+
+When we get to a real RPG character with attributes, etc. then the attributes will be useful
+for all states.
+
+For secret doors, et al, create an action that installs a door feature or whatever is needed
+
+For Encounters, the concept of a "dialog" will be what an encounter is, that is a series of actions chosen by
+the player.  For a dialog this will likely be Describe actions, etc.
+If an encounter has the ability to trade items (a merchant for example), then "(B) Buy" and (S) Sell" options will
+be available along with the other actions.  These will be actions as well I guess.
+Buying and selling will apply a factor to the actual value of an item.  (Yes, only items can be bought and sold)
+
