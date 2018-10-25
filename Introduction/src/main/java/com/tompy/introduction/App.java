@@ -17,8 +17,7 @@ import com.tompy.state.AdventureStateFactoryImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.*;
 
 import static com.tompy.directive.Direction.DIRECTION_SOUTH;
 
@@ -41,11 +40,28 @@ public class App {
         UserInput ui = new UserInputTextImpl(inStream, outStream, entityService);
         Player player = new PlayerImpl(ui.getResponse("Player name?"), null);
         outStream.println();
-        Adventure adventure = new Introduction(player, entityService, new EntityFacadeBuilderFactoryImpl(entityService),
-                new ExitBuilderFactoryImpl(), ui, outStream);
 
-        AdventureStateFactory stateFactory =
-                new AdventureStateFactoryImpl(player, adventure, ui, outStream, entityService);
+        String filename = ui.getResponse("File Name?");
+
+        Adventure adventure;
+        if (!filename.isEmpty()) {
+            try {
+                FileInputStream fis = new FileInputStream(filename);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                adventure = (Adventure) ois.readObject();
+                ois.close();
+                fis.close();
+            } catch (IOException ioe) {
+                return 6;
+            } catch (ClassNotFoundException cnfe) {
+                return 7;
+            }
+        } else {
+            adventure = new Introduction(player, entityService, new EntityFacadeBuilderFactoryImpl(entityService),
+                    new ExitBuilderFactoryImpl(), ui, outStream);
+
+            adventure.create();
+        }
 
         LOGGER.info("Player [{}] enters the adventure", player.getName());
 
@@ -53,11 +69,25 @@ public class App {
         outStream.println("Your quest is to defeat a nasty orc to the north.");
         outStream.println();
 
-        adventure.create();
+        AdventureStateFactory stateFactory =
+                new AdventureStateFactoryImpl(player, adventure, ui, outStream, entityService);
 
         adventure.start(stateFactory.getExploreState(), "StartRoom", DIRECTION_SOUTH);
 
         outStream.println(String.format("%s has left the adventure.", player.getName()));
+
+        filename = ui.getResponse("Save?");
+        if (!filename.isEmpty()) {
+            try {
+                FileOutputStream fos = new FileOutputStream(filename);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(adventure);
+                oos.close();
+                fos.close();
+            } catch (IOException ioe) {
+                return 8;
+            }
+        }
 
         return 0;
     }

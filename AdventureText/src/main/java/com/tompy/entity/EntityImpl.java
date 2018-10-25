@@ -2,13 +2,14 @@ package com.tompy.entity;
 
 import com.tompy.response.Responsive;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * Provides basic implementation for Entity subclasses
  */
-public abstract class EntityImpl extends Responsive implements Entity {
+public abstract class EntityImpl extends Responsive implements Entity, Serializable {
     protected final String name;
     protected final List<String> descriptors;
     protected final String description;

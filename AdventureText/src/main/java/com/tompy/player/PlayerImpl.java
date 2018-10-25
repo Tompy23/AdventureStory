@@ -6,12 +6,13 @@ import com.tompy.entity.item.Item;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static com.tompy.player.PlayerInfo.SEARCHES;
 import static com.tompy.player.PlayerInfo.VISITS;
 
-public class PlayerImpl implements Player {
+public class PlayerImpl implements Player, Serializable {
     private static final Logger LOGGER = LogManager.getLogger(PlayerImpl.class);
     private String name;
     private Area currentArea;

@@ -5,9 +5,10 @@ import com.tompy.attribute.AttributeManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class AttributeManagerImpl implements AttributeManager {
+public class AttributeManagerImpl implements AttributeManager, Serializable {
     private static final Logger LOGGER = LogManager.getLogger(AttributeManagerFactoryImpl.class);
 
     private Map<Attribute, Integer> managed;

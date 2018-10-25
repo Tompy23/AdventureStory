@@ -9,11 +9,12 @@ import com.tompy.state.AdventureStateFactory;
 import com.tompy.state.StateMachine;
 
 import java.io.PrintStream;
+import java.io.Serializable;
 
 /**
  * Defines functions which interact with the state of the adventure.
  */
-public interface Adventure extends StateMachine, Clock {
+public interface Adventure extends StateMachine, Clock, Serializable {
 
     /**
      * Create the adventure elements

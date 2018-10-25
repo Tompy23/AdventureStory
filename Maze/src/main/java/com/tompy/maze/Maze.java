@@ -100,34 +100,35 @@ public class Maze extends AdventureImpl implements Adventure {
             int a = r.nextInt(size - 1);
             int b = r.nextInt(size - 1) * size;
             int c = r.nextInt(3);
+            int t = r.nextInt(4) + 1;
 
             switch (c) {
                 case 0:
                     if (b != 0 && rooms[a + b].getExitForDirection(DIRECTION_NORTH) == null) {
                         i++;
                         exits[a + b] =
-                                buildExit(rooms[a + b], DIRECTION_NORTH, rooms[a + b - size], DIRECTION_SOUTH, true, 1);
+                                buildExit(rooms[a + b], DIRECTION_NORTH, rooms[a + b - size], DIRECTION_SOUTH, true, t);
                     }
                     break;
                 case 1:
                     if (a != size - 1 && rooms[a + b].getExitForDirection(DIRECTION_EAST) == null) {
                         i++;
                         exits[a + b] =
-                                buildExit(rooms[a + b], DIRECTION_EAST, rooms[a + b + 1], DIRECTION_WEST, true, 1);
+                                buildExit(rooms[a + b], DIRECTION_EAST, rooms[a + b + 1], DIRECTION_WEST, true, t);
                     }
                     break;
                 case 2:
                     if (b != (size - 1) * size && rooms[a + b].getExitForDirection(DIRECTION_SOUTH) == null) {
                         i++;
                         exits[a + b] =
-                                buildExit(rooms[a + b], DIRECTION_SOUTH, rooms[a + b + size], DIRECTION_NORTH, true, 1);
+                                buildExit(rooms[a + b], DIRECTION_SOUTH, rooms[a + b + size], DIRECTION_NORTH, true, t);
                     }
                     break;
                 case 3:
                     if (a != 0 && rooms[a + b].getExitForDirection(DIRECTION_WEST) == null) {
                         i++;
                         exits[a + b] =
-                                buildExit(rooms[a + b], DIRECTION_WEST, rooms[a + b - 1], DIRECTION_EAST, true, 1);
+                                buildExit(rooms[a + b], DIRECTION_WEST, rooms[a + b - 1], DIRECTION_EAST, true, t);
                     }
                     break;
             }
@@ -139,7 +140,6 @@ public class Maze extends AdventureImpl implements Adventure {
     private void enterRooms(Area[] rooms) {
         Random r = new Random();
         for (int i = 0; i < size * size; i++) {
-            r.nextInt(7);
             Area room = rooms[i];
             describeAlways(room, EVENT_AREA_ENTER, String.format("maze.room.%d", r.nextInt(7)));
         }

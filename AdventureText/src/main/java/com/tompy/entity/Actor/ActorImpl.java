@@ -24,6 +24,8 @@ public class ActorImpl extends CompartmentImpl implements Actor {
 
     private MoveStrategy moveStrategy;
     private Area currentArea;
+    private int speedFactor;
+    private int tickBank;
 
     protected ActorImpl(Long key, String name, List<String> descriptors, String description,
             EntityService entityService) {
@@ -63,9 +65,21 @@ public class ActorImpl extends CompartmentImpl implements Actor {
         if (direction != null) {
             Exit exit = currentArea.getExitForDirection(direction);
             if (exit != null) {
-                Area area = exit.getConnectedArea(currentArea);
-                LOGGER.info(String.format("moved to [%s]", area.getName()));
-                setArea(area);
+                // Check speed factor
+                int ticksAvailable = adventure.getCurrentActionTicks() + speedFactor + tickBank;
+                LOGGER.info(
+                        String.format("[%d]:action ticks + [%d]:speed factor + [%d]:tick bank = [%d]: ticks available",
+                                adventure.getCurrentActionTicks(), speedFactor, tickBank, ticksAvailable));
+                LOGGER.info(String.format("Exit pass thru ticks [%d]", exit.getPassThruTicks()));
+                if (ticksAvailable >= 0 && exit.getPassThruTicks() <= ticksAvailable) {
+                    Area area = exit.getConnectedArea(currentArea);
+                    LOGGER.info(String.format("moved to [%s]", area.getName()));
+                    setArea(area);
+                    tickBank = ticksAvailable - exit.getPassThruTicks();
+                } else {
+                    tickBank = ticksAvailable;
+                }
+                LOGGER.info(String.format("[%d]:tick bank left over", tickBank));
                 return Collections.singletonList(responseFactory.createBuilder().source(name).text("").build());
             }
         }
