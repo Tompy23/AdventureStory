@@ -25,3 +25,19 @@ If an encounter has the ability to trade items (a merchant for example), then "(
 be available along with the other actions.  These will be actions as well I guess.
 Buying and selling will apply a factor to the actual value of an item.  (Yes, only items can be bought and sold)
 
+I added "Actors" in version 1.1.  This allows for things (aka people or monsters) to move around and interact with the adventure, a level of dynamic interaction which adds a lot of possibilities.
+
+The next thing 1.1 will do is allow a player to save their progress.  Saving progress is an interesting problem to solve.  I have never done this before in an application of this size.  There will be a large amount of...  "technical jabber..."  I am excited to figure it out.
+
+Future versions...
+
+1.1 - Basic Actors.  Save progress (work).  More logging.  No real story, just testing stories.
+
+1.2 - Add more.  More commands.  More Actor behavior.  More "things".  Create a reasonably sized story to play.
+
+1.3+ - No plans at this time.  Possible technical updates and bug fixes.  No new stories.  Maybe more things.
+
+2.0 - Game elements!  There is no design work completed at this time.  This is merely an idea.
+
+The idea is that I can continue to develope more for version 1.x while I start on version. 2.x.  I really feel that 1.x will be a viable story game in and of itself.
+
