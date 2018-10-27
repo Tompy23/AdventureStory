@@ -1,6 +1,7 @@
 package com.tompy.entity.event;
 
 import com.tompy.adventure.Adventure;
+import com.tompy.entity.EntityService;
 import com.tompy.player.Player;
 
 /**
@@ -13,7 +14,8 @@ public interface Trigger {
      *
      * @param player
      * @param adventure
+     * @param entityService
      * @return
      */
-    boolean pull(Player player, Adventure adventure);
+    boolean pull(Player player, Adventure adventure, EntityService entityService);
 }

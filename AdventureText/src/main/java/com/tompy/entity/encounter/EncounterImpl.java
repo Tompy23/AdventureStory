@@ -40,7 +40,7 @@ public class EncounterImpl extends EntityImpl implements Encounter {
         LOGGER.info("Retrieving options for encounter.");
         Map<Long, String> returnValue = new HashMap<>();
         for (Event event : entityService.get(this, EVENT_INTERACTION)) {
-            if (event.pull(player, adventure)) {
+            if (event.pull(player, adventure, entityService)) {
                 returnValue.put(event.getKey(), event.getDescription());
             }
         }

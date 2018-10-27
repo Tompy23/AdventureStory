@@ -76,25 +76,10 @@ public class Introduction extends AdventureImpl implements Adventure {
         describeAlways(room6, EVENT_AREA_PRE_FEATURE_SEARCH, "pre.feature.search");
         describeAlways(room6, EVENT_AREA_PRE_ITEM_SEARCH, "pre.item.search");
         describeAlways(room6, EVENT_AREA_PRE_FEATURE_DIRECTION_SEARCH, "pre.feature.direction.search");
+        describeAlways(room7, EVENT_AREA_PRE_FEATURE_SEARCH, "pre.feature.search");
+        describeAlways(room7, EVENT_AREA_PRE_ITEM_SEARCH, "pre.item.search");
+        describeAlways(room7, EVENT_AREA_PRE_FEATURE_DIRECTION_SEARCH, "pre.feature.direction.search");
 
-        describeAlways(room1, EVENT_AREA_PRE_FEATURE_SEARCH, "pre.feature.search");
-        describeAlways(room1, EVENT_AREA_PRE_ITEM_SEARCH, "pre.item.search");
-        describeAlways(room1, EVENT_AREA_PRE_FEATURE_DIRECTION_SEARCH, "pre.feature.direction.search");
-        describeAlways(room2, EVENT_AREA_PRE_FEATURE_SEARCH, "pre.feature.search");
-        describeAlways(room2, EVENT_AREA_PRE_ITEM_SEARCH, "pre.item.search");
-        describeAlways(room2, EVENT_AREA_PRE_FEATURE_DIRECTION_SEARCH, "pre.feature.direction.search");
-        describeAlways(room3, EVENT_AREA_PRE_FEATURE_SEARCH, "pre.feature.search");
-        describeAlways(room3, EVENT_AREA_PRE_ITEM_SEARCH, "pre.item.search");
-        describeAlways(room3, EVENT_AREA_PRE_FEATURE_DIRECTION_SEARCH, "pre.feature.direction.search");
-        describeAlways(room4, EVENT_AREA_PRE_FEATURE_SEARCH, "pre.feature.search");
-        describeAlways(room4, EVENT_AREA_PRE_ITEM_SEARCH, "pre.item.search");
-        describeAlways(room4, EVENT_AREA_PRE_FEATURE_DIRECTION_SEARCH, "pre.feature.direction.search");
-        describeAlways(room5, EVENT_AREA_PRE_FEATURE_SEARCH, "pre.feature.search");
-        describeAlways(room5, EVENT_AREA_PRE_ITEM_SEARCH, "pre.item.search");
-        describeAlways(room5, EVENT_AREA_PRE_FEATURE_DIRECTION_SEARCH, "pre.feature.direction.search");
-        describeAlways(room6, EVENT_AREA_PRE_FEATURE_SEARCH, "pre.feature.search");
-        describeAlways(room6, EVENT_AREA_PRE_ITEM_SEARCH, "pre.item.search");
-        describeAlways(room6, EVENT_AREA_PRE_FEATURE_DIRECTION_SEARCH, "pre.feature.direction.search");
 
         // Exits
         Exit exit1 = buildExit(room1, DIRECTION_NORTH, room2, DIRECTION_SOUTH, false, 1);
@@ -110,7 +95,7 @@ public class Introduction extends AdventureImpl implements Adventure {
         Feature room1Chest = buildFeature(FEATURE_CHEST, "room1.chest", "room1Chest");
         add(room1Chest, LOCKED);
 
-        describeAlways(room1Chest, EVENT_FEATURE_SEARCH, "room1.chest.search");
+        describeVisible(room1Chest, EVENT_FEATURE_SEARCH, "room1.chest.search");
         Event room1ChestOpen1 =
                 eventBuilder(ACTION_DESCRIBE, TRIGGER_ALWAYS_DELAY, room1Chest, "room1.chest.open.2").delay(1).build();
         Event room1ChestOpen2 = eventBuilder(ACTION_DESCRIBE, TRIGGER_ONCE, room1Chest, "room1.chest.open.1").build();
@@ -124,7 +109,7 @@ public class Introduction extends AdventureImpl implements Adventure {
         Feature room1NorthDoor =
                 featureBuilder(FEATURE_DOOR, "room1.door.north").name("room1NorthDoor").exit(exit1).build();
 
-        describeAlways(room1NorthDoor, EVENT_FEATURE_SEARCH, "room1.door.north.search");
+        describeVisible(room1NorthDoor, EVENT_FEATURE_SEARCH, "room1.door.north.search");
         describeAlways(room1NorthDoor, EVENT_FEATURE_OPEN, "room1.door.north.open");
         describeAlways(room1NorthDoor, EVENT_FEATURE_CLOSE, "room1.door.north.close");
         describeAlways(room1, EVENT_AREA_ENTER, "room1.enter");
@@ -147,7 +132,7 @@ public class Introduction extends AdventureImpl implements Adventure {
         Feature room2NorthDoor =
                 featureBuilder(FEATURE_DOOR, "room2.door.north").name("room2NorthDoor").exit(exit6).build();
         remove(room2NorthDoor, VISIBLE);
-        describeAlways(room2NorthDoor, EVENT_FEATURE_SEARCH, "room2.door.north.search");
+        describeVisible(room2NorthDoor, EVENT_FEATURE_SEARCH, "room2.door.north.search");
 
         Event room2NorthDoorOpen1 =
                 eventBuilder(ACTION_DESCRIBE, TRIGGER_ONCE, room2NorthDoor, "room2.door.north.open.1").build();
@@ -173,7 +158,7 @@ public class Introduction extends AdventureImpl implements Adventure {
         describeAlways(room2, EVENT_AREA_SEARCH, "room2.search");
         describeAlways(room2, EVENT_AREA_SOUTH_SEARCH, "room2.search.south");
         describeAlways(room2, EVENT_AREA_EAST_SEARCH, "room2.search.east");
-        describeAlways(room2EastDoor, EVENT_FEATURE_SEARCH, "room2.door.east.search");
+        describeVisible(room2EastDoor, EVENT_FEATURE_SEARCH, "room2.door.east.search");
 
         describeAlways(room2, EVENT_AREA_NORTH_SEARCH, "room2.search.north.1");
         Event room2SearchNorth2 =
@@ -217,8 +202,8 @@ public class Introduction extends AdventureImpl implements Adventure {
         Feature westPortrait = buildFeature(FEATURE_BASIC, "room2.portrait.west", "westPortrait");
         room2.installFeature(westPortrait, DIRECTION_WEST);
 
-        describeAlways(northPortrait, EVENT_FEATURE_SEARCH, "room2.portrait.north.search");
-        describeAlways(westPortrait, EVENT_FEATURE_SEARCH, "room2.portrait.west.search");
+        describeVisible(northPortrait, EVENT_FEATURE_SEARCH, "room2.portrait.north.search");
+        describeVisible(westPortrait, EVENT_FEATURE_SEARCH, "room2.portrait.west.search");
 
         // Key for east door is in room 1
         Item key1 = itemBuilder(ITEM_KEY, "key1").targetFeature(room2EastDoor).manipulationTicks(1).build();
@@ -231,7 +216,7 @@ public class Introduction extends AdventureImpl implements Adventure {
         Feature room3NorthDoor =
                 featureBuilder(FEATURE_DOOR, "room3.door.north").name("room3NorthDoor").exit(exit3).build();
 
-        describeAlways(room3NorthDoor, EVENT_FEATURE_SEARCH, "room3.door.north.search");
+        describeVisible(room3NorthDoor, EVENT_FEATURE_SEARCH, "room3.door.north.search");
         describeAlways(room3, EVENT_AREA_ENTER, "room3.enter");
         describeAlways(room3, EVENT_AREA_SEARCH, "room3.search");
         describeAlways(room3, EVENT_AREA_WEST_SEARCH, "room3.search.west");
@@ -343,10 +328,10 @@ public class Introduction extends AdventureImpl implements Adventure {
 
         describeAlways(room7, EVENT_AREA_ENTER, "room7.enter");
         describeAlways(room7, EVENT_AREA_SEARCH, "room7.search");
-        describeAlways(room7Table, EVENT_FEATURE_SEARCH, "room7.table.search");
-        describeAlways(room7ChestRed, EVENT_FEATURE_SEARCH, "room7.chest.red.search");
-        describeAlways(room7ChestWhite, EVENT_FEATURE_SEARCH, "room7.chest.white.search");
-        describeAlways(room7ChestBlue, EVENT_FEATURE_SEARCH, "room7.chest.blue.search");
+        describeVisible(room7Table, EVENT_FEATURE_SEARCH, "room7.table.search");
+        describeVisible(room7ChestRed, EVENT_FEATURE_SEARCH, "room7.chest.red.search");
+        describeVisible(room7ChestWhite, EVENT_FEATURE_SEARCH, "room7.chest.white.search");
+        describeVisible(room7ChestBlue, EVENT_FEATURE_SEARCH, "room7.chest.blue.search");
         describeAlways(room7ChestRed, EVENT_FEATURE_UNLOCK, "room7.chest.unlock");
         describeAlways(room7ChestRed, EVENT_FEATURE_OPEN, "room7.chest.open");
         describeAlways(room7ChestWhite, EVENT_FEATURE_UNLOCK, "room7.chest.unlock");

@@ -181,11 +181,11 @@ public class EntityServiceImpl implements EntityService {
         List<Response> returnValue = new ArrayList<>();
         if (entity == null) {
             for (Long key : eventManagers.keySet()) {
-                eventManagers.get(key).getAllOfType(type).stream().filter((e) -> e.pull(player, adventure))
+                eventManagers.get(key).getAllOfType(type).stream().filter((e) -> e.pull(player, adventure, this))
                         .forEach((e) -> returnValue.addAll(e.apply(player, adventure)));
             }
         } else {
-            eventManagers.get(entity.getKey()).getAllOfType(type).stream().filter((e) -> e.pull(player, adventure))
+            eventManagers.get(entity.getKey()).getAllOfType(type).stream().filter((e) -> e.pull(player, adventure, this))
                     .forEach((e) -> returnValue.addAll(e.apply(player, adventure)));
         }
         return returnValue;

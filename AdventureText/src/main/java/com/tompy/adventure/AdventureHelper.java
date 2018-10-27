@@ -27,6 +27,7 @@ import java.util.Objects;
 import static com.tompy.directive.ActionType.ACTION_DESCRIBE;
 import static com.tompy.directive.EventType.EVENT_ACTOR_PROGRAM;
 import static com.tompy.directive.TriggerType.TRIGGER_ALWAYS;
+import static com.tompy.directive.TriggerType.TRIGGER_VISIBLE;
 
 /**
  * Helper class for building Adventure
@@ -39,6 +40,13 @@ public abstract class AdventureHelper {
     protected AdventureStateFactory stateFactory;
     protected MoveStrategyFactory moveStrategyFactory;
     private Adventure thisAdventure;
+
+    public AdventureHelper() {
+        player = null;
+        entityService = null;
+        exitBuilderFactory = null;
+        messages = null;
+    }
 
     public AdventureHelper(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory) {
         this.player = Objects.requireNonNull(player, "Player cannot be null.");
@@ -147,8 +155,18 @@ public abstract class AdventureHelper {
                 .responses(fixResponses(responses)).stateFactory(stateFactory);
     }
 
+    /**
+     *
+     * @param entity
+     * @param type
+     * @param responses
+     */
     protected void describeAlways(Entity entity, EventType type, String... responses) {
         addEvent(entity, type, eventBuilder(ACTION_DESCRIBE, TRIGGER_ALWAYS, entity, responses).build());
+    }
+
+    protected void describeVisible(Entity entity, EventType type, String... responses) {
+        addEvent(entity, type, eventBuilder(ACTION_DESCRIBE, TRIGGER_VISIBLE, entity, responses).build());
     }
 
     /**

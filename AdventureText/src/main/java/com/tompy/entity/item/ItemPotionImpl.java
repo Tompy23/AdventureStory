@@ -32,7 +32,7 @@ public class ItemPotionImpl extends ItemImpl {
         adventure.setActionTicks(manipulationTicks);
         returnValue.addAll(entityService.handle(this, EVENT_BEFORE_POTION, player, adventure));
 
-        if (event.pull(player, adventure)) {
+        if (event.pull(player, adventure, entityService)) {
             returnValue.addAll(event.apply(player, adventure));
         }
 

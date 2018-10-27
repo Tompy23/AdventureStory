@@ -88,7 +88,6 @@ public class AreaImpl extends CompartmentImpl implements Area {
                     .add(this.responseFactory.createBuilder().source(i.getName()).text(i.getDescription()).build()));
         }
 
-
         player.visitArea(name);
 
         return returnValue;
@@ -113,22 +112,34 @@ public class AreaImpl extends CompartmentImpl implements Area {
 
         returnValue.addAll(entityService.handle(this, EVENT_AREA_SEARCH, player, adventure));
 
-        if (0 < features.stream().filter((i) -> entityService.is(i, VISIBLE)).count()) {
-            returnValue.addAll(entityService.handle(this, EVENT_AREA_PRE_FEATURE_SEARCH, player, adventure));
+        if (!features.isEmpty()) {
+            List<Response> featureSearch = new ArrayList<>();
             features.stream().filter((i) -> entityService.is(i, VISIBLE))
-                    .forEach((f) -> returnValue.addAll(f.search(player, adventure)));
+                    .forEach((f) -> featureSearch.addAll(f.search(player, adventure)));
+            if (!featureSearch.isEmpty()) {
+                returnValue.addAll(entityService.handle(this, EVENT_AREA_PRE_FEATURE_SEARCH, player, adventure));
+                returnValue.addAll(featureSearch);
+            }
         }
 
-        if (0 < items.stream().filter((i) -> entityService.is(i, VISIBLE)).count()) {
-            returnValue.addAll(entityService.handle(this, EVENT_AREA_PRE_ITEM_SEARCH, player, adventure));
-            items.stream().filter((i) -> entityService.is(i, VISIBLE)).forEach((i) -> returnValue
+        if (!items.isEmpty()) {
+            List<Response> itemSearch = new ArrayList<>();
+            items.stream().filter((i) -> entityService.is(i, VISIBLE)).forEach((i) -> itemSearch
                     .add(this.responseFactory.createBuilder().source(i.getName()).text(i.getDescription()).build()));
+            if (!itemSearch.isEmpty()) {
+                returnValue.addAll(entityService.handle(this, EVENT_AREA_PRE_ITEM_SEARCH, player, adventure));
+                returnValue.addAll(itemSearch);
+            }
         }
 
         if (!actors.isEmpty()) {
-            returnValue.add(responseFactory.createBuilder().source(name).text("Others...").build());
+            List<Response> actorSearch = new ArrayList<>();
             actors.stream().filter((a) -> entityService.is(a, VISIBLE)).forEach(
-                    (a) -> returnValue.add(responseFactory.createBuilder().source(name).text(a.getName()).build()));
+                    (a) -> actorSearch.add(responseFactory.createBuilder().source(name).text(a.getName()).build()));
+            if (!actorSearch.isEmpty()) {
+                returnValue.add(responseFactory.createBuilder().source(name).text("Others...").build());
+                returnValue.addAll(actorSearch);
+            }
         }
 
         player.searchArea(name);
@@ -145,11 +156,16 @@ public class AreaImpl extends CompartmentImpl implements Area {
         returnValue.addAll(entityService.handle(this, type, player, adventure));
 
         if (directionFeatures.containsKey(direction)) {
-            if (0 < directionFeatures.get(direction).stream().filter((i) -> entityService.is(i, VISIBLE)).count()) {
-                returnValue
-                        .addAll(entityService.handle(this, EVENT_AREA_PRE_FEATURE_DIRECTION_SEARCH, player, adventure));
+            if (!directionFeatures.get(direction).isEmpty()) {
+                List<Response> featureSearch = new ArrayList<>();
                 directionFeatures.get(direction).stream()
-                        .forEach((f) -> returnValue.addAll(f.search(player, adventure)));
+                        .forEach((f) -> featureSearch.addAll(f.search(player, adventure)));
+                if (!featureSearch.isEmpty()) {
+                    returnValue.addAll(entityService
+                            .handle(this, EVENT_AREA_PRE_FEATURE_DIRECTION_SEARCH, player, adventure));
+                    returnValue.addAll(featureSearch);
+                }
+
             }
         }
 

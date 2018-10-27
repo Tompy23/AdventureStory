@@ -39,8 +39,8 @@ public class EventImpl extends EntityImpl implements Event {
         return new EventBuilderImpl(key, entityService);
     }
 
-    @Override public boolean pull(Player player, Adventure adventure) {
-        return trigger.pull(player, adventure);
+    @Override public boolean pull(Player player, Adventure adventure, EntityService entityService) {
+        return trigger.pull(player, adventure, entityService);
     }
 
     @Override public List<Response> apply(Player player, Adventure adventure) {
@@ -185,6 +185,8 @@ public class EventImpl extends EntityImpl implements Event {
                     return new TriggerOnceAfterDelay(entity, delay);
                 case TRIGGER_ALWAYS_DELAY:
                     return new TriggerAlwaysAfterDelay(entity, delay);
+                case TRIGGER_VISIBLE:
+                    return new TriggerVisibleImpl(entity);
             }
             return null;
         }

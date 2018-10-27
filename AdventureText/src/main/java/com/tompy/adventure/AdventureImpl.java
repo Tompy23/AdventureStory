@@ -14,9 +14,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.PrintStream;
+import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class AdventureImpl extends AdventureHelper implements Adventure {
+public abstract class AdventureImpl extends AdventureHelper implements Adventure, Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LogManager.getLogger(AdventureImpl.class);
     protected final EntityFacadeBuilderFactory entityFacadeBuilderFactory;
     private final UserInput userInput;
@@ -25,6 +27,12 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
     private AdventureState currentState;
     private int currentTick;
     private int actionTicks;
+
+    public AdventureImpl() {
+        entityFacadeBuilderFactory = null;
+        userInput = null;
+        outStream = null;
+    }
 
 
     public AdventureImpl(Player player, EntityService entityService,

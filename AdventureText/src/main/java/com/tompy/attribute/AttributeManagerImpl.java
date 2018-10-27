@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.*;
 
 public class AttributeManagerImpl implements AttributeManager, Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LogManager.getLogger(AttributeManagerFactoryImpl.class);
 
     private Map<Attribute, Integer> managed;

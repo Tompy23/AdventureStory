@@ -36,7 +36,7 @@ public class MerchantChat extends MerchantStateBaseImpl implements MerchantState
         LOGGER.info("Getting options for Merchant chat state.");
         Map<Long, String> returnValue = new HashMap<>();
         for (Event event : merchant.getEntityService().get(merchant, EVENT_INTERACTION)) {
-            if (event.pull(merchant.getPlayer(), merchant.getAdventure())) {
+            if (event.pull(merchant.getPlayer(), merchant.getAdventure(), null)) {
                 returnValue.put(event.getKey(), event.getDescription());
             }
         }

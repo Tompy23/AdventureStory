@@ -43,22 +43,30 @@ public class App {
 
         String filename = ui.getResponse("File Name?");
 
+        AdventureStateFactory stateFactory;
         Adventure adventure;
         if (!filename.isEmpty()) {
             try {
                 FileInputStream fis = new FileInputStream(filename);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 adventure = (Adventure) ois.readObject();
+                stateFactory =
+                        new AdventureStateFactoryImpl(player, adventure, ui, outStream, entityService);
                 ois.close();
                 fis.close();
             } catch (IOException ioe) {
+                ioe.printStackTrace();
                 return 6;
             } catch (ClassNotFoundException cnfe) {
+                cnfe.printStackTrace();
                 return 7;
             }
         } else {
             adventure = new Introduction(player, entityService, new EntityFacadeBuilderFactoryImpl(entityService),
                     new ExitBuilderFactoryImpl(), ui, outStream);
+
+            stateFactory =
+                    new AdventureStateFactoryImpl(player, adventure, ui, outStream, entityService);
 
             adventure.create();
         }
@@ -69,8 +77,7 @@ public class App {
         outStream.println("Your quest is to defeat a nasty orc to the north.");
         outStream.println();
 
-        AdventureStateFactory stateFactory =
-                new AdventureStateFactoryImpl(player, adventure, ui, outStream, entityService);
+
 
         adventure.start(stateFactory.getExploreState(), "StartRoom", DIRECTION_SOUTH);
 
@@ -85,6 +92,7 @@ public class App {
                 oos.close();
                 fos.close();
             } catch (IOException ioe) {
+                ioe.printStackTrace();
                 return 8;
             }
         }

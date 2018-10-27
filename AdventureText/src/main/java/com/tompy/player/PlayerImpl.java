@@ -13,6 +13,7 @@ import static com.tompy.player.PlayerInfo.SEARCHES;
 import static com.tompy.player.PlayerInfo.VISITS;
 
 public class PlayerImpl implements Player, Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LogManager.getLogger(PlayerImpl.class);
     private String name;
     private Area currentArea;

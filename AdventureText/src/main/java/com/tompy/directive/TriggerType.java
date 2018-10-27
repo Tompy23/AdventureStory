@@ -5,7 +5,7 @@ package com.tompy.directive;
  */
 public enum TriggerType {
     TRIGGER_ALWAYS("always"), TRIGGER_ONCE("once"), TRIGGER_ONCE_DELAY("once_delay"),
-    TRIGGER_ALWAYS_DELAY("always_delay");
+    TRIGGER_ALWAYS_DELAY("always_delay"), TRIGGER_VISIBLE("visible");
 
     /**
      * Short description

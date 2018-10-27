@@ -10,6 +10,7 @@ import java.util.Objects;
  * Provides basic implementation for Entity subclasses
  */
 public abstract class EntityImpl extends Responsive implements Entity, Serializable {
+    private static final long serialVersionUID = 1L;
     protected final String name;
     protected final List<String> descriptors;
     protected final String description;
