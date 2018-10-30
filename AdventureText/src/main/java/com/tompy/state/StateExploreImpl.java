@@ -27,11 +27,11 @@ public class StateExploreImpl extends AdventureStateBaseImpl implements Adventur
     }
 
     @Override
-    public void process() {
+    public void process(EntityService entityService) {
         Command command = userInput.getCommand();
         if (null != command) {
             command.execute(player, adventure).stream().forEachOrdered((r) -> outStream.println(r.render()));
-            entityService.getActors().stream().forEachOrdered((a) -> a.takeAction(player, adventure).stream()
+            entityService.getActors().stream().forEachOrdered((a) -> a.takeAction(player, adventure, entityService).stream()
                     .forEachOrdered((r) -> outStream.println(r.render())));
             entityService.handle(null, EVENT_EXPLORING, player, adventure).stream()
                     .forEachOrdered((a) -> outStream.println(a.render()));

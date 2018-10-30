@@ -15,15 +15,16 @@ import java.util.stream.Collectors;
 public class ActionDescribeImpl extends ActionImpl {
     public static final Logger LOGGER = LogManager.getLogger(ActionDescribeImpl.class);
 
-    public ActionDescribeImpl(Entity entity, EntityService entityService, String[] responses) {
-        super(entity, entityService, responses);
+    public ActionDescribeImpl(Entity entity, String[] responses) {
+        super(entity, responses);
     }
 
-    @Override public List<Response> apply(Player player, Adventure adventure) {
+    @Override
+    public List<Response> apply(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Apply describing event.");
         List<Response> returnValue = new ArrayList<>();
         returnValue.addAll(responses.stream().
-                map((r) -> responseFactory.createBuilder().source(source).text(substitution(r)).build())
+                map((r) -> responseFactory.createBuilder().source(source).text(substitution(r, entityService)).build())
                 .collect(Collectors.toList()));
         return returnValue;
     }

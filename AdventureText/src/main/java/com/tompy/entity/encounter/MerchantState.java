@@ -1,5 +1,6 @@
 package com.tompy.entity.encounter;
 
+import com.tompy.entity.EntityService;
 import com.tompy.response.Response;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public interface MerchantState {
      *
      * @return
      */
-    Map<Long, String> getOptions();
+    Map<Long, String> getOptions(EntityService entityService);
 
     /**
      * Action on the chosen option
@@ -33,5 +34,5 @@ public interface MerchantState {
      * @param option
      * @return
      */
-    List<Response> act(Long option);
+    List<Response> act(Long option, EntityService entityService);
 }

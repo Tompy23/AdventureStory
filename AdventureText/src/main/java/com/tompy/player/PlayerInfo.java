@@ -1,9 +1,11 @@
 package com.tompy.player;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlayerInfo {
+public class PlayerInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
     public static final String VISITS = "VISITS";
     public static final String SEARCHES = "SEARCHES";
     private Map<String, Integer> countMap = new HashMap<>();

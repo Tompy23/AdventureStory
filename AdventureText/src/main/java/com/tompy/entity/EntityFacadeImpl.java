@@ -4,9 +4,11 @@ import com.tompy.attribute.Attribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class EntityFacadeImpl implements EntityFacade {
+public class EntityFacadeImpl implements EntityFacade, Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LogManager.getLogger(EntityFacadeImpl.class);
     private final Entity entity;
     private final Attribute attribute;

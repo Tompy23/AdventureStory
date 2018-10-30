@@ -29,7 +29,7 @@ public class ItemKeyImpl extends ItemImpl {
     }
 
     @Override
-    public List<Response> use(Player player, Adventure adventure) {
+    public List<Response> use(Player player, Adventure adventure, EntityService entityService) {
         List<Response> returnValue = new ArrayList<>();
 
         LOGGER.info("Using key [{}] on [{}]", getName(), target.getName());
@@ -39,11 +39,11 @@ public class ItemKeyImpl extends ItemImpl {
         returnValue.addAll(entityService.handle(target, EVENT_KEY_BEFORE_USE, player, adventure));
 
         if (entityService.is(target, Attribute.LOCKED)) {
-            returnValue.addAll(target.unlock(player, adventure));
+            returnValue.addAll(target.unlock(player, adventure, entityService));
             returnValue.addAll(entityService.handle(this, EVENT_KEY_LOCK, player, adventure));
             returnValue.addAll(entityService.handle(target, EVENT_KEY_LOCK, player, adventure));
         } else {
-            returnValue.addAll(target.lock(player, adventure));
+            returnValue.addAll(target.lock(player, adventure, entityService));
             returnValue.addAll(entityService.handle(this, EVENT_KEY_UNLOCK, player, adventure));
             returnValue.addAll(entityService.handle(target, EVENT_KEY_UNLOCK, player, adventure));
         }
@@ -54,7 +54,7 @@ public class ItemKeyImpl extends ItemImpl {
     }
 
     @Override
-    public List<Response> misUse(Feature feature, Player player, Adventure adventure) {
+    public List<Response> misUse(Feature feature, Player player, Adventure adventure, EntityService entityService) {
         List<Response> returnValue = new ArrayList<>();
         returnValue.addAll(entityService.handle(this, EVENT_ITEM_MISUSE, player, adventure));
         returnValue.addAll(entityService.handle(feature, EVENT_FEATURE_MISUSE, player, adventure));

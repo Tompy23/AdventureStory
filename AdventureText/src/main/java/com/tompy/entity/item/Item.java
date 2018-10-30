@@ -2,6 +2,7 @@ package com.tompy.entity.item;
 
 import com.tompy.adventure.Adventure;
 import com.tompy.entity.Entity;
+import com.tompy.entity.EntityService;
 import com.tompy.entity.feature.Feature;
 import com.tompy.player.Player;
 import com.tompy.response.Response;
@@ -27,7 +28,7 @@ public interface Item extends Entity {
      * @param adventure
      * @return
      */
-    List<Response> use(Player player, Adventure adventure);
+    List<Response> use(Player player, Adventure adventure, EntityService entityService);
 
     /**
      * Determine if a given target entity is appropriate
@@ -59,5 +60,5 @@ public interface Item extends Entity {
      * @param adventure
      * @return
      */
-    List<Response> misUse(Feature feature, Player player, Adventure adventure);
+    List<Response> misUse(Feature feature, Player player, Adventure adventure, EntityService entityService);
 }

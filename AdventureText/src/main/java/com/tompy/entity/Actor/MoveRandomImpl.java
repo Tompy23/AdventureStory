@@ -13,12 +13,12 @@ import org.apache.logging.log4j.Logger;
 public class MoveRandomImpl extends MoveStrategyBaseImpl implements MoveStrategy {
     private static final Logger LOGGER = LogManager.getLogger(MoveRandomImpl.class);
 
-    public MoveRandomImpl(Actor actor, Player player, Adventure adventure, EntityService entityService) {
-        super(actor, player, adventure, entityService);
+    public MoveRandomImpl(Actor actor, Player player, Adventure adventure) {
+        super(actor, player, adventure);
     }
 
     @Override
-    public Direction getMove() {
+    public Direction getMove(EntityService entityService) {
         Area startArea = entityService.getAreaByName(actor.getArea().getName());
         LOGGER.info(startArea.getName());
         Direction go = AdventureUtils.getRandomDirection();

@@ -1,6 +1,7 @@
 package com.tompy.entity.feature;
 
 import com.tompy.adventure.Adventure;
+import com.tompy.entity.EntityService;
 import com.tompy.entity.compartment.Compartment;
 import com.tompy.entity.item.Item;
 import com.tompy.player.Player;
@@ -20,7 +21,7 @@ public interface Feature extends Compartment {
      * @param adventure
      * @return
      */
-    List<Response> search(Player player, Adventure adventure);
+    List<Response> search(Player player, Adventure adventure, EntityService entityService);
 
     /**
      * Put the Feature in Open state
@@ -29,7 +30,7 @@ public interface Feature extends Compartment {
      * @param adventure
      * @return
      */
-    List<Response> open(Player player, Adventure adventure);
+    List<Response> open(Player player, Adventure adventure, EntityService entityService);
 
     /**
      * Remove the Open state from the Feature
@@ -38,7 +39,7 @@ public interface Feature extends Compartment {
      * @param adventure
      * @return
      */
-    List<Response> close(Player player, Adventure adventure);
+    List<Response> close(Player player, Adventure adventure, EntityService entityService);
 
     /**
      * Add Locked State to Feature
@@ -47,7 +48,7 @@ public interface Feature extends Compartment {
      * @param adventure
      * @return
      */
-    List<Response> lock(Player player, Adventure adventure);
+    List<Response> lock(Player player, Adventure adventure, EntityService entityService);
 
     /**
      * Remove Locked State from Feature
@@ -56,7 +57,7 @@ public interface Feature extends Compartment {
      * @param adventure
      * @return
      */
-    List<Response> unlock(Player player, Adventure adventure);
+    List<Response> unlock(Player player, Adventure adventure, EntityService entityService);
 
     /**
      * Alert that the Feature was not used properly somehow with a specific Item.
@@ -66,7 +67,7 @@ public interface Feature extends Compartment {
      * @param adventure
      * @return
      */
-    List<Response> misUse(Item item, Player player, Adventure adventure);
+    List<Response> misUse(Item item, Player player, Adventure adventure, EntityService entityService);
 
     /**
      * Drink from the feature (a fountain for example)
@@ -75,5 +76,5 @@ public interface Feature extends Compartment {
      * @param adventure
      * @return
      */
-    List<Response> drink(Player player, Adventure adventure);
+    List<Response> drink(Player player, Adventure adventure, EntityService entityService);
 }

@@ -4,9 +4,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Properties;
 
-public class MessageHandler {
+public class MessageHandler implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LogManager.getLogger(MessageHandler.class);
 
     private Properties properties = new Properties();

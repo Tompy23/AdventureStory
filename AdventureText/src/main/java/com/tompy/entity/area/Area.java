@@ -4,6 +4,7 @@ import com.tompy.adventure.Adventure;
 import com.tompy.command.Command;
 import com.tompy.directive.Direction;
 import com.tompy.entity.Actor.Actor;
+import com.tompy.entity.EntityService;
 import com.tompy.entity.compartment.Compartment;
 import com.tompy.entity.feature.Feature;
 import com.tompy.exit.Exit;
@@ -56,7 +57,7 @@ public interface Area extends Compartment {
      * @param adventure - The {@link Adventure} info
      * @return - A list of {@link Response} to display
      */
-    List<Response> enter(Direction direction, Player player, Adventure adventure);
+    List<Response> enter(Direction direction, Player player, Adventure adventure, EntityService entityService);
 
     /**
      * The action which happens when a {@link Player} leaves an Area
@@ -66,7 +67,7 @@ public interface Area extends Compartment {
      * @param adventure - The {@link Adventure} info
      * @return - A list of {@link Response} to display
      */
-    List<Response> exit(Direction direction, Player player, Adventure adventure);
+    List<Response> exit(Direction direction, Player player, Adventure adventure, EntityService entityService);
 
     /**
      * The action which happens when a {@link Player} uses the Search {@link Command}
@@ -75,7 +76,7 @@ public interface Area extends Compartment {
      * @param adventure - The {@link Adventure} info
      * @return - A list of {@link Response} to display
      */
-    List<Response> search(Player player, Adventure adventure);
+    List<Response> search(Player player, Adventure adventure, EntityService entityService);
 
     /**
      * The action which happens when a {@link Player} searches in a specific {@link Direction}
@@ -85,7 +86,7 @@ public interface Area extends Compartment {
      * @param adventure - The {@link Adventure} info
      * @return - A list of {@link Response} to display
      */
-    List<Response> searchDirection(Direction direction, Player player, Adventure adventure);
+    List<Response> searchDirection(Direction direction, Player player, Adventure adventure, EntityService entityService);
 
     /**
      * Return all features in the area

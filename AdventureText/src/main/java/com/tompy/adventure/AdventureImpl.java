@@ -28,13 +28,6 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
     private int currentTick;
     private int actionTicks;
 
-    public AdventureImpl() {
-        entityFacadeBuilderFactory = null;
-        userInput = null;
-        outStream = null;
-    }
-
-
     public AdventureImpl(Player player, EntityService entityService,
             EntityFacadeBuilderFactory entityFacadeBuilderFactory, ExitBuilderFactory exitBuilderFactory,
             UserInput userInput, PrintStream outStream) {
@@ -66,11 +59,11 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
     }
 
     @Override
-    public void start(AdventureState state, String startRoom, Direction direction) {
+    public void start(AdventureState state, String startRoom, Direction direction, EntityService entityService) {
         LOGGER.info("Starting the adventure.");
         Area startArea = entityService.getAreaByName(startRoom);
         player.setArea(startArea);
-        startArea.enter(direction, player, this).stream().forEachOrdered((a) -> outStream.println(a.render()));
+        startArea.enter(direction, player, this, entityService).stream().forEachOrdered((a) -> outStream.println(a.render()));
         outStream.println();
 
         proceed = true;
@@ -98,7 +91,7 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
         if (currentState != null) {
             while (proceed) {
                 LOGGER.info(String.format("Start round.  Current ticks [%d]", getCurrentTicks()));
-                currentState.process();
+                currentState.process(entityService);
                 endAction();
                 LOGGER.info(
                         String.format("End round.  Ticks + [%d] -> [%d]", getCurrentActionTicks(), getCurrentTicks()));

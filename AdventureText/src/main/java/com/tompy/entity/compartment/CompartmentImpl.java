@@ -1,6 +1,5 @@
 package com.tompy.entity.compartment;
 
-import com.tompy.entity.EntityService;
 import com.tompy.entity.EntityImpl;
 import com.tompy.entity.item.Item;
 import org.apache.logging.log4j.LogManager;
@@ -15,9 +14,8 @@ public abstract class CompartmentImpl extends EntityImpl implements Compartment 
     public static final Logger LOGGER = LogManager.getLogger(CompartmentImpl.class);
     protected final List<Item> items;
 
-    protected CompartmentImpl(Long key, String name, List<String> descriptors, String description,
-                              EntityService entityService) {
-        super(key, name, descriptors, description, entityService);
+    protected CompartmentImpl(Long key, String name, List<String> descriptors, String description) {
+        super(key, name, descriptors, description);
         items = new ArrayList<>();
     }
 

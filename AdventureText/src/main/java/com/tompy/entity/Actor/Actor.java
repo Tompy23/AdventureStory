@@ -1,6 +1,7 @@
 package com.tompy.entity.Actor;
 
 import com.tompy.adventure.Adventure;
+import com.tompy.entity.EntityService;
 import com.tompy.entity.area.Area;
 import com.tompy.entity.compartment.Compartment;
 import com.tompy.player.Player;
@@ -10,11 +11,11 @@ import java.util.List;
 
 public interface Actor extends Compartment {
 
-    List<Response> takeAction(Player player, Adventure adventure);
+    List<Response> takeAction(Player player, Adventure adventure, EntityService entityService);
 
     void assignMoveStrategy(MoveStrategy moveStrategy);
 
-    List<Response> move(Player player, Adventure adventure);
+    List<Response> move(Player player, Adventure adventure, EntityService entityService);
 
     /**
      * Get the current area

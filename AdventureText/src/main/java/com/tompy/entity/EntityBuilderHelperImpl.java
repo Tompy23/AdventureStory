@@ -2,6 +2,7 @@ package com.tompy.entity;
 
 import com.tompy.entity.EntityService;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.Objects;
 /**
  * This class helps with building Entity subclasses.
  */
-public abstract class EntityBuilderHelperImpl {
+public abstract class EntityBuilderHelperImpl implements Serializable {
+    private static final long serialVersionUID = 1L;
     protected final EntityService entityService;
     protected final Long key;
     protected String name;

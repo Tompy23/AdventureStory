@@ -1,5 +1,7 @@
 package com.tompy.state;
 
+import com.tompy.entity.EntityService;
+
 /**
  * The state of an adventure for processing in different ways
  */
@@ -13,7 +15,7 @@ public interface AdventureState {
     /**
      * The process which will be called repeatedly until the state is not current
      */
-    void process();
+    void process(EntityService entityService);
 
     /**
      * After the final process of the state

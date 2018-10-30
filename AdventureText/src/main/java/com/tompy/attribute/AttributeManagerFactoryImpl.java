@@ -1,6 +1,9 @@
 package com.tompy.attribute;
 
-public class AttributeManagerFactoryImpl implements AttributeManagerFactory {
+import java.io.Serializable;
+
+public class AttributeManagerFactoryImpl implements AttributeManagerFactory, Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public AttributeManager create() {

@@ -29,7 +29,7 @@ public class ActorImpl extends CompartmentImpl implements Actor {
 
     protected ActorImpl(Long key, String name, List<String> descriptors, String description,
             EntityService entityService) {
-        super(key, name, descriptors, description, entityService);
+        super(key, name, descriptors, description);
         entityService.add(this, VISIBLE);
     }
 
@@ -38,7 +38,7 @@ public class ActorImpl extends CompartmentImpl implements Actor {
     }
 
     @Override
-    public List<Response> takeAction(Player player, Adventure adventure) {
+    public List<Response> takeAction(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info(String.format("Actor [%s] taking action.", this.getName()));
 
         // The event manager will store all the actor's events which constitute its program.
@@ -58,10 +58,10 @@ public class ActorImpl extends CompartmentImpl implements Actor {
     //
 
     @Override
-    public List<Response> move(Player player, Adventure adventure) {
+    public List<Response> move(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info(String.format("[%s] moving", name));
 
-        Direction direction = moveStrategy.getMove();
+        Direction direction = moveStrategy.getMove(entityService);
         if (direction != null) {
             Exit exit = currentArea.getExitForDirection(direction);
             if (exit != null) {

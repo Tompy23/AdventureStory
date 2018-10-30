@@ -1,6 +1,9 @@
 package com.tompy.common;
 
-public class Coordinates3DImpl implements Coordinates {
+import java.io.Serializable;
+
+public class Coordinates3DImpl implements Coordinates, Serializable {
+    private static final long serialVersionUID = 1L;
     private final int x;
     private final int y;
     private final int z;

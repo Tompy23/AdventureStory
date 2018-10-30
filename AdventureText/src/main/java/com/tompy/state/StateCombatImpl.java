@@ -26,7 +26,7 @@ public class StateCombatImpl extends AdventureStateBaseImpl implements Adventure
     }
 
     @Override
-    public void process() {
+    public void process(EntityService entityService) {
 
     }
 

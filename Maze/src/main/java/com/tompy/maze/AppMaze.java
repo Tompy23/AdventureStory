@@ -49,7 +49,7 @@ public class AppMaze {
         AdventureStateFactory stateFactory =
                 new AdventureStateFactoryImpl(player, adventure, ui, outStream, entityService);
 
-        MoveStrategyFactory moveStrategyFactory = new MoveStrategyFactoryImpl(player, adventure, entityService);
+        MoveStrategyFactory moveStrategyFactory = new MoveStrategyFactoryImpl(player, adventure);
 
         LOGGER.info("Player [{}] enters the adventure", player.getName());
 
@@ -58,7 +58,7 @@ public class AppMaze {
 
         adventure.create();
 
-        adventure.start(stateFactory.getExploreState(), "Room-0", DIRECTION_NORTH);
+        adventure.start(stateFactory.getExploreState(), "Room-0", DIRECTION_NORTH, entityService);
 
         outStream.println(String.format("%s has left the adventure.", player.getName()));
 

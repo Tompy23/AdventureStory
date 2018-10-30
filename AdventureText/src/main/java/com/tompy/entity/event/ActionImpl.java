@@ -6,27 +6,27 @@ import com.tompy.entity.Entity;
 import com.tompy.entity.EntityService;
 import com.tompy.response.Responsive;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public abstract class ActionImpl extends Responsive implements Action {
+public abstract class ActionImpl extends Responsive implements Action, Serializable {
+    private static final long serialVersionUID = 1L;
     protected final String source;
     protected final Entity entity;
-    protected final EntityService entityService;
     protected final List<String> responses;
 
-    public ActionImpl(Entity entity, EntityService entityService, String[] responses) {
+    public ActionImpl(Entity entity, String[] responses) {
         this.entity = Objects.requireNonNull(entity, "Entity cannot be null.");
         this.source = entity.getName();
-        this.entityService = Objects.requireNonNull(entityService);
         this.responses = responses == null ? Collections.emptyList() : Arrays.asList(responses);
     }
 
     // ${entity|attribute|applies-text|does-not-apply-text} ${required|required|optional|optional}
-    protected String substitution(String text) {
+    protected String substitution(String text, EntityService entityService) {
         int start = text.indexOf("${");
         int end = text.indexOf("}");
         if (start == -1 && end == -1) {
@@ -49,6 +49,6 @@ public abstract class ActionImpl extends Responsive implements Action {
         }
         sb.append(text.substring(end + 1));
 
-        return substitution(sb.toString());
+        return substitution(sb.toString(), entityService);
     }
 }

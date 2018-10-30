@@ -1,6 +1,7 @@
 package com.tompy.entity.event;
 
 import com.tompy.adventure.Adventure;
+import com.tompy.entity.EntityService;
 import com.tompy.player.Player;
 import com.tompy.response.Response;
 
@@ -18,5 +19,5 @@ public interface Action {
      * @param adventure
      * @return
      */
-    List<Response> apply(Player player, Adventure adventure);
+    List<Response> apply(Player player, Adventure adventure, EntityService entityService);
 }

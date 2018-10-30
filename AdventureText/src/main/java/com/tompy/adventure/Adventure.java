@@ -3,6 +3,7 @@ package com.tompy.adventure;
 import com.tompy.common.Clock;
 import com.tompy.directive.Direction;
 import com.tompy.entity.Actor.MoveStrategyFactory;
+import com.tompy.entity.EntityService;
 import com.tompy.io.UserInput;
 import com.tompy.state.AdventureState;
 import com.tompy.state.AdventureStateFactory;
@@ -54,7 +55,7 @@ public interface Adventure extends StateMachine, Clock, Serializable {
      *
      * @param state - The starting state for the adventure
      */
-    void start(AdventureState state, String startRoom, Direction direction);
+    void start(AdventureState state, String startRoom, Direction direction, EntityService entityService);
 
     /**
      * Gracefully stop an adventure for a specific player

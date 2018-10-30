@@ -4,7 +4,6 @@ import com.tompy.adventure.Adventure;
 import com.tompy.directive.EventType;
 import com.tompy.entity.Entity;
 import com.tompy.entity.EntityService;
-import com.tompy.entity.encounter.MerchantSell;
 import com.tompy.player.Player;
 import com.tompy.response.Response;
 import org.apache.logging.log4j.LogManager;
@@ -19,15 +18,14 @@ public class ActionAddEventImpl extends ActionImpl {
     private final List<Event> events;
     private final EventType type;
 
-    public ActionAddEventImpl(Entity entity, EntityService entityService, String[] responses, EventType type,
-            List<Event> events) {
-        super(entity, entityService, responses);
+    public ActionAddEventImpl(Entity entity, String[] responses, EventType type, List<Event> events) {
+        super(entity, responses);
         this.events = events;
         this.type = type;
     }
 
     @Override
-    public List<Response> apply(Player player, Adventure adventure) {
+    public List<Response> apply(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Applying Add Event Action");
         List<Response> returnValue = new ArrayList<>();
 
@@ -37,8 +35,8 @@ public class ActionAddEventImpl extends ActionImpl {
                 entityService.add(entity, type, event);
             }
             returnValue.addAll(responses.stream().
-                    map((r) -> responseFactory.createBuilder().source(source).text(substitution(r)).build())
-                    .collect(Collectors.toList()));
+                    map((r) -> responseFactory.createBuilder().source(source).text(substitution(r, entityService))
+                            .build()).collect(Collectors.toList()));
         }
 
         return returnValue;

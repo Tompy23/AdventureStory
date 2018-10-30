@@ -45,7 +45,7 @@ public class CommandOpenImpl extends CommandBasicImpl implements Command {
 
         if (optObject.isPresent()) {
             Feature object = optObject.get();
-            returnValue.addAll(object.open(player, adventure));
+            returnValue.addAll(object.open(player, adventure, entityService));
         }
 
         return returnValue;

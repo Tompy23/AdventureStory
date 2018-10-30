@@ -24,7 +24,7 @@ public class CommandSearchDirectionImpl extends CommandSearchImpl {
         LOGGER.info("Executing Search Direction");
         List<Response> returnValue = new ArrayList<>();
 
-        returnValue.addAll(player.getArea().searchDirection(AdventureUtils.getDirection(target), player, adventure));
+        returnValue.addAll(player.getArea().searchDirection(AdventureUtils.getDirection(target), player, adventure, entityService));
 
         return returnValue;
     }

@@ -14,16 +14,13 @@ public abstract class EntityImpl extends Responsive implements Entity, Serializa
     protected final String name;
     protected final List<String> descriptors;
     protected final String description;
-    protected final EntityService entityService;
     private final Long key;
 
-    public EntityImpl(Long key, String name, List<String> descriptors, String description,
-        EntityService entityService) {
+    public EntityImpl(Long key, String name, List<String> descriptors, String description) {
         this.key = Objects.requireNonNull(key, "Entity Key cannot be null.");
         this.name = name != null ? name : "E-" + key;
         this.descriptors = Objects.requireNonNull(descriptors, "Descriptors can be empty, but not null.");
         this.description = description;
-        this.entityService = entityService;
     }
 
     @Override

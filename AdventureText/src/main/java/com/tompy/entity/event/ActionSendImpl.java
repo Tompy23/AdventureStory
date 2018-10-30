@@ -15,16 +15,16 @@ public class ActionSendImpl extends ActionImpl {
     private final Area area;
     private final Direction direction;
 
-    public ActionSendImpl(Entity entity, EntityService entityService, String[] responses, Area area,
+    public ActionSendImpl(Entity entity, String[] responses, Area area,
             Direction direction) {
-        super(entity, entityService, responses);
+        super(entity, responses);
         this.area = Objects.requireNonNull(area, "Area cannot be null.");
         this.direction = Objects.requireNonNull(direction, "Direction cannot be null.");
     }
 
     @Override
-    public List<Response> apply(Player player, Adventure adventure) {
+    public List<Response> apply(Player player, Adventure adventure, EntityService entityService) {
         player.setArea(area);
-        return area.enter(direction, player, adventure);
+        return area.enter(direction, player, adventure, entityService);
     }
 }

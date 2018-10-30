@@ -10,12 +10,11 @@ import java.util.Objects;
 public class MoveStrategyFactoryImpl implements MoveStrategyFactory {
     protected final Player player;
     protected final Adventure adventure;
-    protected final EntityService entityService;
 
-    public MoveStrategyFactoryImpl(Player player, Adventure adventure, EntityService entityService) {
+
+    public MoveStrategyFactoryImpl(Player player, Adventure adventure) {
         this.player = Objects.requireNonNull(player, "Player cannot be null.");
         this.adventure = Objects.requireNonNull(adventure, "Adventure cannot be null.");
-        this.entityService = Objects.requireNonNull(entityService, "Entity Service cannot be null.");
         adventure.setMoveStrategyFactory(this);
     }
 
@@ -23,7 +22,7 @@ public class MoveStrategyFactoryImpl implements MoveStrategyFactory {
     public MoveStrategy createMoveStrategy(Actor actor, MoveStrategyType type) {
         switch (type) {
             case MOVE_RANDOM:
-                return new MoveRandomImpl(actor, player, adventure, entityService);
+                return new MoveRandomImpl(actor, player, adventure);
         }
         return null;
     }

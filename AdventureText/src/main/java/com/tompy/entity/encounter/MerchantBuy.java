@@ -1,5 +1,6 @@
 package com.tompy.entity.encounter;
 
+import com.tompy.entity.EntityService;
 import com.tompy.entity.item.Item;
 import com.tompy.response.Response;
 import org.apache.logging.log4j.LogManager;
@@ -31,19 +32,19 @@ public class MerchantBuy extends MerchantStateBaseImpl implements MerchantState 
     }
 
     @Override
-    public Map<Long, String> getOptions() {
+    public Map<Long, String> getOptions(EntityService entityService) {
         LOGGER.info("Retrieving options for Buy state of Merchant.");
         Map<Long, String> returnValue = new HashMap<>();
         for (Item item : merchant.getAvailable()) {
             returnValue.put(item.getKey(), String.format("Buy %s for $%d.", item.getDescription(), (int) Math
-                    .round(merchant.getEntityService().valueFor(item, VALUE).getAsInt() * merchant.getBuyRate())));
+                    .round(entityService.valueFor(item, VALUE).getAsInt() * merchant.getBuyRate())));
         }
         returnValue.put((long) NOTHING, "Nothing");
         return returnValue;
     }
 
     @Override
-    public List<Response> act(Long option) {
+    public List<Response> act(Long option, EntityService entityService) {
         LOGGER.info("Player buys item from merchant.");
         Item tradeItem = null;
         for (Item item : merchant.getAvailable()) {
@@ -54,7 +55,7 @@ public class MerchantBuy extends MerchantStateBaseImpl implements MerchantState 
         }
         if (tradeItem != null) {
             if (merchant.getPlayer().pay((int) Math
-                    .round(merchant.getEntityService().valueFor(tradeItem, VALUE).getAsInt() *
+                    .round(entityService.valueFor(tradeItem, VALUE).getAsInt() *
                             merchant.getBuyRate()))) {
                 merchant.removeItem(tradeItem);
                 merchant.getPlayer().addItem(tradeItem);

@@ -32,7 +32,7 @@ public class FeatureBasicImpl extends CompartmentImpl implements Feature {
 
     protected FeatureBasicImpl(Long key, String name, List<String> descriptors, String description,
             EntityService entityService, int manipulationTicks) {
-        super(key, name, descriptors, description, entityService);
+        super(key, name, descriptors, description);
         notImplemented =
                 Collections.singletonList(responseFactory.createBuilder().source(name).text("Not Implemented").build());
         open = EntityFacadeImpl.createBuilder(entityService).entity(this).attribute(OPEN).build();
@@ -51,7 +51,7 @@ public class FeatureBasicImpl extends CompartmentImpl implements Feature {
     }
 
     @Override
-    public List<Response> search(Player player, Adventure adventure) {
+    public List<Response> search(Player player, Adventure adventure, EntityService entityService) {
         List<Response> returnValue = new ArrayList<>();
         LOGGER.info("Searching Feature [{}]", getName());
 
@@ -64,7 +64,7 @@ public class FeatureBasicImpl extends CompartmentImpl implements Feature {
     }
 
     @Override
-    public List<Response> open(Player player, Adventure adventure) {
+    public List<Response> open(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Opening [{}]", this.getName());
         List<Response> returnValue = new ArrayList<>();
 
@@ -85,7 +85,7 @@ public class FeatureBasicImpl extends CompartmentImpl implements Feature {
     }
 
     @Override
-    public List<Response> close(Player player, Adventure adventure) {
+    public List<Response> close(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Closing [{}]", this.getName());
         List<Response> returnValue = new ArrayList<>();
 
@@ -101,7 +101,7 @@ public class FeatureBasicImpl extends CompartmentImpl implements Feature {
     }
 
     @Override
-    public List<Response> lock(Player player, Adventure adventure) {
+    public List<Response> lock(Player player, Adventure adventure, EntityService entityService) {
         List<Response> returnValue = new ArrayList<>();
         LOGGER.info("Locking [{}]", this.getName());
 
@@ -121,7 +121,7 @@ public class FeatureBasicImpl extends CompartmentImpl implements Feature {
     }
 
     @Override
-    public List<Response> unlock(Player player, Adventure adventure) {
+    public List<Response> unlock(Player player, Adventure adventure, EntityService entityService) {
         List<Response> returnValue = new ArrayList<>();
         LOGGER.info("Unlocking [{}]", this.getName());
 
@@ -141,7 +141,7 @@ public class FeatureBasicImpl extends CompartmentImpl implements Feature {
     }
 
     @Override
-    public List<Response> misUse(Item item, Player player, Adventure adventure) {
+    public List<Response> misUse(Item item, Player player, Adventure adventure, EntityService entityService) {
         List<Response> returnValue = new ArrayList<>();
         if (item != null) {
             adventure.setActionTicks(manipulationTicks);
@@ -151,7 +151,7 @@ public class FeatureBasicImpl extends CompartmentImpl implements Feature {
     }
 
     @Override
-    public List<Response> drink(Player player, Adventure adventure) {
+    public List<Response> drink(Player player, Adventure adventure, EntityService entityService) {
         return notImplemented;
     }
 

@@ -3,7 +3,10 @@ package com.tompy.response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ResponseImpl implements Response, Comparable<Response> {
+import java.io.Serializable;
+
+public class ResponseImpl implements Response, Comparable<Response>, Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LogManager.getLogger(ResponseImpl.class);
     private static long counter = 0;
     private long sequence;

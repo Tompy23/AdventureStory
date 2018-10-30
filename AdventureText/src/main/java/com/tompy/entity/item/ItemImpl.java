@@ -25,7 +25,7 @@ public class ItemImpl extends EntityImpl implements Item {
 
     protected ItemImpl(Long key, String name, List<String> descriptors, String description, EntityService entityService,
             int manipulationTicks) {
-        super(key, name, descriptors, description, entityService);
+        super(key, name, descriptors, description);
         visible = EntityFacadeImpl.createBuilder(entityService).entity(this).attribute(VISIBLE).build();
         hands = EntityFacadeImpl.createBuilder(entityService).entity(this).attribute(HANDS).build();
         encumbrance = EntityFacadeImpl.createBuilder(entityService).entity(this).attribute(ENCUMBRANCE).build();
@@ -37,7 +37,7 @@ public class ItemImpl extends EntityImpl implements Item {
     }
 
     @Override
-    public List<Response> use(Player player, Adventure adventure) {
+    public List<Response> use(Player player, Adventure adventure, EntityService entityService) {
         List<Response> returnValue = new ArrayList<>();
 
         LOGGER.info("Using [{}]", getName());
@@ -66,7 +66,7 @@ public class ItemImpl extends EntityImpl implements Item {
     }
 
     @Override
-    public List<Response> misUse(Feature feature, Player player, Adventure adventure) {
+    public List<Response> misUse(Feature feature, Player player, Adventure adventure, EntityService entityService) {
         List<Response> returnValue = new ArrayList<>();
         return returnValue;
     }

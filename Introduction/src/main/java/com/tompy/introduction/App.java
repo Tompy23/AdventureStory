@@ -46,6 +46,7 @@ public class App {
         AdventureStateFactory stateFactory;
         Adventure adventure;
         if (!filename.isEmpty()) {
+            filename = filename + ".adv";
             try {
                 FileInputStream fis = new FileInputStream(filename);
                 ObjectInputStream ois = new ObjectInputStream(fis);
@@ -79,12 +80,13 @@ public class App {
 
 
 
-        adventure.start(stateFactory.getExploreState(), "StartRoom", DIRECTION_SOUTH);
+        adventure.start(stateFactory.getExploreState(), "StartRoom", DIRECTION_SOUTH, entityService);
 
         outStream.println(String.format("%s has left the adventure.", player.getName()));
 
         filename = ui.getResponse("Save?");
         if (!filename.isEmpty()) {
+            filename = filename + ".adv";
             try {
                 FileOutputStream fos = new FileOutputStream(filename);
                 ObjectOutputStream oos = new ObjectOutputStream(fos);

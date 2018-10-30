@@ -20,18 +20,20 @@ public class ActionEncounterImpl extends ActionImpl {
     private final Encounter encounter;
     private final AdventureStateFactory stateFactory;
 
-    public ActionEncounterImpl(Entity entity, EntityService entityService, String[] responses, Encounter encounter, AdventureStateFactory stateFactory) {
-        super(entity, entityService, responses);
+    public ActionEncounterImpl(Entity entity, String[] responses, Encounter encounter,
+            AdventureStateFactory stateFactory) {
+        super(entity, responses);
         this.encounter = Objects.requireNonNull(encounter, "Encounter List cannot be null.");
         this.stateFactory = Objects.requireNonNull(stateFactory, "State Factory cannot be null.");
     }
 
-    @Override public List<Response> apply(Player player, Adventure adventure) {
+    @Override
+    public List<Response> apply(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Starting Encounter [{}]", encounter.getName());
         adventure.changeState(stateFactory.createEncounterState().encounter(encounter).build());
         List<Response> returnValue = new ArrayList<>();
         returnValue.addAll(responses.stream().
-                map((r) -> responseFactory.createBuilder().source(source).text(substitution(r)).build())
+                map((r) -> responseFactory.createBuilder().source(source).text(substitution(r, entityService)).build())
                 .collect(Collectors.toList()));
         return returnValue;
     }

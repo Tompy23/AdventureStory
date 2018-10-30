@@ -18,15 +18,15 @@ public class ActionRemoveEvent extends ActionImpl {
     private final List<Event> events;
     private final EventType type;
 
-    public ActionRemoveEvent(Entity entity, EntityService entityService, String[] responses, EventType type,
+    public ActionRemoveEvent(Entity entity, String[] responses, EventType type,
             List<Event> events) {
-        super(entity, entityService, responses);
+        super(entity, responses);
         this.events = events;
         this.type = type;
     }
 
     @Override
-    public List<Response> apply(Player player, Adventure adventure) {
+    public List<Response> apply(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Applying remove Event action.");
         List<Response> returnValue = new ArrayList<>();
 
@@ -36,8 +36,8 @@ public class ActionRemoveEvent extends ActionImpl {
                 LOGGER.info("Removing Event [{}]", event.getName());
             }
             returnValue.addAll(responses.stream().
-                    map((r) -> responseFactory.createBuilder().source(source).text(substitution(r)).build())
-                    .collect(Collectors.toList()));
+                    map((r) -> responseFactory.createBuilder().source(source).text(substitution(r, entityService))
+                            .build()).collect(Collectors.toList()));
         }
 
         return returnValue;

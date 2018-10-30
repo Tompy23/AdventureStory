@@ -1,5 +1,6 @@
 package com.tompy.entity.encounter;
 
+import com.tompy.entity.EntityService;
 import com.tompy.entity.item.Item;
 import com.tompy.response.Response;
 import org.apache.logging.log4j.LogManager;
@@ -32,13 +33,13 @@ public class MerchantSell extends MerchantStateBaseImpl implements MerchantState
     }
 
     @Override
-    public Map<Long, String> getOptions() {
+    public Map<Long, String> getOptions(EntityService entityService) {
         LOGGER.info("Getting options for player selling to Merchant.");
         Map<Long, String> returnValue = new HashMap<>();
         for (Item item : merchant.getPlayer().getInventory()) {
-            if (merchant.getEntityService().is(item, VALUE)) {
+            if (entityService.is(item, VALUE)) {
                 returnValue.put(item.getKey(), String.format("Sell %s for $%d.", item.getDescription(), (int) Math
-                        .round(merchant.getEntityService().valueFor(item, VALUE).getAsInt() * merchant.getSellRate())));
+                        .round(entityService.valueFor(item, VALUE).getAsInt() * merchant.getSellRate())));
             }
         }
         returnValue.put((long) NOTHING, "Nothing");
@@ -46,7 +47,7 @@ public class MerchantSell extends MerchantStateBaseImpl implements MerchantState
     }
 
     @Override
-    public List<Response> act(Long option) {
+    public List<Response> act(Long option, EntityService entityService) {
         LOGGER.info("Acting on Merchant Sell state.");
         Item tradeItem = null;
         for (Item item : merchant.getPlayer().getInventory()) {
@@ -57,7 +58,7 @@ public class MerchantSell extends MerchantStateBaseImpl implements MerchantState
         if (tradeItem != null) {
             merchant.getAvailable().add(tradeItem);
             merchant.getPlayer().removeItem(tradeItem);
-            merchant.getPlayer().addMoney(merchant.getEntityService().valueFor(tradeItem, VALUE).getAsInt());
+            merchant.getPlayer().addMoney(entityService.valueFor(tradeItem, VALUE).getAsInt());
             LOGGER.info("Player sold [{}] to merchant.", tradeItem.getDescription());
         }
         merchant.changeState(merchant.getChatState());

@@ -8,29 +8,31 @@ import com.tompy.directive.TriggerType;
 import com.tompy.entity.Actor.ActionActorMove;
 import com.tompy.entity.Actor.Actor;
 import com.tompy.entity.Entity;
+import com.tompy.entity.EntityBuilderHelperImpl;
+import com.tompy.entity.EntityImpl;
 import com.tompy.entity.EntityService;
 import com.tompy.entity.area.Area;
 import com.tompy.entity.encounter.Encounter;
-import com.tompy.entity.EntityBuilderHelperImpl;
-import com.tompy.entity.EntityImpl;
 import com.tompy.player.Player;
 import com.tompy.response.Response;
 import com.tompy.state.AdventureStateFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class EventImpl extends EntityImpl implements Event {
+public class EventImpl extends EntityImpl implements Event, Serializable {
     public static final Logger LOGGER = LogManager.getLogger(EventImpl.class);
+    private static final long serialVersionUID = 1L;
     private final Action action;
     private final Trigger trigger;
 
-    public EventImpl(Long key, String name, List<String> descriptors, String description, EntityService entityService,
-            Action action, Trigger trigger) {
-        super(key, name, descriptors, description, entityService);
+    public EventImpl(Long key, String name, List<String> descriptors, String description, Action action,
+            Trigger trigger) {
+        super(key, name, descriptors, description);
         this.action = Objects.requireNonNull(action, "Action cannot be null.");
         this.trigger = Objects.requireNonNull(trigger, "Trigger cannot be null.");
     }
@@ -39,12 +41,14 @@ public class EventImpl extends EntityImpl implements Event {
         return new EventBuilderImpl(key, entityService);
     }
 
-    @Override public boolean pull(Player player, Adventure adventure, EntityService entityService) {
+    @Override
+    public boolean pull(Player player, Adventure adventure, EntityService entityService) {
         return trigger.pull(player, adventure, entityService);
     }
 
-    @Override public List<Response> apply(Player player, Adventure adventure) {
-        return action.apply(player, adventure);
+    @Override
+    public List<Response> apply(Player player, Adventure adventure, EntityService entityService) {
+        return action.apply(player, adventure, entityService);
     }
 
     public static final class EventBuilderImpl extends EntityBuilderHelperImpl implements EventBuilder {
@@ -66,57 +70,68 @@ public class EventImpl extends EntityImpl implements Event {
             super(key, entityService);
         }
 
-        @Override public EventBuilder name(String name) {
+        @Override
+        public EventBuilder name(String name) {
             this.name = name;
             return this;
         }
 
-        @Override public EventBuilder memo(String memo) {
+        @Override
+        public EventBuilder memo(String memo) {
             this.description = memo;
             return this;
         }
 
-        @Override public EventBuilder actionType(ActionType actionType) {
+        @Override
+        public EventBuilder actionType(ActionType actionType) {
             this.actionType = actionType;
             return this;
         }
 
-        @Override public EventBuilder triggerType(TriggerType triggerType) {
+        @Override
+        public EventBuilder triggerType(TriggerType triggerType) {
             this.triggerType = triggerType;
             return this;
         }
 
-        @Override public EventBuilder stateFactory(AdventureStateFactory stateFactory) {
+        @Override
+        public EventBuilder stateFactory(AdventureStateFactory stateFactory) {
             this.stateFactory = stateFactory;
             return this;
         }
 
-        @Override public EventBuilder entity(Entity entity) {
+        @Override
+        public EventBuilder entity(Entity entity) {
             this.entity = entity;
             return this;
         }
 
-        @Override public EventBuilder responses(String... responses) {
+        @Override
+        public EventBuilder responses(String... responses) {
             this.responses = responses;
             return this;
         }
 
-        @Override public EventBuilder text(String text) {
+        @Override
+        public EventBuilder text(String text) {
             this.text = text;
             return this;
         }
 
-        @Override public EventBuilder direction(Direction direction) {
+        @Override
+        public EventBuilder direction(Direction direction) {
             this.direction = direction;
             return this;
         }
 
-        @Override public EventBuilder encounter(Encounter encounter) {
+        @Override
+        public EventBuilder encounter(Encounter encounter) {
             this.encounter = encounter;
             return this;
         }
 
-        @Override public EventBuilder delay(int delay) {
+        @Override
+        public EventBuilder delay(int delay) {
             this.delay = delay;
             return this;
         }
@@ -145,32 +160,32 @@ public class EventImpl extends EntityImpl implements Event {
             return this;
         }
 
-        @Override public Event build() {
+        @Override
+        public Event build() {
             LOGGER.info("Building event [{}]", key);
-            return new EventImpl(key, name, this.buildDescriptors(), description, entityService, buildAction(),
-                    buildTrigger());
+            return new EventImpl(key, name, this.buildDescriptors(), description, buildAction(), buildTrigger());
         }
 
         private Action buildAction() {
             switch (actionType) {
                 case ACTION_ADD_EVENT:
-                    return new ActionAddEventImpl(entity, entityService, responses, subEventType, events);
+                    return new ActionAddEventImpl(entity, responses, subEventType, events);
                 case ACTION_DESCRIBE:
-                    return new ActionDescribeImpl(entity, entityService, responses);
+                    return new ActionDescribeImpl(entity, responses);
                 case ACTION_ENCOUNTER:
-                    return new ActionEncounterImpl(entity, entityService, responses, encounter, stateFactory);
+                    return new ActionEncounterImpl(entity, responses, encounter, stateFactory);
                 case ACTION_EXPLORE:
-                    return new ActionExploreImpl(entity, entityService, responses, stateFactory);
+                    return new ActionExploreImpl(entity, responses, stateFactory);
                 case ACTION_END_ADVENTURE:
-                    return new ActionDeathImpl(entity, entityService, responses);
+                    return new ActionDeathImpl(entity, responses);
                 case ACTION_MAKE_VISIBLE:
-                    return new ActionVisibleImp(entity, entityService, responses);
+                    return new ActionVisibleImp(entity, responses);
                 case ACTION_REMOVE_EVENT:
-                    return new ActionRemoveEvent(entity, entityService, responses, subEventType, events);
+                    return new ActionRemoveEvent(entity, responses, subEventType, events);
                 case ACTION_SEND_TO_AREA:
-                    return new ActionSendImpl(entity, entityService, responses, area, direction);
+                    return new ActionSendImpl(entity, responses, area, direction);
                 case ACTION_ACTOR_MOVE:
-                    return new ActionActorMove(entity, entityService, responses, actor);
+                    return new ActionActorMove(entity, responses, actor);
             }
             return null;
         }

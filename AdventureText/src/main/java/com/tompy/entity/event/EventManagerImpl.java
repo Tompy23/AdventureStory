@@ -4,10 +4,12 @@ import com.tompy.directive.EventType;
 import com.tompy.entity.event.Event;
 import com.tompy.entity.event.EventManager;
 
+import java.io.Serializable;
 import java.util.*;
 
 
-public class EventManagerImpl implements EventManager {
+public class EventManagerImpl implements EventManager, Serializable {
+    private static final long serialVersionUID = 1L;
     Map<EventType, List<Event>> managed;
 
     public EventManagerImpl() {

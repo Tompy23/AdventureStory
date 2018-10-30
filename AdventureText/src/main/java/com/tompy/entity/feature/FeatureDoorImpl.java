@@ -34,7 +34,7 @@ public class FeatureDoorImpl extends FeatureBasicImpl {
     }
 
     @Override
-    public List<Response> open(Player player, Adventure adventure) {
+    public List<Response> open(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Opening [{}, {}]", this.getName(), exit.toString());
         List<Response> returnValue = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public class FeatureDoorImpl extends FeatureBasicImpl {
     }
 
     @Override
-    public List<Response> close(Player player, Adventure adventure) {
+    public List<Response> close(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Closing [{}, {}]", this.getName(), exit.toString());
         List<Response> returnValue = new ArrayList<>();
 

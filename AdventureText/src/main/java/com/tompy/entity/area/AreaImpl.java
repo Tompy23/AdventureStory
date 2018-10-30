@@ -32,8 +32,8 @@ public class AreaImpl extends CompartmentImpl implements Area {
     protected Coordinates coordinates;
 
     protected AreaImpl(Long key, String name, List<String> descriptors, String description, String searchDescription,
-            EntityService entityService, int searchTicks, Coordinates coordinates) {
-        super(key, name, descriptors, description, entityService);
+            int searchTicks, Coordinates coordinates) {
+        super(key, name, descriptors, description);
         this.searchDescription = searchDescription;
         this.searchTicks = searchTicks;
         this.coordinates = Objects.requireNonNull(coordinates, "Coordinates cannot be null.");
@@ -75,7 +75,7 @@ public class AreaImpl extends CompartmentImpl implements Area {
     }
 
     @Override
-    public List<Response> enter(Direction direction, Player player, Adventure adventure) {
+    public List<Response> enter(Direction direction, Player player, Adventure adventure, EntityService entityService) {
         List<Response> returnValue = new ArrayList<>();
         LOGGER.info("Entering room [{}]", this.getName());
 
@@ -94,7 +94,7 @@ public class AreaImpl extends CompartmentImpl implements Area {
     }
 
     @Override
-    public List<Response> exit(Direction direction, Player player, Adventure adventure) {
+    public List<Response> exit(Direction direction, Player player, Adventure adventure, EntityService entityService) {
         List<Response> returnValue = new ArrayList<>();
         LOGGER.info("Exiting room [{}] in direction [{}]", this.getName(), direction.name());
 
@@ -106,7 +106,7 @@ public class AreaImpl extends CompartmentImpl implements Area {
     }
 
     @Override
-    public List<Response> search(Player player, Adventure adventure) {
+    public List<Response> search(Player player, Adventure adventure, EntityService entityService) {
         List<Response> returnValue = new ArrayList<>();
         LOGGER.info("Searching room [{}]", this.getName());
 
@@ -115,7 +115,7 @@ public class AreaImpl extends CompartmentImpl implements Area {
         if (!features.isEmpty()) {
             List<Response> featureSearch = new ArrayList<>();
             features.stream().filter((i) -> entityService.is(i, VISIBLE))
-                    .forEach((f) -> featureSearch.addAll(f.search(player, adventure)));
+                    .forEach((f) -> featureSearch.addAll(f.search(player, adventure, entityService)));
             if (!featureSearch.isEmpty()) {
                 returnValue.addAll(entityService.handle(this, EVENT_AREA_PRE_FEATURE_SEARCH, player, adventure));
                 returnValue.addAll(featureSearch);
@@ -148,7 +148,8 @@ public class AreaImpl extends CompartmentImpl implements Area {
     }
 
     @Override
-    public List<Response> searchDirection(Direction direction, Player player, Adventure adventure) {
+    public List<Response> searchDirection(Direction direction, Player player, Adventure adventure,
+            EntityService entityService) {
         List<Response> returnValue = new ArrayList<>();
         LOGGER.info("Searching room [{}] in direction [{}]", this.getName(), direction.name());
 
@@ -159,7 +160,7 @@ public class AreaImpl extends CompartmentImpl implements Area {
             if (!directionFeatures.get(direction).isEmpty()) {
                 List<Response> featureSearch = new ArrayList<>();
                 directionFeatures.get(direction).stream()
-                        .forEach((f) -> featureSearch.addAll(f.search(player, adventure)));
+                        .forEach((f) -> featureSearch.addAll(f.search(player, adventure, entityService)));
                 if (!featureSearch.isEmpty()) {
                     returnValue.addAll(entityService
                             .handle(this, EVENT_AREA_PRE_FEATURE_DIRECTION_SEARCH, player, adventure));
@@ -272,8 +273,8 @@ public class AreaImpl extends CompartmentImpl implements Area {
 
         @Override
         public Area build() {
-            return new AreaImpl(key, name, this.buildDescriptors(), description, searchDescription, entityService,
-                    searchTicks, coordinates);
+            return new AreaImpl(key, name, this.buildDescriptors(), description, searchDescription, searchTicks,
+                    coordinates);
         }
     }
 }

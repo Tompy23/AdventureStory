@@ -41,15 +41,15 @@ public class StateEncounterImpl extends AdventureStateBaseImpl implements Advent
     }
 
     @Override
-    public void process() {
+    public void process(EntityService entityService) {
         // Call the encounter's "list options", returns Map<Long, String>
-        Map<Long, String> options = encounter.getOptions();
+        Map<Long, String> options = encounter.getOptions(entityService);
 
         // Call UserInput Make choice, returns Long
         Long option = userInput.getSelection(options);
 
         // Call the encounter and pass the Long selected, returns List<Response>
-        List<Response> responses = encounter.act(option);
+        List<Response> responses = encounter.act(option, entityService);
 
         // Render the list of responses to outStream
         responses.stream().forEachOrdered((r) -> outStream.println(r.render()));

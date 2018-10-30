@@ -15,18 +15,18 @@ import java.util.stream.Collectors;
 public class ActionActorMove extends ActionImpl {
     private final Actor actor;
 
-    public ActionActorMove(Entity entity, EntityService entityService, String[] responses, Actor actor) {
-        super(entity, entityService, responses);
+    public ActionActorMove(Entity entity, String[] responses, Actor actor) {
+        super(entity, responses);
         this.actor = Objects.requireNonNull(actor, "Actor cannot be null.");
     }
 
     @Override
-    public List<Response> apply(Player player, Adventure adventure) {
+    public List<Response> apply(Player player, Adventure adventure, EntityService entityService) {
         List<Response> returnValue = new ArrayList<>();
         returnValue.addAll(responses.stream().
-                map((r) -> responseFactory.createBuilder().source(source).text(substitution(r)).build())
+                map((r) -> responseFactory.createBuilder().source(source).text(substitution(r, entityService)).build())
                 .collect(Collectors.toList()));
-        returnValue.addAll(actor.move(player, adventure));
+        returnValue.addAll(actor.move(player, adventure, entityService));
         return returnValue;
 
     }

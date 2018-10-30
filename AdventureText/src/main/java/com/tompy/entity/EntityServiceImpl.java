@@ -30,9 +30,11 @@ import com.tompy.response.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class EntityServiceImpl implements EntityService {
+public class EntityServiceImpl implements EntityService, Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LogManager.getLogger(EntityServiceImpl.class);
     private final AttributeManagerFactory attributeManagerFactory;
     private final EventManagerFactory eventManagerFactory;
@@ -182,11 +184,11 @@ public class EntityServiceImpl implements EntityService {
         if (entity == null) {
             for (Long key : eventManagers.keySet()) {
                 eventManagers.get(key).getAllOfType(type).stream().filter((e) -> e.pull(player, adventure, this))
-                        .forEach((e) -> returnValue.addAll(e.apply(player, adventure)));
+                        .forEach((e) -> returnValue.addAll(e.apply(player, adventure, this)));
             }
         } else {
             eventManagers.get(entity.getKey()).getAllOfType(type).stream().filter((e) -> e.pull(player, adventure, this))
-                    .forEach((e) -> returnValue.addAll(e.apply(player, adventure)));
+                    .forEach((e) -> returnValue.addAll(e.apply(player, adventure, this)));
         }
         return returnValue;
     }

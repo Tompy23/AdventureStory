@@ -69,13 +69,6 @@ public interface Merchant extends Entity, MerchantStateMachine {
     double getBuyRate();
 
     /**
-     * Retrieve the entity service of the encounter
-     *
-     * @return
-     */
-    EntityService getEntityService();
-
-    /**
      * Add an item to the merchant's list
      *
      * @param item

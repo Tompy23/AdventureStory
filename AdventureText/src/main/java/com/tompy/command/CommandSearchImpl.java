@@ -38,7 +38,7 @@ public class CommandSearchImpl extends CommandBasicImpl implements Command {
         LOGGER.info("Executing Search");
         List<Response> returnValue = new ArrayList<>();
 
-        returnValue.addAll(player.getArea().search(player, adventure));
+        returnValue.addAll(player.getArea().search(player, adventure, entityService));
 
         return returnValue;
     }

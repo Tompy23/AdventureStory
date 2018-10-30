@@ -6,9 +6,11 @@ import com.tompy.io.UserInput;
 import com.tompy.player.Player;
 
 import java.io.PrintStream;
+import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class AdventureStateBaseImpl implements AdventureState {
+public abstract class AdventureStateBaseImpl implements AdventureState, Serializable {
+    private static final long serialVersionUID = 1L;
     protected final Player player;
     protected final Adventure adventure;
     protected final UserInput userInput;

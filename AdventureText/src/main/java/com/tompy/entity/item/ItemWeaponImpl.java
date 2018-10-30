@@ -26,7 +26,7 @@ public class ItemWeaponImpl extends ItemImpl {
     }
 
     @Override
-    public List<Response> use(Player player, Adventure adventure) {
+    public List<Response> use(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Using weapon.");
         List<Response> returnValue = new ArrayList<>();
 

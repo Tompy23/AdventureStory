@@ -1,5 +1,6 @@
 package com.tompy.entity.encounter;
 
+import com.tompy.entity.EntityService;
 import com.tompy.entity.event.Event;
 import com.tompy.response.Response;
 import org.apache.logging.log4j.LogManager;
@@ -32,10 +33,10 @@ public class MerchantChat extends MerchantStateBaseImpl implements MerchantState
     }
 
     @Override
-    public Map<Long, String> getOptions() {
+    public Map<Long, String> getOptions(EntityService entityService) {
         LOGGER.info("Getting options for Merchant chat state.");
         Map<Long, String> returnValue = new HashMap<>();
-        for (Event event : merchant.getEntityService().get(merchant, EVENT_INTERACTION)) {
+        for (Event event : entityService.get(merchant, EVENT_INTERACTION)) {
             if (event.pull(merchant.getPlayer(), merchant.getAdventure(), null)) {
                 returnValue.put(event.getKey(), event.getDescription());
             }
@@ -46,16 +47,16 @@ public class MerchantChat extends MerchantStateBaseImpl implements MerchantState
     }
 
     @Override
-    public List<Response> act(Long option) {
+    public List<Response> act(Long option, EntityService entityService) {
         LOGGER.info("Merchant chat action.");
         int choice = option.intValue();
         if (choice == BUY || choice == SELL) {
             merchant.changeState(choice == BUY ? merchant.getBuyState() : merchant.getSellState());
         } else {
 
-            for (Event event : merchant.getEntityService().get(merchant, EVENT_INTERACTION)) {
+            for (Event event : entityService.get(merchant, EVENT_INTERACTION)) {
                 if (event.getKey() == option) {
-                    return event.apply(merchant.getPlayer(), merchant.getAdventure());
+                    return event.apply(merchant.getPlayer(), merchant.getAdventure(), entityService);
                 }
             }
         }

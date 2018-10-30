@@ -22,10 +22,9 @@ public class EncounterMerchantImpl extends EncounterImpl implements MerchantStat
     private List<Item> available;
     private MerchantState currentState = null;
 
-    public EncounterMerchantImpl(Long key, String name, List<String> descriptors, String description,
-            EntityService entityService, Player player, Adventure adventure, List<Item> items, double sellRate,
-            double buyRate) {
-        super(key, name, descriptors, description, entityService, player, adventure);
+    public EncounterMerchantImpl(Long key, String name, List<String> descriptors, String description, Player player,
+            Adventure adventure, List<Item> items, double sellRate, double buyRate) {
+        super(key, name, descriptors, description, player, adventure);
         this.available = new ArrayList<>();
         this.available.addAll(items);
         this.sellRate = sellRate;
@@ -37,26 +36,26 @@ public class EncounterMerchantImpl extends EncounterImpl implements MerchantStat
     }
 
     @Override
-    public Map<Long, String> getOptions() {
-        return currentState.getOptions();
+    public Map<Long, String> getOptions(EntityService entityService) {
+        return currentState.getOptions(entityService);
     }
 
     @Override
-    public List<Response> act(Long option) {
-        return currentState.act(option);
+    public List<Response> act(Long option, EntityService entityService) {
+        return currentState.act(option, entityService);
     }
 
     @Override
-    public void process() {
+    public void process(EntityService entityService) {
         LOGGER.info("Processing a Merchant encounter.");
         // Call the encounter's "list options", returns Map<Long, String>
-        Map<Long, String> options = currentState.getOptions();
+        Map<Long, String> options = currentState.getOptions(entityService);
 
         // Call UserInput Make choice, returns Long
         Long option = adventure.getUI().getSelection(options);
 
         // Call the encounter and pass the Long selected, returns List<Response>
-        List<Response> responses = currentState.act(option);
+        List<Response> responses = currentState.act(option, entityService);
 
         // Render the list of responses to outStream
         responses.stream().forEachOrdered((r) -> adventure.getOutStream().println(r.render()));
@@ -109,11 +108,6 @@ public class EncounterMerchantImpl extends EncounterImpl implements MerchantStat
     @Override
     public double getBuyRate() {
         return buyRate;
-    }
-
-    @Override
-    public EntityService getEntityService() {
-        return entityService;
     }
 
     @Override

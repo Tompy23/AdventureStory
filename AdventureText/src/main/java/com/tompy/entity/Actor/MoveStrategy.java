@@ -1,6 +1,7 @@
 package com.tompy.entity.Actor;
 
 import com.tompy.directive.Direction;
+import com.tompy.entity.EntityService;
 
 public interface MoveStrategy {
     /**
@@ -8,5 +9,5 @@ public interface MoveStrategy {
      *
      * @return - a legal Direction, otherwise null
      */
-    Direction getMove();
+    Direction getMove(EntityService entityService);
 }

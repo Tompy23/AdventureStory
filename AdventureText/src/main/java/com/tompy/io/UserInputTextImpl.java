@@ -11,12 +11,13 @@ import java.io.*;
 import java.util.Map;
 import java.util.Objects;
 
-public class UserInputTextImpl implements UserInput {
+public class UserInputTextImpl implements UserInput, Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LogManager.getLogger(UserInputTextImpl.class);
     private CommandFactory factory;
-    private BufferedReader br = null;
-    private PrintStream outStream;
-    private InputStream inStream;
+    private transient BufferedReader br = null;
+    private transient PrintStream outStream;
+    private transient InputStream inStream;
 
     public UserInputTextImpl(InputStream inStream, PrintStream outStream, EntityService entityService) {
         this.inStream = Objects.requireNonNull(inStream, "In Stream cannot be null.");

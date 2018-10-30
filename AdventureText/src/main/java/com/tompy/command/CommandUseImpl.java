@@ -53,17 +53,17 @@ public class CommandUseImpl extends CommandBasicImpl implements Command {
                 // Use subject on target
                 if (source.hasTarget(object)) {
                     LOGGER.info("Using [{}] on [{}]", source.getName(), object.getName());
-                    returnValue.addAll(source.use(player, adventure));
+                    returnValue.addAll(source.use(player, adventure, entityService));
                 } else {
-                    returnValue.addAll(source.misUse(object, player, adventure));
-                    returnValue.addAll(object.misUse(source, player, adventure));
+                    returnValue.addAll(source.misUse(object, player, adventure, entityService));
+                    returnValue.addAll(object.misUse(source, player, adventure, entityService));
                 }
 
             } else {
                 if (optSource.isPresent()) {
-                    returnValue.addAll(optSource.get().misUse(null, player, adventure));
+                    returnValue.addAll(optSource.get().misUse(null, player, adventure, entityService));
                 } else {
-                    returnValue.addAll(optObject.get().misUse(null, player, adventure));
+                    returnValue.addAll(optObject.get().misUse(null, player, adventure, entityService));
                 }
             }
 
@@ -74,7 +74,7 @@ public class CommandUseImpl extends CommandBasicImpl implements Command {
     private List<Response> subjectOnlyUse(Player player, Adventure adventure, Optional<Item> optSource) {
         if (optSource.isPresent()) {
             Item source = optSource.get();
-            return source.use(player, adventure);
+            return source.use(player, adventure, entityService);
         }
 
         return Collections.emptyList();
