@@ -4,10 +4,7 @@ import com.tompy.adventure.Adventure;
 import com.tompy.adventure.AdventureImpl;
 import com.tompy.common.Coordinates;
 import com.tompy.common.Coordinates2DImpl;
-import com.tompy.directive.ActionType;
-import com.tompy.directive.TriggerType;
 import com.tompy.entity.Actor.Actor;
-import com.tompy.entity.EntityFacadeBuilderFactory;
 import com.tompy.entity.EntityService;
 import com.tompy.entity.area.Area;
 import com.tompy.entity.event.Event;
@@ -24,7 +21,6 @@ import java.util.Random;
 import static com.tompy.directive.ActionType.ACTION_ACTOR_MOVE;
 import static com.tompy.directive.ActionType.ACTION_END_ADVENTURE;
 import static com.tompy.directive.Direction.*;
-import static com.tompy.directive.EventType.EVENT_ACTOR_PROGRAM;
 import static com.tompy.directive.EventType.EVENT_AREA_ENTER;
 import static com.tompy.directive.MoveStrategyType.MOVE_RANDOM;
 import static com.tompy.directive.TriggerType.TRIGGER_ALWAYS;
@@ -34,9 +30,9 @@ public class Maze extends AdventureImpl implements Adventure {
     private static final int size = 4;
     private static final double exitFactor = 1.0;
 
-    public Maze(Player player, EntityService entityService, EntityFacadeBuilderFactory entityFacadeBuilderFactory,
-            ExitBuilderFactory exitBuilderFactory, UserInput userInput, PrintStream outStream) {
-        super(player, entityService, entityFacadeBuilderFactory, exitBuilderFactory, userInput, outStream);
+    public Maze(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory, UserInput userInput,
+            PrintStream outStream) {
+        super(player, entityService, exitBuilderFactory, userInput, outStream);
     }
 
     @Override
@@ -48,8 +44,7 @@ public class Maze extends AdventureImpl implements Adventure {
 
         Area winRoom = rooms[(size * size) - 2];
 
-        Event win = eventBuilder(ACTION_END_ADVENTURE, TRIGGER_ALWAYS, winRoom, "maze.room.win")
-                .build();
+        Event win = eventBuilder(ACTION_END_ADVENTURE, TRIGGER_ALWAYS, winRoom, "maze.room.win").build();
         addEvent(winRoom, EVENT_AREA_ENTER, win);
 
         // Actors testing

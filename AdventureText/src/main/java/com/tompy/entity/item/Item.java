@@ -39,20 +39,6 @@ public interface Item extends Entity {
     boolean hasTarget(Entity entity);
 
     /**
-     * Number of hands the item takes to use
-     *
-     * @return
-     */
-    int hands();
-
-    /**
-     * Encumbrance value of the item when carried.
-     *
-     * @return
-     */
-    int encumbrance();
-
-    /**
      * Behavior when the item is misused, possibly on a specific feature
      *
      * @param feature

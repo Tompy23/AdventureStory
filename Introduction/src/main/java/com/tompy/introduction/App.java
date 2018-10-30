@@ -3,7 +3,6 @@ package com.tompy.introduction;
 
 import com.tompy.adventure.Adventure;
 import com.tompy.attribute.AttributeManagerFactoryImpl;
-import com.tompy.entity.EntityFacadeBuilderFactoryImpl;
 import com.tompy.entity.EntityService;
 import com.tompy.entity.EntityServiceImpl;
 import com.tompy.entity.event.EventManagerFactoryImpl;
@@ -51,8 +50,7 @@ public class App {
                 FileInputStream fis = new FileInputStream(filename);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 adventure = (Adventure) ois.readObject();
-                stateFactory =
-                        new AdventureStateFactoryImpl(player, adventure, ui, outStream, entityService);
+                stateFactory = new AdventureStateFactoryImpl(player, adventure, ui, outStream, entityService);
                 ois.close();
                 fis.close();
             } catch (IOException ioe) {
@@ -63,11 +61,9 @@ public class App {
                 return 7;
             }
         } else {
-            adventure = new Introduction(player, entityService, new EntityFacadeBuilderFactoryImpl(entityService),
-                    new ExitBuilderFactoryImpl(), ui, outStream);
+            adventure = new Introduction(player, entityService, new ExitBuilderFactoryImpl(), ui, outStream);
 
-            stateFactory =
-                    new AdventureStateFactoryImpl(player, adventure, ui, outStream, entityService);
+            stateFactory = new AdventureStateFactoryImpl(player, adventure, ui, outStream, entityService);
 
             adventure.create();
         }
@@ -77,7 +73,6 @@ public class App {
         outStream.println(String.format("%s, you are about to enter a world of adventure... ", player.getName()));
         outStream.println("Your quest is to defeat a nasty orc to the north.");
         outStream.println();
-
 
 
         adventure.start(stateFactory.getExploreState(), "StartRoom", DIRECTION_SOUTH, entityService);

@@ -5,7 +5,6 @@ import com.tompy.adventure.Adventure;
 import com.tompy.attribute.AttributeManagerFactoryImpl;
 import com.tompy.entity.Actor.MoveStrategyFactory;
 import com.tompy.entity.Actor.MoveStrategyFactoryImpl;
-import com.tompy.entity.EntityFacadeBuilderFactoryImpl;
 import com.tompy.entity.EntityService;
 import com.tompy.entity.EntityServiceImpl;
 import com.tompy.entity.event.EventManagerFactoryImpl;
@@ -43,8 +42,7 @@ public class AppMaze {
         UserInput ui = new UserInputTextImpl(inStream, outStream, entityService);
         Player player = new PlayerImpl(ui.getResponse("Player name?"), null);
         outStream.println();
-        Adventure adventure = new Maze(player, entityService, new EntityFacadeBuilderFactoryImpl(entityService),
-                new ExitBuilderFactoryImpl(), ui, outStream);
+        Adventure adventure = new Maze(player, entityService, new ExitBuilderFactoryImpl(), ui, outStream);
 
         AdventureStateFactory stateFactory =
                 new AdventureStateFactoryImpl(player, adventure, ui, outStream, entityService);

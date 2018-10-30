@@ -1,6 +1,7 @@
 package com.tompy.entity.feature;
 
 import com.tompy.adventure.Adventure;
+import com.tompy.attribute.Attribute;
 import com.tompy.entity.EntityUtil;
 import com.tompy.entity.EntityService;
 import com.tompy.exit.Exit;
@@ -12,6 +13,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tompy.attribute.Attribute.LOCKED;
+import static com.tompy.attribute.Attribute.OPEN;
+import static com.tompy.attribute.Attribute.VISIBLE;
 import static com.tompy.directive.EventType.EVENT_FEATURE_CLOSE;
 import static com.tompy.directive.EventType.EVENT_FEATURE_OPEN;
 import static com.tompy.directive.EventType.EVENT_FEATURE_OPEN_BUT_LOCKED;
@@ -28,9 +32,9 @@ public class FeatureDoorImpl extends FeatureBasicImpl {
 
     protected FeatureDoorImpl(Long key, String name, List<String> descriptors, String description,
             EntityService entityService, Exit exit, int manipulationTicks) {
-        super(key, name, descriptors, description, entityService, manipulationTicks);
+        super(key, name, descriptors, description,  manipulationTicks);
         this.exit = exit;
-        EntityUtil.add(visible);
+        entityService.add(this, VISIBLE);
     }
 
     @Override
@@ -38,13 +42,13 @@ public class FeatureDoorImpl extends FeatureBasicImpl {
         LOGGER.info("Opening [{}, {}]", this.getName(), exit.toString());
         List<Response> returnValue = new ArrayList<>();
 
-        if (EntityUtil.is(visible)) {
-            if (!EntityUtil.is(open) && !EntityUtil.is(locked)) {
-                EntityUtil.add(open);
+        if (entityService.is(this, VISIBLE)) {
+            if (!entityService.is(this, OPEN) && !entityService.is(this, LOCKED)) {
+                entityService.add(this, OPEN);
                 exit.open();
                 adventure.setActionTicks(manipulationTicks);
                 returnValue.addAll(entityService.handle(this, EVENT_FEATURE_OPEN, player, adventure));
-            } else if (EntityUtil.is(locked)) {
+            } else if (entityService.is(this, LOCKED)) {
                 returnValue
                         .addAll(entityService.handle(this, EVENT_FEATURE_OPEN_BUT_LOCKED, player, adventure));
             }
@@ -58,9 +62,9 @@ public class FeatureDoorImpl extends FeatureBasicImpl {
         LOGGER.info("Closing [{}, {}]", this.getName(), exit.toString());
         List<Response> returnValue = new ArrayList<>();
 
-        if (EntityUtil.is(visible)) {
-            if (EntityUtil.is(open)) {
-                EntityUtil.remove(open);
+        if (entityService.is(this, VISIBLE)) {
+            if (entityService.is(this, OPEN)) {
+                entityService.remove(this, OPEN);
                 exit.close();
                 adventure.setActionTicks(manipulationTicks);
                 returnValue.addAll(entityService.handle(this, EVENT_FEATURE_CLOSE, player, adventure));

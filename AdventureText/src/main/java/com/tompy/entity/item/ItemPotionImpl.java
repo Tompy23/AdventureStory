@@ -19,8 +19,8 @@ public class ItemPotionImpl extends ItemImpl {
     private final Event event;
 
     public ItemPotionImpl(Long key, String name, List<String> descriptors, String description,
-            EntityService entityService, Event event, int manipulationTicks) {
-        super(key, name, descriptors, description, entityService, manipulationTicks);
+            Event event, int manipulationTicks) {
+        super(key, name, descriptors, description, manipulationTicks);
         this.event = event;
     }
 

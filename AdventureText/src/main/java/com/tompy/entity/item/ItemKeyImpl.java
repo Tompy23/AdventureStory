@@ -22,9 +22,9 @@ public class ItemKeyImpl extends ItemImpl {
     private static final Logger LOGGER = LogManager.getLogger(ItemKeyImpl.class);
     private final Feature target;
 
-    public ItemKeyImpl(Long key, String name, List<String> descriptors, String description, EntityService entityService,
-        Feature target, int manipulationTicks) {
-        super(key, name, descriptors, description, entityService, manipulationTicks);
+    public ItemKeyImpl(Long key, String name, List<String> descriptors, String description, Feature target,
+            int manipulationTicks) {
+        super(key, name, descriptors, description, manipulationTicks);
         this.target = target;
     }
 

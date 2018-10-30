@@ -18,9 +18,9 @@ public class ItemWeaponImpl extends ItemImpl {
     private static final Logger LOGGER = LogManager.getLogger(ItemWeaponImpl.class);
     private final Feature target;
 
-    public ItemWeaponImpl(Long key, String name, List<String> descriptors, String description,
-            EntityService entityService, Feature target, int manipulationTicks) {
-        super(key, name, descriptors, description, entityService, manipulationTicks);
+    public ItemWeaponImpl(Long key, String name, List<String> descriptors, String description, Feature target,
+            int manipulationTicks) {
+        super(key, name, descriptors, description, manipulationTicks);
         this.target = target;
 
     }

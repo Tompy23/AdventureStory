@@ -144,53 +144,6 @@ public class EntityUtil {
     }
 
     /**
-     * Add entity and attribute via Entity Facade
-     *
-     * @param facade
-     */
-    public static void add(EntityFacade facade) {
-        facade.getService().add(facade.getEntity(), facade.getAttribute());
-    }
-
-    /**
-     * Add entity and attribute via Entity Facade
-     *
-     * @param facade
-     * @param value
-     */
-    public static void add(EntityFacade facade, Integer value) {
-        facade.getService().add(facade.getEntity(), facade.getAttribute(), value);
-    }
-
-    /**
-     * Remove an entity and attribute via Entity Facade
-     * @param facade
-     */
-    public static void remove(EntityFacade facade) {
-        facade.getService().remove(facade.getEntity(), facade.getAttribute());
-    }
-
-    /**
-     * Determine if an attribute applies to an event via Entity Facade
-     *
-     * @param facade
-     * @return
-     */
-    public static boolean is(EntityFacade facade) {
-        return facade.getService().is(facade.getEntity(), facade.getAttribute());
-    }
-
-    /**
-     * Retrieve the value for an attribute for an entity via Entity Facade
-     *
-     * @param facade
-     * @return
-     */
-    public static OptionalInt valueFor(EntityFacade facade) {
-        return facade.getService().valueFor(facade.getEntity(), facade.getAttribute());
-    }
-
-    /**
      * Make an entity visible for an entityService
      *
      * @param entityService

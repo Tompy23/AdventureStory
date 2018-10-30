@@ -2,7 +2,6 @@ package com.tompy.adventure;
 
 import com.tompy.directive.Direction;
 import com.tompy.entity.Actor.MoveStrategyFactory;
-import com.tompy.entity.EntityFacadeBuilderFactory;
 import com.tompy.entity.EntityService;
 import com.tompy.entity.area.Area;
 import com.tompy.exit.ExitBuilderFactory;
@@ -20,7 +19,6 @@ import java.util.Objects;
 public abstract class AdventureImpl extends AdventureHelper implements Adventure, Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LogManager.getLogger(AdventureImpl.class);
-    protected final EntityFacadeBuilderFactory entityFacadeBuilderFactory;
     private final UserInput userInput;
     private final PrintStream outStream;
     private boolean proceed;
@@ -28,12 +26,9 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
     private int currentTick;
     private int actionTicks;
 
-    public AdventureImpl(Player player, EntityService entityService,
-            EntityFacadeBuilderFactory entityFacadeBuilderFactory, ExitBuilderFactory exitBuilderFactory,
+    public AdventureImpl(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
             UserInput userInput, PrintStream outStream) {
         super(player, entityService, exitBuilderFactory);
-        this.entityFacadeBuilderFactory =
-                Objects.requireNonNull(entityFacadeBuilderFactory, "Entity Facade Builder Factory cannot be null.");
         this.userInput = Objects.requireNonNull(userInput, "User Input cannot be null.");
         this.outStream = Objects.requireNonNull(outStream, "Output Stream cannot be null.");
     }

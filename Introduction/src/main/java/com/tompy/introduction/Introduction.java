@@ -4,7 +4,6 @@ import com.tompy.adventure.Adventure;
 import com.tompy.adventure.AdventureImpl;
 import com.tompy.common.Coordinates;
 import com.tompy.common.Coordinates2DImpl;
-import com.tompy.entity.EntityFacadeBuilderFactory;
 import com.tompy.entity.EntityService;
 import com.tompy.entity.area.Area;
 import com.tompy.entity.encounter.Encounter;
@@ -36,10 +35,9 @@ import static com.tompy.directive.TriggerType.*;
 public class Introduction extends AdventureImpl implements Adventure {
     private static final Logger LOGGER = LogManager.getLogger(Introduction.class);
 
-    public Introduction(Player player, EntityService entityService,
-            EntityFacadeBuilderFactory entityFacadeBuilderFactory, ExitBuilderFactory exitBuilderFactory,
+    public Introduction(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
             UserInput userInput, PrintStream outStream) {
-        super(player, entityService, entityFacadeBuilderFactory, exitBuilderFactory, userInput, outStream);
+        super(player, entityService, exitBuilderFactory, userInput, outStream);
     }
 
     @Override

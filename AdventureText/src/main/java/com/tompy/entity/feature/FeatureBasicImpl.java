@@ -2,12 +2,9 @@ package com.tompy.entity.feature;
 
 import com.tompy.adventure.Adventure;
 import com.tompy.directive.FeatureType;
-import com.tompy.entity.EntityUtil;
-import com.tompy.entity.EntityFacade;
+import com.tompy.entity.EntityBuilderHelperImpl;
 import com.tompy.entity.EntityService;
 import com.tompy.entity.compartment.CompartmentImpl;
-import com.tompy.entity.EntityBuilderHelperImpl;
-import com.tompy.entity.EntityFacadeImpl;
 import com.tompy.entity.item.Item;
 import com.tompy.exit.Exit;
 import com.tompy.player.Player;
@@ -25,19 +22,13 @@ import static com.tompy.directive.EventType.*;
 public class FeatureBasicImpl extends CompartmentImpl implements Feature {
     private static final Logger LOGGER = LogManager.getLogger(FeatureBasicImpl.class);
     protected final List<Response> notImplemented;
-    protected final EntityFacade open;
-    protected final EntityFacade locked;
-    protected final EntityFacade visible;
     protected int manipulationTicks;
 
     protected FeatureBasicImpl(Long key, String name, List<String> descriptors, String description,
-            EntityService entityService, int manipulationTicks) {
+            int manipulationTicks) {
         super(key, name, descriptors, description);
         notImplemented =
                 Collections.singletonList(responseFactory.createBuilder().source(name).text("Not Implemented").build());
-        open = EntityFacadeImpl.createBuilder(entityService).entity(this).attribute(OPEN).build();
-        locked = EntityFacadeImpl.createBuilder(entityService).entity(this).attribute(LOCKED).build();
-        visible = EntityFacadeImpl.createBuilder(entityService).entity(this).attribute(VISIBLE).build();
         this.manipulationTicks = manipulationTicks;
     }
 
@@ -55,7 +46,7 @@ public class FeatureBasicImpl extends CompartmentImpl implements Feature {
         List<Response> returnValue = new ArrayList<>();
         LOGGER.info("Searching Feature [{}]", getName());
 
-        if (EntityUtil.is(visible)) {
+        if (entityService.is(this, VISIBLE)) {
             adventure.setActionTicks(manipulationTicks);
             returnValue.addAll(entityService.handle(this, EVENT_FEATURE_SEARCH, player, adventure));
         }
@@ -68,16 +59,15 @@ public class FeatureBasicImpl extends CompartmentImpl implements Feature {
         LOGGER.info("Opening [{}]", this.getName());
         List<Response> returnValue = new ArrayList<>();
 
-        if (EntityUtil.is(visible)) {
-            if (!EntityUtil.is(open) && !EntityUtil.is(locked)) {
-                EntityUtil.add(open);
+        if (entityService.is(this, VISIBLE)) {
+            if (!entityService.is(this, OPEN) && !entityService.is(this, LOCKED)) {
+                entityService.add(this, OPEN);
                 adventure.setActionTicks(manipulationTicks);
                 returnValue.addAll(entityService.handle(this, EVENT_FEATURE_OPEN, player, adventure));
                 items.stream().forEach((i) -> entityService.add(i, VISIBLE));
-            } else if (EntityUtil.is(locked)) {
+            } else if (entityService.is(this, LOCKED)) {
                 adventure.setActionTicks(manipulationTicks);
-                returnValue
-                        .addAll(entityService.handle(this, EVENT_FEATURE_OPEN_BUT_LOCKED, player, adventure));
+                returnValue.addAll(entityService.handle(this, EVENT_FEATURE_OPEN_BUT_LOCKED, player, adventure));
             }
         }
 
@@ -89,9 +79,9 @@ public class FeatureBasicImpl extends CompartmentImpl implements Feature {
         LOGGER.info("Closing [{}]", this.getName());
         List<Response> returnValue = new ArrayList<>();
 
-        if (EntityUtil.is(visible)) {
-            if (EntityUtil.is(open)) {
-                EntityUtil.remove(open);
+        if (entityService.is(this, VISIBLE)) {
+            if (entityService.is(this, OPEN)) {
+                entityService.remove(this, OPEN);
                 adventure.setActionTicks(manipulationTicks);
                 returnValue.addAll(entityService.handle(this, EVENT_FEATURE_CLOSE, player, adventure));
             }
@@ -105,15 +95,14 @@ public class FeatureBasicImpl extends CompartmentImpl implements Feature {
         List<Response> returnValue = new ArrayList<>();
         LOGGER.info("Locking [{}]", this.getName());
 
-        if (EntityUtil.is(visible)) {
-            if (!EntityUtil.is(open) && !EntityUtil.is(locked)) {
-                EntityUtil.add(locked);
+        if (entityService.is(this, VISIBLE)) {
+            if (!entityService.is(this, OPEN) && !entityService.is(this, LOCKED)) {
+                entityService.add(this, LOCKED);
                 adventure.setActionTicks(manipulationTicks);
                 returnValue.addAll(entityService.handle(this, EVENT_FEATURE_LOCK, player, adventure));
             } else {
                 adventure.setActionTicks(manipulationTicks);
-                returnValue
-                        .addAll(entityService.handle(this, EVENT_FEATURE_UNABLE_TO_LOCK, player, adventure));
+                returnValue.addAll(entityService.handle(this, EVENT_FEATURE_UNABLE_TO_LOCK, player, adventure));
             }
         }
 
@@ -125,15 +114,14 @@ public class FeatureBasicImpl extends CompartmentImpl implements Feature {
         List<Response> returnValue = new ArrayList<>();
         LOGGER.info("Unlocking [{}]", this.getName());
 
-        if (EntityUtil.is(visible)) {
-            if (!EntityUtil.is(open) && EntityUtil.is(locked)) {
-                EntityUtil.remove(locked);
+        if (entityService.is(this, VISIBLE)) {
+            if (!entityService.is(this, OPEN) && entityService.is(this, LOCKED)) {
+                entityService.remove(this, LOCKED);
                 adventure.setActionTicks(manipulationTicks);
                 returnValue.addAll(entityService.handle(this, EVENT_FEATURE_UNLOCK, player, adventure));
             } else {
                 adventure.setActionTicks(manipulationTicks);
-                returnValue.addAll(entityService
-                        .handle(this, EVENT_FEATURE_UNABLE_TO_UNLOCK, player, adventure));
+                returnValue.addAll(entityService.handle(this, EVENT_FEATURE_UNABLE_TO_UNLOCK, player, adventure));
             }
         }
 
@@ -215,7 +203,8 @@ public class FeatureBasicImpl extends CompartmentImpl implements Feature {
                     return door;
                 case FEATURE_MONSTER:
                     FeatureMonsterImpl monster =
-                            new FeatureMonsterImpl(key, name, this.buildDescriptors(), description, entityService, manipulationTicks);
+                            new FeatureMonsterImpl(key, name, this.buildDescriptors(), description, entityService,
+                                    manipulationTicks);
                     if (entityService != null) {
                         entityService.addFeature(monster);
                     }
@@ -230,7 +219,7 @@ public class FeatureBasicImpl extends CompartmentImpl implements Feature {
                 default:
                     FeatureBasicImpl feature =
                             new FeatureBasicImpl(key, name == null ? "FEATURE-" + key : name, this.buildDescriptors(),
-                                    description, entityService, manipulationTicks);
+                                    description, manipulationTicks);
                     if (entityService != null) {
                         entityService.addFeature(feature);
                     }

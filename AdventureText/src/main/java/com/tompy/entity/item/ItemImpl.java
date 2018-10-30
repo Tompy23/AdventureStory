@@ -14,21 +14,12 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.tompy.attribute.Attribute.*;
-
 public class ItemImpl extends EntityImpl implements Item {
     private static final Logger LOGGER = LogManager.getLogger(ItemImpl.class);
-    protected final EntityFacade visible;
-    protected final EntityFacade hands;
-    protected final EntityFacade encumbrance;
     protected int manipulationTicks;
 
-    protected ItemImpl(Long key, String name, List<String> descriptors, String description, EntityService entityService,
-            int manipulationTicks) {
+    protected ItemImpl(Long key, String name, List<String> descriptors, String description, int manipulationTicks) {
         super(key, name, descriptors, description);
-        visible = EntityFacadeImpl.createBuilder(entityService).entity(this).attribute(VISIBLE).build();
-        hands = EntityFacadeImpl.createBuilder(entityService).entity(this).attribute(HANDS).build();
-        encumbrance = EntityFacadeImpl.createBuilder(entityService).entity(this).attribute(ENCUMBRANCE).build();
         this.manipulationTicks = manipulationTicks;
     }
 
@@ -56,16 +47,6 @@ public class ItemImpl extends EntityImpl implements Item {
     }
 
     @Override
-    public int hands() {
-        return EntityUtil.valueFor(hands).getAsInt();
-    }
-
-    @Override
-    public int encumbrance() {
-        return EntityUtil.valueFor(encumbrance).getAsInt();
-    }
-
-    @Override
     public List<Response> misUse(Feature feature, Player player, Adventure adventure, EntityService entityService) {
         List<Response> returnValue = new ArrayList<>();
         return returnValue;
@@ -73,7 +54,6 @@ public class ItemImpl extends EntityImpl implements Item {
 
     public static class ItemBuilderImpl extends EntityBuilderHelperImpl implements ItemBuilder {
         private ItemType type;
-        private EntityFacade target;
         private Feature targetFeature;
         private Event event;
         private EventType eventType;
@@ -89,23 +69,21 @@ public class ItemImpl extends EntityImpl implements Item {
             Item item;
             switch (type) {
                 case ITEM_KEY:
-                    item = new ItemKeyImpl(key, name, buildDescriptors(), description, entityService, targetFeature,
+                    item = new ItemKeyImpl(key, name, buildDescriptors(), description, targetFeature,
                             manipulationTicks);
                     break;
                 case ITEM_GEM:
-                    item = new ItemGemImpl(key, name, buildDescriptors(), description, entityService,
-                            manipulationTicks);
+                    item = new ItemGemImpl(key, name, buildDescriptors(), description, manipulationTicks);
                     break;
                 case ITEM_POTION:
-                    item = new ItemPotionImpl(key, name, buildDescriptors(), description, entityService, event,
-                            manipulationTicks);
+                    item = new ItemPotionImpl(key, name, buildDescriptors(), description, event, manipulationTicks);
                     break;
                 case ITEM_WEAPON:
-                    item = new ItemWeaponImpl(key, name, buildDescriptors(), description, entityService, targetFeature,
+                    item = new ItemWeaponImpl(key, name, buildDescriptors(), description, targetFeature,
                             manipulationTicks);
                     break;
                 default:
-                    item = new ItemImpl(key, name, buildDescriptors(), description, entityService, manipulationTicks);
+                    item = new ItemImpl(key, name, buildDescriptors(), description, manipulationTicks);
             }
 
             if (item != null && entityService != null) {
@@ -129,12 +107,6 @@ public class ItemImpl extends EntityImpl implements Item {
         @Override
         public ItemBuilder type(ItemType type) {
             this.type = type;
-            return this;
-        }
-
-        @Override
-        public ItemBuilder target(EntityFacade target) {
-            this.target = target;
             return this;
         }
 

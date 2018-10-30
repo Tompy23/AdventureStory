@@ -105,14 +105,14 @@ public class PlayerImpl implements Player, Serializable {
 
     @Override
     public boolean equip(Item item) {
-        if (inventory.contains(item)) {
-            if (equipped.stream().mapToInt(Item::hands).sum() < 2) {
-                inventory.remove(item);
-                equipped.add(item);
-                LOGGER.info("Equipping item [{}]", item.getName());
-                return true;
-            }
-        }
+//        if (inventory.contains(item)) {
+//            if (equipped.stream().mapToInt(Item::hands).sum() < 2) {
+//                inventory.remove(item);
+//                equipped.add(item);
+//                LOGGER.info("Equipping item [{}]", item.getName());
+//                return true;
+//            }
+//        }
         return false;
     }
 
