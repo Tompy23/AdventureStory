@@ -4,6 +4,7 @@ import com.tompy.adventure.Adventure;
 import com.tompy.attribute.Attribute;
 import com.tompy.attribute.AttributeManager;
 import com.tompy.attribute.AttributeManagerFactory;
+import com.tompy.common.Builder;
 import com.tompy.directive.EventType;
 import com.tompy.entity.Actor.Actor;
 import com.tompy.entity.Actor.ActorBuilder;
@@ -14,14 +15,10 @@ import com.tompy.entity.area.AreaImpl;
 import com.tompy.entity.encounter.Encounter;
 import com.tompy.entity.encounter.EncounterBuilder;
 import com.tompy.entity.encounter.EncounterImpl;
-import com.tompy.entity.event.Event;
-import com.tompy.entity.event.EventBuilder;
-import com.tompy.entity.event.EventManager;
-import com.tompy.entity.event.EventManagerFactory;
-import com.tompy.entity.event.EventImpl;
+import com.tompy.entity.event.*;
 import com.tompy.entity.feature.Feature;
-import com.tompy.entity.feature.FeatureBuilder;
 import com.tompy.entity.feature.FeatureBasicImpl;
+import com.tompy.entity.feature.FeatureBuilder;
 import com.tompy.entity.item.Item;
 import com.tompy.entity.item.ItemBuilder;
 import com.tompy.entity.item.ItemImpl;
@@ -49,20 +46,23 @@ public class EntityServiceImpl implements EntityService, Serializable {
     private Long entityKey;
     private Map<String, Entity> entityMap;
 
-    public EntityServiceImpl(AttributeManagerFactory attributeManagerFactory, EventManagerFactory eventManagerFactory) {
+    private EntityServiceImpl(AttributeManagerFactory attributeManagerFactory, EventManagerFactory eventManagerFactory,
+            Map<Long, AttributeManager> attributeManagers, Map<Long, EventManager> eventManagers, List<Item> items,
+            List<Feature> features, List<Area> areas, List<Event> events, List<Encounter> encounters,
+            List<Actor> actors, Long entityKey, Map<String, Entity> entityMap) {
         this.attributeManagerFactory =
                 Objects.requireNonNull(attributeManagerFactory, "Attribute Manager Factory cannot be null.");
         this.eventManagerFactory = Objects.requireNonNull(eventManagerFactory, "Event Manager Factory cannot be null>");
-        attributeManagers = new HashMap<>();
-        eventManagers = new HashMap<>();
-        items = new ArrayList<>();
-        features = new ArrayList<>();
-        areas = new ArrayList<>();
-        events = new ArrayList<>();
-        encounters = new ArrayList<>();
-        actors = new ArrayList<>();
-        entityKey = 0L;
-        entityMap = new HashMap<>();
+        this.attributeManagers = attributeManagers;
+        this.eventManagers = eventManagers;
+        this.items = items;
+        this.features = features;
+        this.areas = areas;
+        this.events = events;
+        this.encounters = encounters;
+        this.actors = actors;
+        this.entityKey = entityKey;
+        this.entityMap = entityMap;
     }
 
     @Override
@@ -187,7 +187,8 @@ public class EntityServiceImpl implements EntityService, Serializable {
                         .forEach((e) -> returnValue.addAll(e.apply(player, adventure, this)));
             }
         } else {
-            eventManagers.get(entity.getKey()).getAllOfType(type).stream().filter((e) -> e.pull(player, adventure, this))
+            eventManagers.get(entity.getKey()).getAllOfType(type).stream()
+                    .filter((e) -> e.pull(player, adventure, this))
                     .forEach((e) -> returnValue.addAll(e.apply(player, adventure, this)));
         }
         return returnValue;
@@ -195,7 +196,52 @@ public class EntityServiceImpl implements EntityService, Serializable {
 
     @Override
     public List<Actor> getActors() {
-        return actors;
+        return Collections.unmodifiableList(actors);
+    }
+
+    @Override
+    public List<Item> getItems() {
+        return Collections.unmodifiableList(items);
+    }
+
+    @Override
+    public List<Feature> getFeatures() {
+        return Collections.unmodifiableList(features);
+    }
+
+    @Override
+    public List<Encounter> getEncounters() {
+        return Collections.unmodifiableList(encounters);
+    }
+
+    @Override
+    public List<Area> getAreas() {
+        return Collections.unmodifiableList(areas);
+    }
+
+    @Override
+    public List<Event> getEvents() {
+        return Collections.unmodifiableList(events);
+    }
+
+    @Override
+    public Map<String, Entity> getEntityMap() {
+        return Collections.unmodifiableMap(entityMap);
+    }
+
+    @Override
+    public Map<Long, EventManager> getEventManagers() {
+        return Collections.unmodifiableMap(eventManagers);
+    }
+
+    @Override
+    public Map<Long, AttributeManager> getAttributeManagers() {
+        return Collections.unmodifiableMap(attributeManagers);
+    }
+
+    @Override
+    public Long getEntityKey() {
+        return entityKey;
     }
 
     @Override
@@ -275,6 +321,101 @@ public class EntityServiceImpl implements EntityService, Serializable {
         if (actor != null) {
             actors.add(actor);
             entityMap.put(actor.getName(), actor);
+        }
+    }
+
+    public static EntityServiceBuilder createBuilder(AttributeManagerFactory attributeManagerFactory,
+            EventManagerFactory eventManagerFactory) {
+        return new EntityServiceBuilder(attributeManagerFactory, eventManagerFactory);
+    }
+
+
+    public static final class EntityServiceBuilder implements Builder<EntityService> {
+        private final AttributeManagerFactory attributeManagerFactory;
+        private final EventManagerFactory eventManagerFactory;
+        private Map<Long, AttributeManager> attributeManagers = null;
+        private Map<Long, EventManager> eventManagers = null;
+        private List<Item> items = null;
+        private List<Feature> features = null;
+        private List<Area> areas = null;
+        private List<Event> events = null;
+        private List<Encounter> encounters = null;
+        private List<Actor> actors = null;
+        private Long entityKey = null;
+        private Map<String, Entity> entityMap = null;
+
+        public EntityServiceBuilder(AttributeManagerFactory attributeManagerFactory,
+                EventManagerFactory eventManagerFactory) {
+            this.attributeManagerFactory =
+                    Objects.requireNonNull(attributeManagerFactory, "Attribute Manager Factory cannot be null.");
+            this.eventManagerFactory =
+                    Objects.requireNonNull(eventManagerFactory, "Event Manager Factory cannot be null>");
+        }
+
+        @Override
+        public EntityService build() {
+            items = items == null ? new ArrayList<>() : new ArrayList<>(items);
+            features = features == null ? new ArrayList<>() : new ArrayList<>(features);
+            areas = areas == null ? new ArrayList<>() : new ArrayList<>(areas);
+            events = events == null ? new ArrayList<>() : new ArrayList<>(events);
+            encounters = encounters == null ? new ArrayList<>() : new ArrayList<>(encounters);
+            actors = actors == null ? new ArrayList<>() : new ArrayList<>(actors);
+            attributeManagers = attributeManagers == null ? new HashMap<>() : new HashMap<>(attributeManagers);
+            eventManagers = eventManagers == null ? new HashMap<>() : new HashMap<>(eventManagers);
+            entityMap = entityMap == null ? new HashMap<>() : new HashMap<>(entityMap);
+            entityKey = entityKey == null ? 0L : entityKey;
+            return new EntityServiceImpl(attributeManagerFactory, eventManagerFactory, attributeManagers, eventManagers,
+                    items, features, areas, events, encounters, actors, entityKey, entityMap);
+        }
+
+        public EntityServiceBuilder attributeManagers(Map<Long, AttributeManager> attributeManagers) {
+            this.attributeManagers = Collections.unmodifiableMap(attributeManagers);
+            return this;
+        }
+
+        public EntityServiceBuilder eventManagers(Map<Long, EventManager> eventManagers) {
+            this.eventManagers = Collections.unmodifiableMap(eventManagers);
+            return this;
+        }
+
+        public EntityServiceBuilder items(List<Item> items) {
+            this.items = Collections.unmodifiableList(items);
+            return this;
+        }
+
+        public EntityServiceBuilder features(List<Feature> features) {
+            this.features = Collections.unmodifiableList(features);
+            return this;
+        }
+
+        public EntityServiceBuilder areas(List<Area> areas) {
+            this.areas = Collections.unmodifiableList(areas);
+            return this;
+        }
+
+        public EntityServiceBuilder events(List<Event> events) {
+            this.events = Collections.unmodifiableList(events);
+            return this;
+        }
+
+        public EntityServiceBuilder encounters(List<Encounter> encounters) {
+            this.encounters = Collections.unmodifiableList(encounters);
+            return this;
+        }
+
+        public EntityServiceBuilder actors(List<Actor> actors) {
+            this.actors = Collections.unmodifiableList(actors);
+            return this;
+        }
+
+        public EntityServiceBuilder entityKey(Long entityKey) {
+            this.entityKey = entityKey;
+            return this;
+        }
+
+        public EntityServiceBuilder entityMap(Map<String, Entity> entityMap) {
+            this.entityMap = Collections.unmodifiableMap(entityMap);
+            return this;
         }
     }
 }

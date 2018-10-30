@@ -41,6 +41,13 @@ public abstract class AdventureHelper {
     protected MoveStrategyFactory moveStrategyFactory;
     private Adventure thisAdventure;
 
+    public AdventureHelper() {
+        player = null;
+        entityService = null;
+        exitBuilderFactory = null;
+        messages = null;
+    }
+
     public AdventureHelper(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory) {
         this.player = Objects.requireNonNull(player, "Player cannot be null.");
         this.entityService = Objects.requireNonNull(entityService, "Entity Service cannot be null.");

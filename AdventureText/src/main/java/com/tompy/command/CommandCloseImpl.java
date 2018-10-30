@@ -21,8 +21,8 @@ public class CommandCloseImpl extends CommandBasicImpl implements Command {
     private static final Logger LOGGER = LogManager.getLogger(CommandCloseImpl.class);
     private final String target;
 
-    private CommandCloseImpl(CommandType type, String target, EntityService entityService) {
-        super(type, entityService);
+    private CommandCloseImpl(CommandType type, String target) {
+        super(type);
         this.target = Objects.requireNonNull(target, "Target cannot be null.");
     }
 
@@ -35,7 +35,7 @@ public class CommandCloseImpl extends CommandBasicImpl implements Command {
     }
 
     @Override
-    public List<Response> execute(Player player, Adventure adventure) {
+    public List<Response> execute(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Executing Command Close");
         List<Response> returnValue = new ArrayList<>();
 
@@ -68,7 +68,7 @@ public class CommandCloseImpl extends CommandBasicImpl implements Command {
 
         @Override
         public Command build() {
-            return new CommandCloseImpl(COMMAND_CLOSE, target, entityService);
+            return new CommandCloseImpl(COMMAND_CLOSE, target);
         }
     }
 }

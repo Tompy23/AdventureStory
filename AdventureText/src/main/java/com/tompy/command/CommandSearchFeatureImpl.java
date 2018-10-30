@@ -18,13 +18,13 @@ import java.util.Optional;
 public class CommandSearchFeatureImpl extends CommandSearchImpl {
     private static final Logger LOGGER = LogManager.getLogger(CommandSearchFeatureImpl.class);
 
-    public CommandSearchFeatureImpl(CommandType type, EntityService entityService, String target,
+    public CommandSearchFeatureImpl(CommandType type, String target,
             String secondaryTarget) {
-        super(type, entityService, target, secondaryTarget);
+        super(type, target, secondaryTarget);
     }
 
     @Override
-    public List<Response> execute(Player player, Adventure adventure) {
+    public List<Response> execute(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Executing Search Feature");
         List<Response> returnValue = new ArrayList<>();
 

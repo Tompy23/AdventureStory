@@ -4,7 +4,8 @@ import com.tompy.common.Clock;
 import com.tompy.directive.Direction;
 import com.tompy.entity.Actor.MoveStrategyFactory;
 import com.tompy.entity.EntityService;
-import com.tompy.io.UserInput;
+import com.tompy.io.UserIO;
+import com.tompy.persistence.AdventureData;
 import com.tompy.state.AdventureState;
 import com.tompy.state.AdventureStateFactory;
 import com.tompy.state.StateMachine;
@@ -21,6 +22,10 @@ public interface Adventure extends StateMachine, Clock, Serializable {
      * Create the adventure elements
      */
     void create();
+
+    void load(AdventureData data);
+
+    AdventureData save();
 
     /**
      * Set the state factory for the adventure
@@ -41,14 +46,7 @@ public interface Adventure extends StateMachine, Clock, Serializable {
      *
      * @return - The user input implementation
      */
-    UserInput getUI();
-
-    /**
-     * Expose the output mechanism
-     *
-     * @return - The print stream implementation
-     */
-    PrintStream getOutStream();
+    UserIO getUI();
 
     /**
      * Begin an adventure for a player

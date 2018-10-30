@@ -2,14 +2,17 @@ package com.tompy.entity;
 
 import com.tompy.adventure.Adventure;
 import com.tompy.attribute.Attribute;
+import com.tompy.attribute.AttributeManager;
 import com.tompy.directive.EventType;
 import com.tompy.entity.Actor.Actor;
 import com.tompy.entity.Actor.ActorBuilderFactory;
 import com.tompy.entity.area.Area;
 import com.tompy.entity.area.AreaBuilderFactory;
+import com.tompy.entity.encounter.Encounter;
 import com.tompy.entity.encounter.EncounterBuilderFactory;
 import com.tompy.entity.event.Event;
 import com.tompy.entity.event.EventBuilderFactory;
+import com.tompy.entity.event.EventManager;
 import com.tompy.entity.feature.Feature;
 import com.tompy.entity.feature.FeatureBuilderFactory;
 import com.tompy.entity.item.Item;
@@ -18,6 +21,7 @@ import com.tompy.player.Player;
 import com.tompy.response.Response;
 
 import java.util.List;
+import java.util.Map;
 import java.util.OptionalInt;
 
 /**
@@ -157,4 +161,22 @@ public interface EntityService
      * @return List of actors
      */
     List<Actor> getActors();
+
+    List<Item> getItems();
+
+    List<Feature> getFeatures();
+
+    List<Encounter> getEncounters();
+
+    List<Area> getAreas();
+
+    List<Event> getEvents();
+
+    Long getEntityKey();
+
+    Map<String, Entity> getEntityMap();
+
+    Map<Long, EventManager> getEventManagers();
+
+    Map<Long, AttributeManager> getAttributeManagers();
 }

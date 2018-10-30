@@ -27,7 +27,7 @@ public class ActionExploreImpl extends ActionImpl {
     @Override
     public List<Response> apply(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Start Exploring State.");
-        adventure.changeState(stateFactory.getExploreState());
+        adventure.changeState(stateFactory.getExploreState(), entityService);
         List<Response> returnValue = new ArrayList<>();
         returnValue.addAll(responses.stream().
                 map((r) -> responseFactory.createBuilder().source(source).text(substitution(r, entityService)).build())

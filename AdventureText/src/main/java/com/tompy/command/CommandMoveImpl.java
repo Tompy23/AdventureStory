@@ -19,8 +19,8 @@ public class CommandMoveImpl extends CommandBasicImpl implements Command {
     private static final Logger LOGGER = LogManager.getLogger(CommandMoveImpl.class);
     protected Direction direction = Direction.DIRECTION_NORTH;
 
-    private CommandMoveImpl(CommandType type, String dir, EntityService entityService) {
-        super(type != null ? type : CommandType.COMMAND_MOVE, entityService);
+    private CommandMoveImpl(CommandType type, String dir) {
+        super(type != null ? type : CommandType.COMMAND_MOVE);
         if (AdventureUtils.isDirection(dir)) {
             direction = AdventureUtils.getDirection(dir);
         } else {
@@ -37,7 +37,7 @@ public class CommandMoveImpl extends CommandBasicImpl implements Command {
     }
 
     @Override
-    public List<Response> execute(Player player, Adventure adventure) {
+    public List<Response> execute(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Executing Command Move.  direction: {}", direction != null ? direction.getDescription() : "???");
         List<Response> returnValue = new ArrayList<>();
         Area currentArea = player.getArea();
@@ -72,7 +72,7 @@ public class CommandMoveImpl extends CommandBasicImpl implements Command {
         }
 
         public Command build() {
-            return new CommandMoveImpl(type, dir, entityService);
+            return new CommandMoveImpl(type, dir);
         }
     }
 }

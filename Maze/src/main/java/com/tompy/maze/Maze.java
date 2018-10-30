@@ -10,7 +10,7 @@ import com.tompy.entity.area.Area;
 import com.tompy.entity.event.Event;
 import com.tompy.exit.Exit;
 import com.tompy.exit.ExitBuilderFactory;
-import com.tompy.io.UserInput;
+import com.tompy.io.UserIO;
 import com.tompy.player.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,9 +30,10 @@ public class Maze extends AdventureImpl implements Adventure {
     private static final int size = 4;
     private static final double exitFactor = 1.0;
 
-    public Maze(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory, UserInput userInput,
-            PrintStream outStream) {
-        super(player, entityService, exitBuilderFactory, userInput, outStream);
+    public Maze() {}
+
+    public Maze(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory, UserIO io) {
+        super(player, entityService, exitBuilderFactory, io);
     }
 
     @Override

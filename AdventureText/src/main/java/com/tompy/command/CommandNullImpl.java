@@ -14,8 +14,8 @@ import java.util.List;
 public class CommandNullImpl extends CommandBasicImpl implements Command {
     private static final Logger LOGGER = LogManager.getLogger(CommandNullImpl.class);
 
-    private CommandNullImpl(EntityService entityService) {
-        super(CommandType.COMMAND_NULL, entityService);
+    private CommandNullImpl() {
+        super(CommandType.COMMAND_NULL);
     }
 
     public static CommandBuilderFactory createBuilderFactory() {
@@ -27,7 +27,7 @@ public class CommandNullImpl extends CommandBasicImpl implements Command {
     }
 
     @Override
-    public List<Response> execute(Player player, Adventure adventure) {
+    public List<Response> execute(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Executing Command Null.");
         List<Response> returnValue = new ArrayList<>();
         returnValue.add(responseFactory.createBuilder().text("I do not understand").source("Unknown").build());
@@ -48,7 +48,7 @@ public class CommandNullImpl extends CommandBasicImpl implements Command {
 
         @Override
         public Command build() {
-            return new CommandNullImpl(entityService);
+            return new CommandNullImpl();
         }
     }
 }

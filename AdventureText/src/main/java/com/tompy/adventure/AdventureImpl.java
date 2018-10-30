@@ -5,7 +5,8 @@ import com.tompy.entity.Actor.MoveStrategyFactory;
 import com.tompy.entity.EntityService;
 import com.tompy.entity.area.Area;
 import com.tompy.exit.ExitBuilderFactory;
-import com.tompy.io.UserInput;
+import com.tompy.io.UserIO;
+import com.tompy.persistence.AdventureData;
 import com.tompy.player.Player;
 import com.tompy.state.AdventureState;
 import com.tompy.state.AdventureStateFactory;
@@ -19,18 +20,20 @@ import java.util.Objects;
 public abstract class AdventureImpl extends AdventureHelper implements Adventure, Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LogManager.getLogger(AdventureImpl.class);
-    private final UserInput userInput;
-    private final PrintStream outStream;
+    private final UserIO userIO;
     private boolean proceed;
     private AdventureState currentState;
     private int currentTick;
     private int actionTicks;
 
+    public AdventureImpl() {
+        userIO = null;
+    }
+
     public AdventureImpl(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
-            UserInput userInput, PrintStream outStream) {
+            UserIO userInput) {
         super(player, entityService, exitBuilderFactory);
-        this.userInput = Objects.requireNonNull(userInput, "User Input cannot be null.");
-        this.outStream = Objects.requireNonNull(outStream, "Output Stream cannot be null.");
+        this.userIO = Objects.requireNonNull(userInput, "User Input cannot be null.");
     }
 
     @Override
@@ -44,26 +47,27 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
     }
 
     @Override
-    public UserInput getUI() {
-        return userInput;
-    }
-
-    @Override
-    public PrintStream getOutStream() {
-        return outStream;
+    public UserIO getUI() {
+        return userIO;
     }
 
     @Override
     public void start(AdventureState state, String startRoom, Direction direction, EntityService entityService) {
         LOGGER.info("Starting the adventure.");
-        Area startArea = entityService.getAreaByName(startRoom);
-        player.setArea(startArea);
-        startArea.enter(direction, player, this, entityService).stream().forEachOrdered((a) -> outStream.println(a.render()));
-        outStream.println();
+        Area startArea = null;
+        if (startRoom != null) {
+            startArea = entityService.getAreaByName(startRoom);
+            player.setArea(startArea);
+        }
+        if (direction != null && startArea != null) {
+            startArea.enter(direction, player, this, entityService).stream()
+                    .forEachOrdered((a) -> userIO.println(a.render()));
+            userIO.println();
+        }
 
         proceed = true;
-        changeState(state);
-        processState();
+        changeState(state, entityService);
+        processState(entityService);
     }
 
     @Override
@@ -74,24 +78,24 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
     }
 
     @Override
-    public void changeState(AdventureState newState) {
+    public void changeState(AdventureState newState, EntityService entityService) {
         if (currentState != null) {
-            currentState.end();
+            currentState.end(entityService, userIO);
         }
         currentState = newState;
-        currentState.start();
+        currentState.start(entityService, userIO);
     }
 
-    private void processState() {
+    private void processState(EntityService entityService) {
         if (currentState != null) {
             while (proceed) {
                 LOGGER.info(String.format("Start round.  Current ticks [%d]", getCurrentTicks()));
-                currentState.process(entityService);
+                currentState.process(entityService, userIO);
                 endAction();
                 LOGGER.info(
                         String.format("End round.  Ticks + [%d] -> [%d]", getCurrentActionTicks(), getCurrentTicks()));
             }
-            currentState.end();
+            currentState.end(entityService, userIO);
         }
     }
 
@@ -114,5 +118,32 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
     public void endAction() {
         currentTick += actionTicks;
         actionTicks = 0;
+    }
+
+    @Override
+    public void load(AdventureData data) {
+        // TODO - disperse the data... create EntityService, et al.
+
+    }
+
+    @Override
+    public AdventureData save() {
+        AdventureData.AdventureDataBuilder builder = new AdventureData.AdventureDataBuilder();
+        builder.actors(entityService.getActors());
+        builder.actionTicks(actionTicks);
+        builder.areas(entityService.getAreas());
+        builder.attributeManagers(entityService.getAttributeManagers());
+        builder.currentState(currentState);
+        builder.encounters(entityService.getEncounters());
+        builder.currentTick(currentTick);
+        builder.entityKey(entityService.getEntityKey());
+        builder.eventManagers(entityService.getEventManagers());
+        builder.events(entityService.getEvents());
+        builder.entityMap(entityService.getEntityMap());
+        builder.features(entityService.getFeatures());
+        builder.items(entityService.getItems());
+        builder.player(player);
+        // TODO - Create the AdventureData from EntityService, et al and return.
+        return builder.build();
     }
 }

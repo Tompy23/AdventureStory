@@ -30,7 +30,7 @@ public class ActionEncounterImpl extends ActionImpl {
     @Override
     public List<Response> apply(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Starting Encounter [{}]", encounter.getName());
-        adventure.changeState(stateFactory.createEncounterState().encounter(encounter).build());
+        adventure.changeState(stateFactory.createEncounterState().encounter(encounter).build(), entityService);
         List<Response> returnValue = new ArrayList<>();
         returnValue.addAll(responses.stream().
                 map((r) -> responseFactory.createBuilder().source(source).text(substitution(r, entityService)).build())

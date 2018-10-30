@@ -21,13 +21,13 @@ public class CommandTakeFromImpl extends CommandTakeImpl {
     private static final Logger LOGGER = LogManager.getLogger(CommandTakeFromImpl.class);
     private final String item;
 
-    protected CommandTakeFromImpl(CommandType type, EntityService entityService, String item, String target) {
-        super(type != null ? type : CommandType.COMMAND_TAKE_FROM, entityService, target);
+    protected CommandTakeFromImpl(CommandType type, String item, String target) {
+        super(type != null ? type : CommandType.COMMAND_TAKE_FROM, target);
         this.item = Objects.requireNonNull(item, "Item cannot be null.");
     }
 
     @Override
-    public List<Response> execute(Player player, Adventure adventure) {
+    public List<Response> execute(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Executing Command Take From");
         List<Response> returnValue = new ArrayList<>();
 

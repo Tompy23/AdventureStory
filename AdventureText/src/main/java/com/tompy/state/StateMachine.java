@@ -1,5 +1,7 @@
 package com.tompy.state;
 
+import com.tompy.entity.EntityService;
+
 /**
  * State functions
  */
@@ -10,5 +12,5 @@ public interface StateMachine {
      *
      * @param newState
      */
-    void changeState(AdventureState newState);
+    void changeState(AdventureState newState, EntityService entityService);
 }

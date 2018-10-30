@@ -2,7 +2,7 @@ package com.tompy.entity;
 
 import com.tompy.entity.feature.Feature;
 import com.tompy.entity.item.Item;
-import com.tompy.io.UserInput;
+import com.tompy.io.UserIO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,7 +27,7 @@ public class EntityUtil {
      * @param io          - In case the user must supply a response
      * @return - The Item selected.
      */
-    public static Long findEntityByDescription(List<? extends Entity> items, String description, UserInput io) {
+    public static Long findEntityByDescription(List<? extends Entity> items, String description, UserIO io) {
         Map<Long, Integer> scores = computeScores(items, description);
         Long itemKey = null;
         if (!scores.isEmpty()) {
@@ -51,7 +51,7 @@ public class EntityUtil {
      * @param io          - In case the user must supply a response
      * @return - The Item selected.
      */
-    public static Optional<Item> findItemByDescription(List<Item> items, String description, UserInput io) {
+    public static Optional<Item> findItemByDescription(List<Item> items, String description, UserIO io) {
         Long objectKey = EntityUtil.findEntityByDescription(items, description, io);
         return items.stream().filter((i) -> i.getKey().equals(objectKey)).findFirst();
     }
@@ -64,7 +64,7 @@ public class EntityUtil {
      * @return - The Item selected.
      */
     public static Optional<Item> findVisibleItemByDescription(EntityService entityService, List<Item> items,
-            String description, UserInput io) {
+            String description, UserIO io) {
         List<Entity> entities =
                 items.stream().filter((f) -> entityService.is(f, VISIBLE)).collect(Collectors.toList());
         Long objectKey = EntityUtil.findEntityByDescription(entities, description, io);
@@ -77,7 +77,7 @@ public class EntityUtil {
      * @param io          - In case the user must supply a response
      * @return - The Item selected.
      */
-    public static Optional<Feature> findFeatureByDescription(List<Feature> features, String description, UserInput io) {
+    public static Optional<Feature> findFeatureByDescription(List<Feature> features, String description, UserIO io) {
         Long objectKey = EntityUtil.findEntityByDescription(features, description, io);
         return features.stream().filter((i) -> i.getKey().equals(objectKey)).findFirst();
     }
@@ -90,7 +90,7 @@ public class EntityUtil {
      * @return - The Item selected.
      */
     public static Optional<Feature> findVisibleFeatureByDescription(EntityService entityService, List<Feature> features,
-            String description, UserInput io) {
+            String description, UserIO io) {
         List<Entity> entities =
                 features.stream().filter((f) -> entityService.is(f, VISIBLE)).collect(Collectors.toList());
         Long objectKey = EntityUtil.findEntityByDescription(entities, description, io);
@@ -126,7 +126,7 @@ public class EntityUtil {
         return finalists;
     }
 
-    private static Long makeChoice(List<? extends Entity> entities, List<Long> finalists, UserInput io) {
+    private static Long makeChoice(List<? extends Entity> entities, List<Long> finalists, UserIO io) {
         Map<Long, String> choices = new HashMap<>();
         for (Long finalist : finalists) {
             for (Entity entity : entities) {

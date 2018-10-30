@@ -31,7 +31,7 @@ public class EntityServiceTest {
     @Before
     public void init() {
         attributeManagerFactory = new AttributeManagerFactoryImpl();
-        entityService = new EntityServiceImpl(attributeManagerFactory, mockEventManagerFactory);
+        entityService = EntityServiceImpl.createBuilder(attributeManagerFactory, mockEventManagerFactory).build();
     }
 
     @Test

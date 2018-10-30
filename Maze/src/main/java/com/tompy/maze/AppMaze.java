@@ -3,14 +3,15 @@ package com.tompy.maze;
 
 import com.tompy.adventure.Adventure;
 import com.tompy.attribute.AttributeManagerFactoryImpl;
+import com.tompy.command.CommandFactoryImpl;
 import com.tompy.entity.Actor.MoveStrategyFactory;
 import com.tompy.entity.Actor.MoveStrategyFactoryImpl;
 import com.tompy.entity.EntityService;
 import com.tompy.entity.EntityServiceImpl;
 import com.tompy.entity.event.EventManagerFactoryImpl;
 import com.tompy.exit.ExitBuilderFactoryImpl;
-import com.tompy.io.UserInput;
-import com.tompy.io.UserInputTextImpl;
+import com.tompy.io.UserIO;
+import com.tompy.io.UserIOImpl;
 import com.tompy.player.Player;
 import com.tompy.player.PlayerImpl;
 import com.tompy.state.AdventureStateFactory;
@@ -38,14 +39,16 @@ public class AppMaze {
         InputStream inStream = System.in;
         PrintStream outStream = System.out;
         EntityService entityService =
-                new EntityServiceImpl(new AttributeManagerFactoryImpl(), new EventManagerFactoryImpl());
-        UserInput ui = new UserInputTextImpl(inStream, outStream, entityService);
+                EntityServiceImpl.createBuilder(new AttributeManagerFactoryImpl(), new EventManagerFactoryImpl())
+                        .build();
+        UserIO ui = new UserIOImpl();
+        ui.init(inStream, outStream, new CommandFactoryImpl());
         Player player = new PlayerImpl(ui.getResponse("Player name?"), null);
         outStream.println();
-        Adventure adventure = new Maze(player, entityService, new ExitBuilderFactoryImpl(), ui, outStream);
+        Adventure adventure = new Maze(player, entityService, new ExitBuilderFactoryImpl(), ui);
 
         AdventureStateFactory stateFactory =
-                new AdventureStateFactoryImpl(player, adventure, ui, outStream, entityService);
+                new AdventureStateFactoryImpl(player, adventure, entityService);
 
         MoveStrategyFactory moveStrategyFactory = new MoveStrategyFactoryImpl(player, adventure);
 

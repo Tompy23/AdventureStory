@@ -14,8 +14,8 @@ import java.util.List;
 public class CommandQuitImpl extends CommandBasicImpl implements Command {
     private static final Logger LOGGER = LogManager.getLogger(CommandQuitImpl.class);
 
-    private CommandQuitImpl(EntityService entityService) {
-        super(CommandType.COMMAND_QUIT, entityService);
+    private CommandQuitImpl() {
+        super(CommandType.COMMAND_QUIT);
     }
 
     public static CommandBuilderFactory createBuilderFactory() {
@@ -27,7 +27,7 @@ public class CommandQuitImpl extends CommandBasicImpl implements Command {
     }
 
     @Override
-    public List<Response> execute(Player player, Adventure adventure) {
+    public List<Response> execute(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Executing Command Quit");
         List<Response> returnValue = new ArrayList<>();
 
@@ -41,7 +41,7 @@ public class CommandQuitImpl extends CommandBasicImpl implements Command {
     public static final class CommandQuitBuilderImpl extends CommandBuilderImpl {
         @Override
         public Command build() {
-            return new CommandQuitImpl(entityService);
+            return new CommandQuitImpl();
         }
 
         @Override

@@ -14,42 +14,37 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertTrue;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ItemTest {
+@RunWith(MockitoJUnitRunner.class) public class ItemTest {
     public ItemBuilderFactory itemBuilderFactory;
 
-    @Mock
-    private AttributeManagerFactory mockAttributeManagerFactory;
+    @Mock private AttributeManagerFactory mockAttributeManagerFactory;
 
-    @Mock
-    private EventManagerFactory mockEventManagerFactory;
+    @Mock private EventManagerFactory mockEventManagerFactory;
 
     @Before
     public void init() {
-        itemBuilderFactory = new EntityServiceImpl(mockAttributeManagerFactory, mockEventManagerFactory);
+        itemBuilderFactory =
+                EntityServiceImpl.createBuilder(mockAttributeManagerFactory, mockEventManagerFactory).build();
     }
 
     @Test
     public void testName() {
         ItemBuilder builder = itemBuilderFactory.createItemBuilder();
-        Item i = builder.type(ItemType.ITEM_TEST).name("item").description(
-                "An ancient grail").build();
+        Item i = builder.type(ItemType.ITEM_TEST).name("item").description("An ancient grail").build();
         assertTrue(i.getName().equals("item"));
     }
 
     @Test
     public void testDescriptors() {
         ItemBuilder builder = itemBuilderFactory.createItemBuilder();
-        Item i = builder.type(ItemType.ITEM_TEST).name("item").description(
-                "An ancient grail").build();
+        Item i = builder.type(ItemType.ITEM_TEST).name("item").description("An ancient grail").build();
         assertTrue(i.getDescriptionWords().size() == 3);
     }
 
     @Test
     public void getDetailDescription() {
         ItemBuilder builder = itemBuilderFactory.createItemBuilder();
-        Item i = builder.type(ItemType.ITEM_TEST).name("item").description(
-                "An ancient grail").build();
+        Item i = builder.type(ItemType.ITEM_TEST).name("item").description("An ancient grail").build();
         assertTrue(i.getDescription().equals("An ancient grail"));
     }
 }

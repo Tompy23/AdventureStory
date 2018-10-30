@@ -1,15 +1,15 @@
 package com.tompy.command;
 
 import com.tompy.adventure.AdventureUtils;
-import com.tompy.entity.EntityService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-public class CommandFactoryImpl implements CommandFactory {
+public class CommandFactoryImpl implements CommandFactory, Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LogManager.getLogger(CommandFactoryImpl.class);
     private static final String COMMAND_CLOSE = "CLOSE";
     private static final String COMMAND_INVENTORY = "INVENTORY";
@@ -21,11 +21,10 @@ public class CommandFactoryImpl implements CommandFactory {
     private static final String COMMAND_SEARCH = "SEARCH";
     private static final String COMMAND_TAKE = "TAKE";
     private static final String COMMAND_USE = "USE";
-    private final EntityService entityService;
 
     private Map<String, CommandBuilderFactory> factoryMap = new HashMap<>();
 
-    public CommandFactoryImpl(EntityService entityService) {
+    public CommandFactoryImpl() {
         factoryMap.put(COMMAND_CLOSE, CommandCloseImpl.createBuilderFactory());
         factoryMap.put(COMMAND_INVENTORY, CommandInventoryImpl.createBuilderFactory());
         factoryMap.put(COMMAND_MOVE, CommandMoveImpl.createBuilderFactory());
@@ -36,7 +35,6 @@ public class CommandFactoryImpl implements CommandFactory {
         factoryMap.put(COMMAND_SEARCH, CommandSearchImpl.createBuilderFactory());
         factoryMap.put(COMMAND_TAKE, CommandTakeImpl.createBuilderFactory());
         factoryMap.put(COMMAND_USE, CommandUseImpl.createBuilderFactory());
-        this.entityService = Objects.requireNonNull(entityService, "Entity Service cannot be null.");
     }
 
     @Override
@@ -51,13 +49,12 @@ public class CommandFactoryImpl implements CommandFactory {
             if (null != cb) {
                 if (cb != null) {
                     LOGGER.info("Creating Command [{}]", commandInputs[0]);
-                    return cb.parts(commandInputs).entityService(entityService)
-                        .type(AdventureUtils.getCommandType(commandInputs[0])).build();
+                    return cb.parts(commandInputs).type(AdventureUtils.getCommandType(commandInputs[0])).build();
                 }
             }
         }
 
         LOGGER.info("Created Null Command");
-        return factoryMap.get(COMMAND_NULL).createBuilder().entityService(entityService).build();
+        return factoryMap.get(COMMAND_NULL).createBuilder().build();
     }
 }

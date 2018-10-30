@@ -3,7 +3,6 @@ package com.tompy.io;
 import com.tompy.command.CommandFactory;
 import com.tompy.command.CommandFactoryImpl;
 import com.tompy.command.Command;
-import com.tompy.entity.EntityService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,19 +10,19 @@ import java.io.*;
 import java.util.Map;
 import java.util.Objects;
 
-public class UserInputTextImpl implements UserInput, Serializable {
+public class UserIOImpl implements UserIO, Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Logger LOGGER = LogManager.getLogger(UserInputTextImpl.class);
-    private CommandFactory factory;
+    private static final Logger LOGGER = LogManager.getLogger(UserIOImpl.class);
+    private transient CommandFactory factory;
     private transient BufferedReader br = null;
     private transient PrintStream outStream;
     private transient InputStream inStream;
 
-    public UserInputTextImpl(InputStream inStream, PrintStream outStream, EntityService entityService) {
+    public void init(InputStream inStream, PrintStream outStream, CommandFactory commandFactory) {
         this.inStream = Objects.requireNonNull(inStream, "In Stream cannot be null.");
         this.outStream = Objects.requireNonNull(outStream, "Out Stream cannot be null.");
         br = new BufferedReader(new InputStreamReader(inStream));
-        factory = new CommandFactoryImpl(entityService);
+        factory = commandFactory;
     }
 
     @Override
@@ -85,6 +84,21 @@ public class UserInputTextImpl implements UserInput, Serializable {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+    }
+
+    @Override
+    public void print(String text) {
+        outStream.print(text);
+    }
+
+    @Override
+    public void println() {
+        outStream.println();
+    }
+
+    @Override
+    public void println(String text) {
+        outStream.println(text);
     }
 
     private Long[] setUpSelection(Map<Long, String> options) {

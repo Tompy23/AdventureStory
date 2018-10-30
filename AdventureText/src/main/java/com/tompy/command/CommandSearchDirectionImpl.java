@@ -14,17 +14,18 @@ import java.util.List;
 
 public class CommandSearchDirectionImpl extends CommandSearchImpl {
     private static final Logger LOGGER = LogManager.getLogger(CommandSearchDirectionImpl.class);
-    public CommandSearchDirectionImpl(CommandType type, EntityService entityService, String target,
-                                      String secondaryTarget) {
-        super(type, entityService, target, secondaryTarget);
+
+    public CommandSearchDirectionImpl(CommandType type, String target, String secondaryTarget) {
+        super(type, target, secondaryTarget);
     }
 
     @Override
-    public List<Response> execute(Player player, Adventure adventure) {
+    public List<Response> execute(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Executing Search Direction");
         List<Response> returnValue = new ArrayList<>();
 
-        returnValue.addAll(player.getArea().searchDirection(AdventureUtils.getDirection(target), player, adventure, entityService));
+        returnValue.addAll(player.getArea()
+                .searchDirection(AdventureUtils.getDirection(target), player, adventure, entityService));
 
         return returnValue;
     }

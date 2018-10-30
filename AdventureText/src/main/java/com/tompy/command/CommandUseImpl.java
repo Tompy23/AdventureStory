@@ -3,8 +3,8 @@ package com.tompy.command;
 import com.tompy.adventure.Adventure;
 import com.tompy.adventure.AdventureUtils;
 import com.tompy.directive.CommandType;
-import com.tompy.entity.EntityUtil;
 import com.tompy.entity.EntityService;
+import com.tompy.entity.EntityUtil;
 import com.tompy.entity.feature.Feature;
 import com.tompy.entity.item.Item;
 import com.tompy.player.Player;
@@ -19,8 +19,8 @@ public class CommandUseImpl extends CommandBasicImpl implements Command {
     private final String subject;
     private final String target;
 
-    public CommandUseImpl(CommandType type, EntityService entityService, String subject, String target) {
-        super(type, entityService);
+    public CommandUseImpl(CommandType type, String subject, String target) {
+        super(type);
         this.subject = Objects.requireNonNull(subject, "Subject cannot be null.");
         this.target = target;
     }
@@ -34,12 +34,12 @@ public class CommandUseImpl extends CommandBasicImpl implements Command {
     }
 
     @Override
-    public List<Response> execute(Player player, Adventure adventure) {
+    public List<Response> execute(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Executing Command Use. subject: {}; target {}", subject, target);
         Optional<Item> optSource = EntityUtil.findItemByDescription(player.getInventory(), subject, adventure.getUI());
 
         if (target == null) {
-            return subjectOnlyUse(player, adventure, optSource);
+            return subjectOnlyUse(player, adventure, optSource, entityService);
         } else {
             List<Response> returnValue = new ArrayList<>();
             Optional<Feature> optObject = EntityUtil
@@ -71,7 +71,8 @@ public class CommandUseImpl extends CommandBasicImpl implements Command {
         }
     }
 
-    private List<Response> subjectOnlyUse(Player player, Adventure adventure, Optional<Item> optSource) {
+    private List<Response> subjectOnlyUse(Player player, Adventure adventure, Optional<Item> optSource,
+            EntityService entityService) {
         if (optSource.isPresent()) {
             Item source = optSource.get();
             return source.use(player, adventure, entityService);
@@ -87,7 +88,7 @@ public class CommandUseImpl extends CommandBasicImpl implements Command {
 
         @Override
         public Command build() {
-            return new CommandUseImpl(type, entityService, subject, target);
+            return new CommandUseImpl(type, subject, target);
         }
 
         @Override

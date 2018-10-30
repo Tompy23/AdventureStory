@@ -14,8 +14,8 @@ import java.util.List;
 public class CommandInventoryImpl extends CommandBasicImpl implements Command {
     private static final Logger LOGGER = LogManager.getLogger(CommandInventoryImpl.class);
 
-    private CommandInventoryImpl(CommandType type, EntityService entityService) {
-        super(type, entityService);
+    private CommandInventoryImpl(CommandType type) {
+        super(type);
     }
 
     public static CommandBuilderFactory createBuilderFactory() {
@@ -27,7 +27,7 @@ public class CommandInventoryImpl extends CommandBasicImpl implements Command {
     }
 
     @Override
-    public List<Response> execute(Player player, Adventure adventure) {
+    public List<Response> execute(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Executing Command Inventory");
         List<Response> returnValue = new ArrayList<>();
 
@@ -52,7 +52,7 @@ public class CommandInventoryImpl extends CommandBasicImpl implements Command {
 
         @Override
         public Command build() {
-            return new CommandInventoryImpl(type, entityService);
+            return new CommandInventoryImpl(type);
         }
     }
 }

@@ -51,14 +51,14 @@ public class EncounterMerchantImpl extends EncounterImpl implements MerchantStat
         // Call the encounter's "list options", returns Map<Long, String>
         Map<Long, String> options = currentState.getOptions(entityService);
 
-        // Call UserInput Make choice, returns Long
+        // Call UserIO Make choice, returns Long
         Long option = adventure.getUI().getSelection(options);
 
         // Call the encounter and pass the Long selected, returns List<Response>
         List<Response> responses = currentState.act(option, entityService);
 
         // Render the list of responses to outStream
-        responses.stream().forEachOrdered((r) -> adventure.getOutStream().println(r.render()));
+        responses.stream().forEachOrdered((r) -> adventure.getUI().println(r.render()));
     }
 
     @Override

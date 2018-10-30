@@ -23,12 +23,4 @@ public interface CommandBuilder extends Builder<Command> {
      * @return
      */
     CommandBuilder type(CommandType type);
-
-    /**
-     * The EntityService for use by the command
-     *
-     * @param entityService
-     * @return
-     */
-    CommandBuilder entityService(EntityService entityService);
 }

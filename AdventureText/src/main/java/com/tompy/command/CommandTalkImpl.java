@@ -14,8 +14,8 @@ import static com.tompy.directive.CommandType.COMMAND_TALK;
 public class CommandTalkImpl extends CommandBasicImpl implements Command {
     private final String target;
 
-    protected CommandTalkImpl(CommandType type, String target, EntityService entityService) {
-        super(type, entityService);
+    protected CommandTalkImpl(CommandType type, String target) {
+        super(type);
         this.target = Objects.requireNonNull(target, "Target cannot be null.");
     }
 
@@ -28,7 +28,7 @@ public class CommandTalkImpl extends CommandBasicImpl implements Command {
     }
 
     @Override
-    public List<Response> execute(Player player, Adventure adventure) {
+    public List<Response> execute(Player player, Adventure adventure, EntityService entityService) {
         //TODO Starts an encounter with the target
         // This is done by firing an "Encounter" type action event
         // The event will then change the state appropriately and handle any other setup
@@ -45,7 +45,7 @@ public class CommandTalkImpl extends CommandBasicImpl implements Command {
 
         @Override
         public Command build() {
-            return new CommandTalkImpl(COMMAND_TALK, target, entityService);
+            return new CommandTalkImpl(COMMAND_TALK, target);
         }
     }
 }

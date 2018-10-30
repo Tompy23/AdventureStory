@@ -12,7 +12,7 @@ import com.tompy.entity.feature.Feature;
 import com.tompy.entity.item.Item;
 import com.tompy.exit.Exit;
 import com.tompy.exit.ExitBuilderFactory;
-import com.tompy.io.UserInput;
+import com.tompy.io.UserIO;
 import com.tompy.player.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,9 +35,11 @@ import static com.tompy.directive.TriggerType.*;
 public class Introduction extends AdventureImpl implements Adventure {
     private static final Logger LOGGER = LogManager.getLogger(Introduction.class);
 
+    public Introduction() {}
+
     public Introduction(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
-            UserInput userInput, PrintStream outStream) {
-        super(player, entityService, exitBuilderFactory, userInput, outStream);
+            UserIO userInput) {
+        super(player, entityService, exitBuilderFactory, userInput);
     }
 
     @Override

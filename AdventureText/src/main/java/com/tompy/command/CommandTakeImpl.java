@@ -21,8 +21,8 @@ public class CommandTakeImpl extends CommandBasicImpl implements Command {
     private static final Logger LOGGER = LogManager.getLogger(CommandTakeImpl.class);
     protected final String target;
 
-    protected CommandTakeImpl(CommandType type, EntityService entityService, String target) {
-        super(type != null ? type : COMMAND_TAKE, entityService);
+    protected CommandTakeImpl(CommandType type, String target) {
+        super(type != null ? type : COMMAND_TAKE);
         this.target = Objects.requireNonNull(target, "Target cannot be null.");
     }
 
@@ -35,7 +35,7 @@ public class CommandTakeImpl extends CommandBasicImpl implements Command {
     }
 
     @Override
-    public List<Response> execute(Player player, Adventure adventure) {
+    public List<Response> execute(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Executing Command Take");
         List<Response> returnValue = new ArrayList<>();
 
@@ -71,9 +71,9 @@ public class CommandTakeImpl extends CommandBasicImpl implements Command {
         public Command build() {
             switch (type) {
                 case COMMAND_TAKE_FROM:
-                    return new CommandTakeFromImpl(type, entityService, item, target);
+                    return new CommandTakeFromImpl(type, item, target);
                 default:
-                    return new CommandTakeImpl(type, entityService, target);
+                    return new CommandTakeImpl(type, target);
             }
         }
 

@@ -14,12 +14,12 @@ import java.util.List;
 public class CommandSearchOnImpl extends CommandSearchImpl {
     private static final Logger LOGGER = LogManager.getLogger(CommandSearchOnImpl.class);
 
-    public CommandSearchOnImpl(CommandType type, EntityService entityService, String target, String secondaryTarget) {
-        super(type, entityService, target, secondaryTarget);
+    public CommandSearchOnImpl(CommandType type, String target, String secondaryTarget) {
+        super(type, target, secondaryTarget);
     }
 
     @Override
-    public List<Response> execute(Player player, Adventure adventure) {
+    public List<Response> execute(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Executing Search On");
         List<Response> returnValue = new ArrayList<>();
 

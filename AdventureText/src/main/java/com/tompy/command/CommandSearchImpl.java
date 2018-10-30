@@ -19,8 +19,8 @@ public class CommandSearchImpl extends CommandBasicImpl implements Command {
     protected String target;
     protected String secondaryTarget;
 
-    protected CommandSearchImpl(CommandType type, EntityService entityService, String target, String secondaryTarget) {
-        super(type, entityService);
+    protected CommandSearchImpl(CommandType type, String target, String secondaryTarget) {
+        super(type);
         this.target = target;
         this.secondaryTarget = secondaryTarget;
     }
@@ -34,7 +34,7 @@ public class CommandSearchImpl extends CommandBasicImpl implements Command {
     }
 
     @Override
-    public List<Response> execute(Player player, Adventure adventure) {
+    public List<Response> execute(Player player, Adventure adventure, EntityService entityService) {
         LOGGER.info("Executing Search");
         List<Response> returnValue = new ArrayList<>();
 
@@ -51,15 +51,15 @@ public class CommandSearchImpl extends CommandBasicImpl implements Command {
         public Command build() {
             switch (type) {
                 case COMMAND_SEARCH_DIRECTION:
-                    return new CommandSearchDirectionImpl(type, entityService, target, secondaryTarget);
+                    return new CommandSearchDirectionImpl(type, target, secondaryTarget);
                 case COMMAND_SEARCH_IN:
-                    return new CommandSearchInImpl(type, entityService, target, secondaryTarget);
+                    return new CommandSearchInImpl(type, target, secondaryTarget);
                 case COMMAND_SEARCH_ON:
-                    return new CommandSearchOnImpl(type, entityService, target, secondaryTarget);
+                    return new CommandSearchOnImpl(type, target, secondaryTarget);
                 case COMMAND_SEARCH_FEATURE:
-                    return new CommandSearchFeatureImpl(type, entityService, target, secondaryTarget);
+                    return new CommandSearchFeatureImpl(type, target, secondaryTarget);
                 default:
-                    return new CommandSearchImpl(type, entityService, target, secondaryTarget);
+                    return new CommandSearchImpl(type, target, secondaryTarget);
             }
         }
 

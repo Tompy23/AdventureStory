@@ -2,6 +2,7 @@ package com.tompy.command;
 
 import com.tompy.adventure.Adventure;
 import com.tompy.directive.CommandType;
+import com.tompy.entity.EntityService;
 import com.tompy.player.Player;
 import com.tompy.response.Response;
 
@@ -26,5 +27,5 @@ public interface Command {
      * @param adventure - The {@link Adventure} information available to this command
      * @return - A list of {@link Response}
      */
-    List<Response> execute(Player player, Adventure adventure);
+    List<Response> execute(Player player, Adventure adventure, EntityService entityService);
 }
