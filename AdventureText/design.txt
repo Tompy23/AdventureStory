@@ -35,7 +35,14 @@ Future versions...
 
 1.2 - Add more.  More commands.  More Actor behavior.  More "things".  Create a reasonably sized story to play.
 
-1.3+ - No plans at this time.  Possible technical updates and bug fixes.  No new stories.  Maybe more things.
+1.3 - Add Maps.  Simple command "map", which then shows an ASCII art map.  Each "Area" can be assigned a different map object
+        For example, when in an overland area, an overland map is shown, when in a town area, a map of the town, etc.
+        Also, the maps could be altered (basically a new set of map messages) based on outcomes, assigning a new "map"
+            to the named map object.  I guess a "MapManager", and each area is given a map id, and that id doesn't change
+            but the underlying map in the map manager does.
+      Release a Story (<-goal)
+
+1.4+ - No plans at this time.  Possible technical updates and bug fixes.  No new stories.  Maybe more things.
 
 2.0 - Game elements!  There is no design work completed at this time.  This is merely an idea.
 
