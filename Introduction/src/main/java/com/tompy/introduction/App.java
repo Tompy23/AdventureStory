@@ -4,6 +4,7 @@ package com.tompy.introduction;
 import com.tompy.adventure.Adventure;
 import com.tompy.attribute.AttributeManagerFactoryImpl;
 import com.tompy.command.CommandFactoryImpl;
+import com.tompy.directive.Direction;
 import com.tompy.entity.EntityService;
 import com.tompy.entity.EntityServiceImpl;
 import com.tompy.entity.event.EventManagerFactoryImpl;
@@ -13,6 +14,7 @@ import com.tompy.io.UserIOImpl;
 import com.tompy.persistence.AdventureData;
 import com.tompy.player.Player;
 import com.tompy.player.PlayerImpl;
+import com.tompy.state.AdventureState;
 import com.tompy.state.AdventureStateFactory;
 import com.tompy.state.AdventureStateFactoryImpl;
 import org.apache.logging.log4j.LogManager;
@@ -48,6 +50,9 @@ public class App {
         AdventureStateFactory stateFactory;
         Adventure adventure;
         Player player;
+        AdventureState adventureState;
+        String startRoom;
+        Direction entryDirection;
         if (!filename.isEmpty()) {
             filename = filename + ".adv";
             try {
@@ -64,11 +69,14 @@ public class App {
 
                 player = adventureData.getPlayer();
                 adventure = new Introduction(player, entityService, new ExitBuilderFactoryImpl(), ui);
-
                 stateFactory = new AdventureStateFactoryImpl(player, adventure, entityService);
                 ui.init(System.in, System.out, new CommandFactoryImpl());
                 ois.close();
                 fis.close();
+
+                startRoom = player.getArea().getName();
+                adventureState = stateFactory.getExploreState();
+                entryDirection = null;
             } catch (IOException ioe) {
                 ioe.printStackTrace();
                 return 6;
@@ -89,6 +97,10 @@ public class App {
             stateFactory = new AdventureStateFactoryImpl(player, adventure, entityService);
 
             adventure.create();
+
+            startRoom = "StartRoom";
+            adventureState = stateFactory.getExploreState();
+            entryDirection = DIRECTION_SOUTH;
         }
 
         LOGGER.info("Player [{}] enters the adventure", player.getName());
@@ -98,7 +110,7 @@ public class App {
         ui.println();
 
 
-        adventure.start(stateFactory.getExploreState(), "StartRoom", DIRECTION_SOUTH, entityService);
+        adventure.start(adventureState, startRoom, entryDirection, entityService);
 
         ui.println(String.format("%s has left the adventure.", player.getName()));
 

@@ -175,7 +175,7 @@ public class AdventureUtils {
             case DIRECTION_WEST:
                 return EVENT_AREA_ENTER_WEST;
             default:
-                return null;
+                return EVENT_AREA_ENTER;
         }
     }
 

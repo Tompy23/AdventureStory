@@ -8,8 +8,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandFactoryImpl implements CommandFactory, Serializable {
-    private static final long serialVersionUID = 1L;
+public class CommandFactoryImpl implements CommandFactory{
     private static final Logger LOGGER = LogManager.getLogger(CommandFactoryImpl.class);
     private static final String COMMAND_CLOSE = "CLOSE";
     private static final String COMMAND_INVENTORY = "INVENTORY";

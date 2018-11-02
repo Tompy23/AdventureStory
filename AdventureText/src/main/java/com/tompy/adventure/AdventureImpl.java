@@ -17,8 +17,7 @@ import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class AdventureImpl extends AdventureHelper implements Adventure, Serializable {
-    private static final long serialVersionUID = 1L;
+public abstract class AdventureImpl extends AdventureHelper implements Adventure {
     private static final Logger LOGGER = LogManager.getLogger(AdventureImpl.class);
     private final UserIO userIO;
     private boolean proceed;
