@@ -15,7 +15,6 @@ public class MoveStrategyFactoryImpl implements MoveStrategyFactory {
     public MoveStrategyFactoryImpl(Player player, Adventure adventure) {
         this.player = Objects.requireNonNull(player, "Player cannot be null.");
         this.adventure = Objects.requireNonNull(adventure, "Adventure cannot be null.");
-        adventure.setMoveStrategyFactory(this);
     }
 
     @Override

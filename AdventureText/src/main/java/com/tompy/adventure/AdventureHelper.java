@@ -5,6 +5,7 @@ import com.tompy.common.Coordinates;
 import com.tompy.directive.*;
 import com.tompy.entity.Actor.Actor;
 import com.tompy.entity.Actor.MoveStrategyFactory;
+import com.tompy.entity.Actor.MoveStrategyFactoryImpl;
 import com.tompy.entity.Entity;
 import com.tompy.entity.EntityService;
 import com.tompy.entity.area.Area;
@@ -45,6 +46,7 @@ public abstract class AdventureHelper {
         player = null;
         entityService = null;
         exitBuilderFactory = null;
+        moveStrategyFactory = null;
         messages = null;
     }
 
@@ -57,6 +59,7 @@ public abstract class AdventureHelper {
 
     protected void setThisAdventure(Adventure adventure) {
         this.thisAdventure = Objects.requireNonNull(adventure, "This Adventure cannot be null.");
+        this.moveStrategyFactory = new MoveStrategyFactoryImpl(player, adventure);
     }
 
 
@@ -156,7 +159,6 @@ public abstract class AdventureHelper {
     }
 
     /**
-     *
      * @param entity
      * @param type
      * @param responses

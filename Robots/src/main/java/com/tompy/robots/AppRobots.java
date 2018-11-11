@@ -1,9 +1,9 @@
-package com.tompy.maze;
-
+package com.tompy.robots;
 
 import com.tompy.adventure.Adventure;
 import com.tompy.attribute.AttributeManagerFactoryImpl;
 import com.tompy.command.CommandFactoryImpl;
+import com.tompy.entity.Actor.MoveStrategyFactory;
 import com.tompy.entity.Actor.MoveStrategyFactoryImpl;
 import com.tompy.entity.EntityService;
 import com.tompy.entity.EntityServiceImpl;
@@ -23,14 +23,12 @@ import java.io.PrintStream;
 
 import static com.tompy.directive.Direction.DIRECTION_NORTH;
 
-/**
- * Hello world!
- */
-public class AppMaze {
-    private final static Logger LOGGER = LogManager.getLogger(AppMaze.class);
+public class AppRobots {
+
+    private final static Logger LOGGER = LogManager.getLogger(AppRobots.class);
 
     public static void main(String[] args) {
-        AppMaze a = new AppMaze();
+        AppRobots a = new AppRobots();
         System.exit(a.go(args));
     }
 
@@ -44,10 +42,11 @@ public class AppMaze {
         ui.init(inStream, outStream, new CommandFactoryImpl());
         Player player = new PlayerImpl(ui.getResponse("Player name?"), null);
         outStream.println();
-        Adventure adventure =
-                new Maze(player, entityService, new ExitBuilderFactoryImpl(), ui);
+        Adventure adventure = new Robots(player, entityService, new ExitBuilderFactoryImpl(), ui);
 
         AdventureStateFactory stateFactory = new AdventureStateFactoryImpl(player, adventure, entityService);
+
+        MoveStrategyFactory moveStrategyFactory = new MoveStrategyFactoryImpl(player, adventure);
 
         LOGGER.info("Player [{}] enters the adventure", player.getName());
 

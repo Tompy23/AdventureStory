@@ -19,6 +19,7 @@ public class CommandFactoryImpl implements CommandFactory{
     private static final String COMMAND_RUN = "RUN";
     private static final String COMMAND_SEARCH = "SEARCH";
     private static final String COMMAND_TAKE = "TAKE";
+    private static final String COMMAND_TALK = "TALK";
     private static final String COMMAND_USE = "USE";
 
     private Map<String, CommandBuilderFactory> factoryMap = new HashMap<>();
@@ -33,6 +34,7 @@ public class CommandFactoryImpl implements CommandFactory{
         factoryMap.put(COMMAND_RUN, CommandMoveImpl.createBuilderFactory());
         factoryMap.put(COMMAND_SEARCH, CommandSearchImpl.createBuilderFactory());
         factoryMap.put(COMMAND_TAKE, CommandTakeImpl.createBuilderFactory());
+        factoryMap.put(COMMAND_TALK, CommandTalkImpl.createBuilderFactory());
         factoryMap.put(COMMAND_USE, CommandUseImpl.createBuilderFactory());
     }
 

@@ -15,7 +15,6 @@ import com.tompy.player.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.PrintStream;
 import java.util.Random;
 
 import static com.tompy.directive.ActionType.ACTION_ACTOR_MOVE;
@@ -30,7 +29,8 @@ public class Maze extends AdventureImpl implements Adventure {
     private static final int size = 4;
     private static final double exitFactor = 1.0;
 
-    public Maze() {}
+    public Maze() {
+    }
 
     public Maze(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory, UserIO io) {
         super(player, entityService, exitBuilderFactory, io);

@@ -1,5 +1,6 @@
 package com.tompy.entity;
 
+import com.tompy.entity.Actor.Actor;
 import com.tompy.entity.feature.Feature;
 import com.tompy.entity.item.Item;
 import com.tompy.io.UserIO;
@@ -27,8 +28,10 @@ public class EntityUtil {
      * @param io          - In case the user must supply a response
      * @return - The Item selected.
      */
-    public static Long findEntityByDescription(List<? extends Entity> items, String description, UserIO io) {
-        Map<Long, Integer> scores = computeScores(items, description);
+    private static Long findEntityByDescription(List<? extends Entity> items, String description, UserIO io,
+            SearchData.ScoreComputer scoreComputer) {
+        SearchData data = new SearchData(items, description);
+        Map<Long, Integer> scores = scoreComputer.compute(data);
         Long itemKey = null;
         if (!scores.isEmpty()) {
             List<Long> finalists = computeFinalists(scores);
@@ -52,7 +55,8 @@ public class EntityUtil {
      * @return - The Item selected.
      */
     public static Optional<Item> findItemByDescription(List<Item> items, String description, UserIO io) {
-        Long objectKey = EntityUtil.findEntityByDescription(items, description, io);
+        Long objectKey =
+                EntityUtil.findEntityByDescription(items, description, io, EntityUtil::computeScoresByDescription);
         return items.stream().filter((i) -> i.getKey().equals(objectKey)).findFirst();
     }
 
@@ -65,10 +69,10 @@ public class EntityUtil {
      */
     public static Optional<Item> findVisibleItemByDescription(EntityService entityService, List<Item> items,
             String description, UserIO io) {
-        List<Entity> entities =
-                items.stream().filter((f) -> entityService.is(f, VISIBLE)).collect(Collectors.toList());
-        Long objectKey = EntityUtil.findEntityByDescription(entities, description, io);
-        return items.stream().filter((i) -> i.getKey().equals(objectKey) ).findFirst();
+        List<Entity> entities = items.stream().filter((f) -> entityService.is(f, VISIBLE)).collect(Collectors.toList());
+        Long objectKey =
+                EntityUtil.findEntityByDescription(entities, description, io, EntityUtil::computeScoresByDescription);
+        return items.stream().filter((i) -> i.getKey().equals(objectKey)).findFirst();
     }
 
     /**
@@ -78,7 +82,8 @@ public class EntityUtil {
      * @return - The Item selected.
      */
     public static Optional<Feature> findFeatureByDescription(List<Feature> features, String description, UserIO io) {
-        Long objectKey = EntityUtil.findEntityByDescription(features, description, io);
+        Long objectKey =
+                EntityUtil.findEntityByDescription(features, description, io, EntityUtil::computeScoresByDescription);
         return features.stream().filter((i) -> i.getKey().equals(objectKey)).findFirst();
     }
 
@@ -93,19 +98,58 @@ public class EntityUtil {
             String description, UserIO io) {
         List<Entity> entities =
                 features.stream().filter((f) -> entityService.is(f, VISIBLE)).collect(Collectors.toList());
-        Long objectKey = EntityUtil.findEntityByDescription(entities, description, io);
+        Long objectKey =
+                EntityUtil.findEntityByDescription(entities, description, io, EntityUtil::computeScoresByDescription);
         return features.stream().filter((f) -> f.getKey().equals(objectKey)).findFirst();
     }
 
-    private static Map<Long, Integer> computeScores(List<? extends Entity> items, String description) {
+    /**
+     * @param entityService - The entity service where the managers are located.
+     * @param actors        - The list of features from which to choose
+     * @param description   - The description supplied by the user.
+     * @param io            - In case the user must supply a response
+     * @return - The Item selected.
+     */
+    public static Optional<Actor> findVisibleActorByDescription(EntityService entityService, List<Actor> actors,
+            String description, UserIO io) {
+        List<Entity> entities =
+                actors.stream().filter((a) -> entityService.is(a, VISIBLE)).collect(Collectors.toList());
+        Long tmpObjectKey =
+                EntityUtil.findEntityByDescription(entities, description, io, EntityUtil::computeScoresByDescription);
+        if (tmpObjectKey == null) {
+            tmpObjectKey =
+                    EntityUtil.findEntityByDescription(entities, description, io, EntityUtil::computeScoresByName);
+        }
+        Long objectKey = tmpObjectKey;
+        return actors.stream().filter((a) -> a.getKey().equals(objectKey)).findFirst();
+    }
+
+    private static Map<Long, Integer> computeScoresByDescription(SearchData data) {
         Map<Long, Integer> scores = new HashMap<>();
-        items.stream().forEach(e -> scores.put(e.getKey(), 0));
-        for (Entity entity : items) {
-            for (String word : entity.getDescriptionWords()) {
-                for (String d : description.split(Pattern.quote(" "))) {
-                    if (d.toUpperCase().contains(word.toUpperCase())) {
-                        scores.put(entity.getKey(), scores.get(entity.getKey()) + 1);
-                    }
+        data.getItems().stream().forEach(e -> scores.put(e.getKey(), 0));
+        for (Entity entity : data.getItems()) {
+            computeScores(scores, data, entity, entity.getDescriptionWords().toArray(new String[0]));
+        }
+
+        return scores;
+    }
+
+    private static Map<Long, Integer> computeScoresByName(SearchData data) {
+        Map<Long, Integer> scores = new HashMap<>();
+        data.getItems().stream().forEach(e -> scores.put(e.getKey(), 0));
+        for (Entity entity : data.getItems()) {
+            computeScores(scores, data, entity, entity.getName().split(" "));
+        }
+
+        return scores;
+    }
+
+    private static Map<Long, Integer> computeScores(Map<Long, Integer> scores, SearchData data, Entity entity,
+            String... words) {
+        for (String word : words) {
+            for (String d : data.getDescription().split(Pattern.quote(" "))) {
+                if (d.toUpperCase().contains(word.toUpperCase())) {
+                    scores.put(entity.getKey(), scores.get(entity.getKey()) + 1);
                 }
             }
         }

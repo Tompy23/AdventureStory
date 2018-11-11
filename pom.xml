@@ -14,5 +14,6 @@
         <module>AdventureText</module>
         <module>Introduction</module>
         <module>Maze</module>
+        <module>Robots</module>
     </modules>
 </project>

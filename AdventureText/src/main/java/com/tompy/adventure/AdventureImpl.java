@@ -2,6 +2,7 @@ package com.tompy.adventure;
 
 import com.tompy.directive.Direction;
 import com.tompy.entity.Actor.MoveStrategyFactory;
+import com.tompy.entity.Actor.MoveStrategyFactoryImpl;
 import com.tompy.entity.EntityService;
 import com.tompy.entity.area.Area;
 import com.tompy.exit.ExitBuilderFactory;
@@ -13,8 +14,6 @@ import com.tompy.state.AdventureStateFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.PrintStream;
-import java.io.Serializable;
 import java.util.Objects;
 
 public abstract class AdventureImpl extends AdventureHelper implements Adventure {
