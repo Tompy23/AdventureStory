@@ -48,3 +48,9 @@ Future versions...
 
 The idea is that I can continue to develop more for version 1.x while I start on version. 2.x.  I really feel that 1.x will be a viable story game in and of itself.
 
+***2018-11-11***
+Getting ready for version 1.1.  Looks like I might add 1.1 and 1.2 into 1.1.  Maps are cool.  Story idea is ready.
+ToDo:
+1. Persistance refactor
+2. Start the Robot story
+3. Create an InputStream that pulls commands out of a generator for testing
