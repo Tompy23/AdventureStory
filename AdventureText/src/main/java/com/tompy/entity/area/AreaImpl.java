@@ -11,6 +11,7 @@ import com.tompy.entity.compartment.CompartmentBuilderHelperImpl;
 import com.tompy.entity.compartment.CompartmentImpl;
 import com.tompy.entity.feature.Feature;
 import com.tompy.exit.Exit;
+import com.tompy.map.AdventureMap;
 import com.tompy.player.Player;
 import com.tompy.response.Response;
 import org.apache.logging.log4j.LogManager;
@@ -30,6 +31,7 @@ public class AreaImpl extends CompartmentImpl implements Area {
     protected List<Actor> actors = new ArrayList<>();
     protected int searchTicks;
     protected Coordinates coordinates;
+    protected AdventureMap map;
 
     protected AreaImpl(Long key, String name, List<String> descriptors, String description, String searchDescription,
             int searchTicks, Coordinates coordinates) {
@@ -171,6 +173,11 @@ public class AreaImpl extends CompartmentImpl implements Area {
         }
 
         return returnValue;
+    }
+
+    @Override
+    public List<Response> showMap(Player player, Adventure adventure, EntityService entityService) {
+        return map.display();
     }
 
     @Override

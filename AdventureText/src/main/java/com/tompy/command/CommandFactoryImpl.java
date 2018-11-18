@@ -12,6 +12,7 @@ public class CommandFactoryImpl implements CommandFactory{
     private static final Logger LOGGER = LogManager.getLogger(CommandFactoryImpl.class);
     private static final String COMMAND_CLOSE = "CLOSE";
     private static final String COMMAND_INVENTORY = "INVENTORY";
+    private static final String COMMAND_MAP = "MAP";
     private static final String COMMAND_MOVE = "MOVE";
     private static final String COMMAND_NULL = "NULL";
     private static final String COMMAND_OPEN = "OPEN";
@@ -27,6 +28,7 @@ public class CommandFactoryImpl implements CommandFactory{
     public CommandFactoryImpl() {
         factoryMap.put(COMMAND_CLOSE, CommandCloseImpl.createBuilderFactory());
         factoryMap.put(COMMAND_INVENTORY, CommandInventoryImpl.createBuilderFactory());
+        factoryMap.put(COMMAND_MAP, CommandMapImpl.createBuilderFactory());
         factoryMap.put(COMMAND_MOVE, CommandMoveImpl.createBuilderFactory());
         factoryMap.put(COMMAND_NULL, CommandNullImpl.createBuilderFactory());
         factoryMap.put(COMMAND_OPEN, CommandOpenImpl.createBuilderFactory());
