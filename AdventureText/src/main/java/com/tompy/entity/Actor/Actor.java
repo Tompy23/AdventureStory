@@ -30,4 +30,14 @@ public interface Actor extends Compartment {
      * @param area
      */
     void setArea(Area area);
+
+    /**
+     * Talk to an actor
+     *
+     * @param player
+     * @param adventure
+     * @param entityService
+     * @return
+     */
+    List<Response> talk(Player player, Adventure adventure, EntityService entityService);
 }

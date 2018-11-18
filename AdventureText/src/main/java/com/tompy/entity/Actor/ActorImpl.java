@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import static com.tompy.attribute.Attribute.VISIBLE;
 import static com.tompy.directive.EventType.EVENT_ACTOR_PROGRAM;
+import static com.tompy.directive.EventType.EVENT_ACTOR_TALK;
 
 public class ActorImpl extends CompartmentImpl implements Actor {
     private static final Logger LOGGER = LogManager.getLogger(ActorImpl.class);
@@ -83,6 +84,15 @@ public class ActorImpl extends CompartmentImpl implements Actor {
                 return Collections.singletonList(responseFactory.createBuilder().source(name).text("").build());
             }
         }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<Response> talk(Player player, Adventure adventure, EntityService entityService) {
+        if (getArea().equals(player.getArea())) {
+            return entityService.handle(this, EVENT_ACTOR_TALK, player, adventure);
+        }
+
         return Collections.emptyList();
     }
 

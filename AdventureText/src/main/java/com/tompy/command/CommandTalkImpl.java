@@ -46,7 +46,12 @@ public class CommandTalkImpl extends CommandBasicImpl implements Command {
                 .findVisibleActorByDescription(entityService, player.getArea().getAllActors(), target,
                         adventure.getUI());
 
-        return null;
+        if (optObject.isPresent()) {
+            Actor actor = optObject.get();
+            returnValue.addAll(actor.talk(player, adventure, entityService));
+        }
+
+        return returnValue;
     }
 
     public static final class CommandTalkBuilderImpl extends CommandBuilderImpl {
