@@ -4,6 +4,7 @@ import com.tompy.attribute.Attribute;
 import com.tompy.directive.CommandType;
 import com.tompy.directive.Direction;
 import com.tompy.directive.EventType;
+import com.tompy.map.AdventureMap;
 import com.tompy.messages.MessageHandler;
 
 import java.util.HashMap;
@@ -22,6 +23,7 @@ public class AdventureUtils {
     private static Map<String, Direction> directionMap = new HashMap<>();
     private static Map<String, CommandType> commandTypeMap = new HashMap<>();
     private static Map<String, Attribute> attributeMap = new HashMap<>();
+    private static Map<String, AdventureMap> adventureMapMap = new HashMap<>();
     private static Random r = new Random();
 
     static {
@@ -218,6 +220,13 @@ public class AdventureUtils {
         return returnValue;
     }
 
+    /**
+     * Retrieve a premade map from resources
+     *
+     * @param name - key of the resource
+     * @param messages - Message handler containing the resource
+     * @return - char[] containing the map data
+     */
     public static char[] getMap(String name, MessageHandler messages) {
         StringBuilder sb = new StringBuilder();
         String property;
@@ -230,5 +239,13 @@ public class AdventureUtils {
         } while (property != null);
 
         return sb.toString().toCharArray();
+    }
+
+    public static void addMap(String key, AdventureMap map) {
+        adventureMapMap.put(key, map);
+    }
+
+    public static AdventureMap getMap(String key) {
+        return adventureMapMap.get(key);
     }
 }
