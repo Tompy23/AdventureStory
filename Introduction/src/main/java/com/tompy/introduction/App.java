@@ -11,6 +11,7 @@ import com.tompy.entity.event.EventManagerFactoryImpl;
 import com.tompy.exit.ExitBuilderFactoryImpl;
 import com.tompy.io.UserIO;
 import com.tompy.io.UserIOImpl;
+import com.tompy.map.AdventureMapBuilderFactoryImpl;
 import com.tompy.persistence.AdventureData;
 import com.tompy.player.Player;
 import com.tompy.player.PlayerImpl;
@@ -68,7 +69,8 @@ public class App {
                                 .features(adventureData.getFeatures()).items(adventureData.getItems()).build();
 
                 player = adventureData.getPlayer();
-                adventure = new Introduction(player, entityService, new ExitBuilderFactoryImpl(), ui);
+                adventure = new Introduction(player, entityService, new ExitBuilderFactoryImpl(),
+                        new AdventureMapBuilderFactoryImpl(), ui);
                 stateFactory = new AdventureStateFactoryImpl(player, adventure, entityService);
                 ui.init(System.in, System.out, new CommandFactoryImpl());
                 ois.close();
@@ -92,7 +94,8 @@ public class App {
             player = new PlayerImpl(ui.getResponse("Player name?"), null);
             ui.println();
 
-            adventure = new Introduction(player, entityService, new ExitBuilderFactoryImpl(), ui);
+            adventure = new Introduction(player, entityService, new ExitBuilderFactoryImpl(),
+                    new AdventureMapBuilderFactoryImpl(), ui);
 
             stateFactory = new AdventureStateFactoryImpl(player, adventure, entityService);
 

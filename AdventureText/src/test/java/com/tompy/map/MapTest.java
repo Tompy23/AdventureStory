@@ -1,7 +1,8 @@
 package com.tompy.map;
 
-import com.tompy.adventure.Adventure;
+import com.tompy.adventure.AdventureUtils;
 import com.tompy.common.Coordinates2DImpl;
+import com.tompy.messages.MessageHandler;
 import com.tompy.response.Response;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,7 +23,7 @@ import java.util.List;
     @Test
     public void testAddLegend() {
         AdventureMap advMap = builder.height(3).width(3).build();
-        advMap.addLegend('X', "marks the spot");
+        advMap.addLegendExt('X', "marks the spot");
 
         String[] tests = prepareTests(advMap);
 
@@ -96,7 +97,22 @@ import java.util.List;
         Assert.assertTrue(tests2[5].equals("......."));
         Assert.assertTrue(tests2[6].equals("......."));
         Assert.assertTrue(tests2[7].equals(". -> Clear"));
-        Assert.assertTrue(tests2[8].equals("X -> a mess"));    }
+        Assert.assertTrue(tests2[8].equals("X -> a mess"));
+    }
+
+    @Test
+    public void testMapCreate() {
+        MessageHandler messages = new MessageHandler("message.properties");
+
+        AdventureMap advMap = builder.height(4).width(6).map(AdventureUtils.getMap("map", messages)).build();
+
+        String[] tests = prepareTests(advMap);
+
+        Assert.assertTrue(tests[0].equals("......"));
+        Assert.assertTrue(tests[1].equals("......"));
+        Assert.assertTrue(tests[2].equals(".ABC.."));
+        Assert.assertTrue(tests[3].equals("......"));
+    }
 
     private String[] prepareTests(AdventureMap advMap) {
         List<Response> responses = advMap.display();

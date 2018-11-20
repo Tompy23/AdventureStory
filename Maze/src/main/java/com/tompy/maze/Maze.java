@@ -11,6 +11,7 @@ import com.tompy.entity.event.Event;
 import com.tompy.exit.Exit;
 import com.tompy.exit.ExitBuilderFactory;
 import com.tompy.io.UserIO;
+import com.tompy.map.AdventureMapBuilderFactory;
 import com.tompy.player.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,8 +33,9 @@ public class Maze extends AdventureImpl implements Adventure {
     public Maze() {
     }
 
-    public Maze(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory, UserIO io) {
-        super(player, entityService, exitBuilderFactory, io);
+    public Maze(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
+            AdventureMapBuilderFactory mapBuilderFactory, UserIO io) {
+        super(player, entityService, exitBuilderFactory, mapBuilderFactory, io);
     }
 
     @Override

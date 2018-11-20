@@ -19,6 +19,8 @@ import com.tompy.entity.item.Item;
 import com.tompy.entity.item.ItemBuilder;
 import com.tompy.exit.Exit;
 import com.tompy.exit.ExitBuilderFactory;
+import com.tompy.map.AdventureMap;
+import com.tompy.map.AdventureMapBuilderFactory;
 import com.tompy.messages.MessageHandler;
 import com.tompy.player.Player;
 import com.tompy.state.AdventureStateFactory;
@@ -38,6 +40,7 @@ public abstract class AdventureHelper {
     protected final EntityService entityService;
     protected final ExitBuilderFactory exitBuilderFactory;
     protected final MessageHandler messages;
+    protected final AdventureMapBuilderFactory mapBuilderFactory;
     protected AdventureStateFactory stateFactory;
     protected MoveStrategyFactory moveStrategyFactory;
     private Adventure thisAdventure;
@@ -48,13 +51,17 @@ public abstract class AdventureHelper {
         exitBuilderFactory = null;
         moveStrategyFactory = null;
         messages = null;
+        mapBuilderFactory = null;
     }
 
-    public AdventureHelper(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory) {
+    public AdventureHelper(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
+            AdventureMapBuilderFactory mapBuilderFactory) {
         this.player = Objects.requireNonNull(player, "Player cannot be null.");
         this.entityService = Objects.requireNonNull(entityService, "Entity Service cannot be null.");
         this.exitBuilderFactory = exitBuilderFactory;
+        this.mapBuilderFactory = mapBuilderFactory;
         this.messages = new MessageHandler();
+
     }
 
     protected void setThisAdventure(Adventure adventure) {
@@ -275,5 +282,28 @@ public abstract class AdventureHelper {
      */
     protected void programActor(Actor actor, Event event) {
         addEvent(actor, EVENT_ACTOR_PROGRAM, event);
+    }
+
+    /**
+     * Blank map builder
+     *
+     * @param height - the height of the map
+     * @param width - the width of the map
+     * @return - A new {@link AdventureMap}
+     */
+    protected AdventureMap buildAdventureMap(int height, int width) {
+        return mapBuilderFactory.adventureMapBuilder().height(height).width(width).build();
+    }
+
+    /**
+     * A predefined map builder
+     *
+     * @param map - The map so far.
+     * @param height - the height of the map
+     * @param width - the width of the map
+     * @return - A new {@link AdventureMap}
+     */
+    protected AdventureMap buildAdventureMap(char[] map, int height, int width) {
+        return mapBuilderFactory.adventureMapBuilder().map(map).height(height).width(width).build();
     }
 }

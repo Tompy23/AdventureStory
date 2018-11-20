@@ -22,6 +22,15 @@ public class MessageHandler implements Serializable {
         }
     }
 
+    public MessageHandler(String name) {
+        try {
+            properties.load(getClass().getClassLoader().getResourceAsStream(name));
+        } catch (IOException ioe) {
+            LOGGER.error("Failed to load text.");
+            System.exit(5);
+        }
+    }
+
     public String get(String key) {
         return properties.getProperty(key);
     }

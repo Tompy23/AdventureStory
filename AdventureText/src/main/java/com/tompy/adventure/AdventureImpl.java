@@ -2,11 +2,11 @@ package com.tompy.adventure;
 
 import com.tompy.directive.Direction;
 import com.tompy.entity.Actor.MoveStrategyFactory;
-import com.tompy.entity.Actor.MoveStrategyFactoryImpl;
 import com.tompy.entity.EntityService;
 import com.tompy.entity.area.Area;
 import com.tompy.exit.ExitBuilderFactory;
 import com.tompy.io.UserIO;
+import com.tompy.map.AdventureMapBuilderFactory;
 import com.tompy.persistence.AdventureData;
 import com.tompy.player.Player;
 import com.tompy.state.AdventureState;
@@ -29,19 +29,14 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
     }
 
     public AdventureImpl(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
-            UserIO userInput) {
-        super(player, entityService, exitBuilderFactory);
+            AdventureMapBuilderFactory mapBuilderFactory, UserIO userInput) {
+        super(player, entityService, exitBuilderFactory, mapBuilderFactory);
         this.userIO = Objects.requireNonNull(userInput, "User Input cannot be null.");
     }
 
     @Override
     public void setStateFactory(AdventureStateFactory stateFactory) {
         this.stateFactory = Objects.requireNonNull(stateFactory, "State Factory cannot be null.");
-    }
-
-    @Override
-    public void setMoveStrategyFactory(MoveStrategyFactory moveStrategyFactory) {
-        this.moveStrategyFactory = Objects.requireNonNull(moveStrategyFactory, "Move Strategy Factory cannot be null.");
     }
 
     @Override

@@ -35,13 +35,6 @@ public interface Adventure extends StateMachine, Clock, Serializable {
     void setStateFactory(AdventureStateFactory stateFactory);
 
     /**
-     * Set the move strategy factory for Actors
-     *
-     * @param moveStrategyFactory - The move strategy factory
-     */
-    void setMoveStrategyFactory(MoveStrategyFactory moveStrategyFactory);
-
-    /**
      * Expose the user input
      *
      * @return - The user input implementation

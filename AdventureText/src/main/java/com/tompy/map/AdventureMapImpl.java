@@ -41,8 +41,14 @@ public class AdventureMapImpl extends Responsive implements AdventureMap {
     }
 
     @Override
-    public AdventureMap addLegend(char letter, String label) {
+    public AdventureMap addLegendExt(char letter, String label) {
         legendExtend.put(letter, label);
+        return this;
+    }
+
+    @Override
+    public AdventureMap addLegend(char letter, String label) {
+        legendMap.put(letter, label);
         return this;
     }
 

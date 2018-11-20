@@ -4,6 +4,7 @@ import com.tompy.attribute.Attribute;
 import com.tompy.directive.CommandType;
 import com.tompy.directive.Direction;
 import com.tompy.directive.EventType;
+import com.tompy.messages.MessageHandler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -217,4 +218,17 @@ public class AdventureUtils {
         return returnValue;
     }
 
+    public static char[] getMap(String name, MessageHandler messages) {
+        StringBuilder sb = new StringBuilder();
+        String property;
+        int i = 1;
+        do {
+            property = messages.get(String.format("%s.%d", name, i++));
+            if (property != null) {
+                sb.append(property);
+            }
+        } while (property != null);
+
+        return sb.toString().toCharArray();
+    }
 }

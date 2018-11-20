@@ -5,6 +5,7 @@ import com.tompy.adventure.AdventureImpl;
 import com.tompy.entity.EntityService;
 import com.tompy.exit.ExitBuilderFactory;
 import com.tompy.io.UserIO;
+import com.tompy.map.AdventureMapBuilderFactory;
 import com.tompy.player.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,8 +16,9 @@ public class Robots extends AdventureImpl implements Adventure {
     public Robots() {
     }
 
-    public Robots(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory, UserIO userInput) {
-        super(player, entityService, exitBuilderFactory, userInput);
+    public Robots(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
+            AdventureMapBuilderFactory mapBuilderFactory, UserIO userInput) {
+        super(player, entityService, exitBuilderFactory, mapBuilderFactory, userInput);
     }
 
     @Override

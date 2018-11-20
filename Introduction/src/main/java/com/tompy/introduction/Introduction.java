@@ -13,11 +13,11 @@ import com.tompy.entity.item.Item;
 import com.tompy.exit.Exit;
 import com.tompy.exit.ExitBuilderFactory;
 import com.tompy.io.UserIO;
+import com.tompy.map.AdventureMapBuilderFactory;
 import com.tompy.player.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,11 +35,12 @@ import static com.tompy.directive.TriggerType.*;
 public class Introduction extends AdventureImpl implements Adventure {
     private static final Logger LOGGER = LogManager.getLogger(Introduction.class);
 
-    public Introduction() {}
+    public Introduction() {
+    }
 
     public Introduction(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
-            UserIO userInput) {
-        super(player, entityService, exitBuilderFactory, userInput);
+            AdventureMapBuilderFactory mapBuilderFactory, UserIO userInput) {
+        super(player, entityService, exitBuilderFactory, mapBuilderFactory, userInput);
     }
 
     @Override

@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface AdventureMap {
 
+    AdventureMap addLegendExt(char letter, String label);
+
     AdventureMap addLegend(char letter, String label);
 
     AdventureMap addLandmark(char letter, String label, Coordinates coordinates);

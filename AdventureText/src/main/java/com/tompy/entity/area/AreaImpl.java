@@ -177,7 +177,8 @@ public class AreaImpl extends CompartmentImpl implements Area {
 
     @Override
     public List<Response> showMap(Player player, Adventure adventure, EntityService entityService) {
-        return map.display();
+        return map != null ? map.display() :
+                Collections.singletonList(responseFactory.createBuilder().source(this.name).text("No map").build());
     }
 
     @Override
