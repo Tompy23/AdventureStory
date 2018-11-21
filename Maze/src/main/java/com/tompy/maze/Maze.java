@@ -1,9 +1,11 @@
 package com.tompy.maze;
 
 import com.tompy.adventure.Adventure;
+import com.tompy.adventure.AdventureFactory;
 import com.tompy.adventure.AdventureImpl;
 import com.tompy.common.Coordinates;
 import com.tompy.common.Coordinates2DImpl;
+import com.tompy.directive.Direction;
 import com.tompy.entity.Actor.Actor;
 import com.tompy.entity.EntityService;
 import com.tompy.entity.area.Area;
@@ -30,12 +32,27 @@ public class Maze extends AdventureImpl implements Adventure {
     private static final int size = 4;
     private static final double exitFactor = 1.0;
 
-    public Maze() {
+    public static AdventureFactory getFactory() {
+        return Maze::createAdventure;
     }
 
-    public Maze(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
-            AdventureMapBuilderFactory mapBuilderFactory, UserIO io) {
-        super(player, entityService, exitBuilderFactory, mapBuilderFactory, io);
+    public static Adventure createAdventure() {
+        return new Maze();
+    }
+
+    @Override
+    public String getName() {
+        return "Maze";
+    }
+
+    @Override
+    public String getStartRoomName() {
+        return "Room-0";
+    }
+
+    @Override
+    public Direction getEntryDirection() {
+        return DIRECTION_SOUTH;
     }
 
     @Override

@@ -1,25 +1,40 @@
 package com.tompy.robots;
 
 import com.tompy.adventure.Adventure;
+import com.tompy.adventure.AdventureFactory;
 import com.tompy.adventure.AdventureImpl;
-import com.tompy.entity.EntityService;
-import com.tompy.exit.ExitBuilderFactory;
-import com.tompy.io.UserIO;
-import com.tompy.map.AdventureMapBuilderFactory;
-import com.tompy.player.Player;
+import com.tompy.directive.Direction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import static com.tompy.directive.Direction.DIRECTION_SOUTH;
 
 public class Robots extends AdventureImpl implements Adventure {
     private static final Logger LOGGER = LogManager.getLogger(Robots.class);
 
-    public Robots() {
+    public static AdventureFactory getFactory() {
+        return Robots::createAdventure;
     }
 
-    public Robots(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
-            AdventureMapBuilderFactory mapBuilderFactory, UserIO userInput) {
-        super(player, entityService, exitBuilderFactory, mapBuilderFactory, userInput);
+    public static Adventure createAdventure() {
+        return new Robots();
     }
+
+    @Override
+    public String getName() {
+        return "Robots";
+    }
+
+    @Override
+    public String getStartRoomName() {
+        return "";
+    }
+
+    @Override
+    public Direction getEntryDirection() {
+        return DIRECTION_SOUTH;
+    }
+
 
     @Override
     public void create() {

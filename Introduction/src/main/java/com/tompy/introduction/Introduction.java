@@ -1,20 +1,17 @@
 package com.tompy.introduction;
 
 import com.tompy.adventure.Adventure;
+import com.tompy.adventure.AdventureFactory;
 import com.tompy.adventure.AdventureImpl;
 import com.tompy.common.Coordinates;
 import com.tompy.common.Coordinates2DImpl;
-import com.tompy.entity.EntityService;
+import com.tompy.directive.Direction;
 import com.tompy.entity.area.Area;
 import com.tompy.entity.encounter.Encounter;
 import com.tompy.entity.event.Event;
 import com.tompy.entity.feature.Feature;
 import com.tompy.entity.item.Item;
 import com.tompy.exit.Exit;
-import com.tompy.exit.ExitBuilderFactory;
-import com.tompy.io.UserIO;
-import com.tompy.map.AdventureMapBuilderFactory;
-import com.tompy.player.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,12 +32,27 @@ import static com.tompy.directive.TriggerType.*;
 public class Introduction extends AdventureImpl implements Adventure {
     private static final Logger LOGGER = LogManager.getLogger(Introduction.class);
 
-    public Introduction() {
+    public static AdventureFactory getFactory() {
+        return Introduction::createAdventure;
     }
 
-    public Introduction(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
-            AdventureMapBuilderFactory mapBuilderFactory, UserIO userInput) {
-        super(player, entityService, exitBuilderFactory, mapBuilderFactory, userInput);
+    public static Adventure createAdventure() {
+        return new Introduction();
+    }
+
+    @Override
+    public String getName() {
+        return "Introduction";
+    }
+
+    @Override
+    public String getStartRoomName() {
+        return "StartRoom";
+    }
+
+    @Override
+    public Direction getEntryDirection() {
+        return DIRECTION_SOUTH;
     }
 
     @Override

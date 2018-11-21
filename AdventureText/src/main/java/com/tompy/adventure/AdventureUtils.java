@@ -23,7 +23,6 @@ public class AdventureUtils {
     private static Map<String, Direction> directionMap = new HashMap<>();
     private static Map<String, CommandType> commandTypeMap = new HashMap<>();
     private static Map<String, Attribute> attributeMap = new HashMap<>();
-    private static Map<String, AdventureMap> adventureMapMap = new HashMap<>();
     private static Random r = new Random();
 
     static {
@@ -239,13 +238,5 @@ public class AdventureUtils {
         } while (property != null);
 
         return sb.toString().toCharArray();
-    }
-
-    public static void addMap(String key, AdventureMap map) {
-        adventureMapMap.put(key, map);
-    }
-
-    public static AdventureMap getMap(String key) {
-        return adventureMapMap.get(key);
     }
 }

@@ -36,32 +36,22 @@ import static com.tompy.directive.TriggerType.TRIGGER_VISIBLE;
  * Helper class for building Adventure
  */
 public abstract class AdventureHelper {
-    protected final Player player;
-    protected final EntityService entityService;
-    protected final ExitBuilderFactory exitBuilderFactory;
-    protected final MessageHandler messages;
-    protected final AdventureMapBuilderFactory mapBuilderFactory;
+    protected Player player;
+    protected EntityService entityService;
+    protected ExitBuilderFactory exitBuilderFactory;
+    protected MessageHandler messages;
+    protected AdventureMapBuilderFactory mapBuilderFactory;
     protected AdventureStateFactory stateFactory;
     protected MoveStrategyFactory moveStrategyFactory;
     private Adventure thisAdventure;
 
-    public AdventureHelper() {
-        player = null;
-        entityService = null;
-        exitBuilderFactory = null;
-        moveStrategyFactory = null;
-        messages = null;
-        mapBuilderFactory = null;
-    }
-
-    public AdventureHelper(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
+    public void init(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
             AdventureMapBuilderFactory mapBuilderFactory) {
         this.player = Objects.requireNonNull(player, "Player cannot be null.");
         this.entityService = Objects.requireNonNull(entityService, "Entity Service cannot be null.");
         this.exitBuilderFactory = exitBuilderFactory;
         this.mapBuilderFactory = mapBuilderFactory;
         this.messages = new MessageHandler();
-
     }
 
     protected void setThisAdventure(Adventure adventure) {

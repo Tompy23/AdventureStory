@@ -6,6 +6,7 @@ import com.tompy.entity.EntityService;
 import com.tompy.entity.area.Area;
 import com.tompy.exit.ExitBuilderFactory;
 import com.tompy.io.UserIO;
+import com.tompy.map.AdventureMap;
 import com.tompy.map.AdventureMapBuilderFactory;
 import com.tompy.persistence.AdventureData;
 import com.tompy.player.Player;
@@ -14,23 +15,23 @@ import com.tompy.state.AdventureStateFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public abstract class AdventureImpl extends AdventureHelper implements Adventure {
     private static final Logger LOGGER = LogManager.getLogger(AdventureImpl.class);
-    private final UserIO userIO;
+    private UserIO userIO;
     private boolean proceed;
     private AdventureState currentState;
     private int currentTick;
     private int actionTicks;
+    private static Map<String, AdventureMap> mapOfMaps = new HashMap<>();
 
-    public AdventureImpl() {
-        userIO = null;
-    }
-
-    public AdventureImpl(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
+    @Override
+    public void init(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
             AdventureMapBuilderFactory mapBuilderFactory, UserIO userInput) {
-        super(player, entityService, exitBuilderFactory, mapBuilderFactory);
+        super.init(player, entityService, exitBuilderFactory, mapBuilderFactory);
         this.userIO = Objects.requireNonNull(userInput, "User Input cannot be null.");
     }
 
@@ -42,6 +43,14 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
     @Override
     public UserIO getUI() {
         return userIO;
+    }
+
+    public void addMap(String key, AdventureMap map) {
+        mapOfMaps.put(key, map);
+    }
+
+    public AdventureMap getMap(String key) {
+        return mapOfMaps.get(key);
     }
 
     @Override
