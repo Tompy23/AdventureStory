@@ -56,6 +56,11 @@ public class Introduction extends AdventureImpl implements Adventure {
     }
 
     @Override
+    public String getPropertiesFilename() {
+        return "i18n.properties";
+    }
+
+    @Override
     public void create() {
         setThisAdventure(this);
         LOGGER.info("Creating adventure...");

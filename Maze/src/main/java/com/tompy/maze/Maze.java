@@ -56,6 +56,11 @@ public class Maze extends AdventureImpl implements Adventure {
     }
 
     @Override
+    public String getPropertiesFilename() {
+        return "i18n.properties";
+    }
+
+    @Override
     public void create() {
         setThisAdventure(this);
         Area[] rooms = createRooms();

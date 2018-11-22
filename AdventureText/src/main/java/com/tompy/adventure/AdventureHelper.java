@@ -46,12 +46,12 @@ public abstract class AdventureHelper {
     private Adventure thisAdventure;
 
     public void init(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
-            AdventureMapBuilderFactory mapBuilderFactory) {
+            AdventureMapBuilderFactory mapBuilderFactory, String propertiesFilename) {
         this.player = Objects.requireNonNull(player, "Player cannot be null.");
         this.entityService = Objects.requireNonNull(entityService, "Entity Service cannot be null.");
         this.exitBuilderFactory = exitBuilderFactory;
         this.mapBuilderFactory = mapBuilderFactory;
-        this.messages = new MessageHandler();
+        this.messages = new MessageHandler(propertiesFilename);
     }
 
     protected void setThisAdventure(Adventure adventure) {

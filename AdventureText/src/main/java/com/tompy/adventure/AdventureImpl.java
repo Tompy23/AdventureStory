@@ -30,8 +30,8 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
 
     @Override
     public void init(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
-            AdventureMapBuilderFactory mapBuilderFactory, UserIO userInput) {
-        super.init(player, entityService, exitBuilderFactory, mapBuilderFactory);
+            AdventureMapBuilderFactory mapBuilderFactory, UserIO userInput, String propertiesFilename) {
+        super.init(player, entityService, exitBuilderFactory, mapBuilderFactory, propertiesFilename);
         this.userIO = Objects.requireNonNull(userInput, "User Input cannot be null.");
     }
 
@@ -145,7 +145,8 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
         builder.features(entityService.getFeatures());
         builder.items(entityService.getItems());
         builder.player(player);
-        // TODO - Create the AdventureData from EntityService, et al and return.
+        builder.maps(mapOfMaps);
+
         return builder.build();
     }
 }

@@ -10,6 +10,7 @@ import com.tompy.entity.event.Event;
 import com.tompy.entity.event.EventManager;
 import com.tompy.entity.feature.Feature;
 import com.tompy.entity.item.Item;
+import com.tompy.map.AdventureMap;
 import com.tompy.player.Player;
 import com.tompy.state.AdventureState;
 
@@ -34,11 +35,12 @@ public class AdventureData implements Serializable {
     private final int currentTick;
     private final int actionTicks;
     private final Player player;
+    private final Map<String, AdventureMap> maps;
 
     private AdventureData(Map<Long, AttributeManager> attributeManagers, Map<Long, EventManager> eventManagers,
             List<Item> items, List<Feature> features, List<Area> areas, List<Event> events, List<Encounter> encounters,
             List<Actor> actors, Long entityKey, Map<String, Entity> entityMap, AdventureState currentState,
-            int currentTick, int actionTicks, Player player) {
+            int currentTick, int actionTicks, Player player, Map<String, AdventureMap> maps) {
         this.attributeManagers = attributeManagers;
         this.eventManagers = eventManagers;
         this.items = items;
@@ -53,6 +55,7 @@ public class AdventureData implements Serializable {
         this.currentTick = currentTick;
         this.actionTicks = actionTicks;
         this.player = player;
+        this.maps = maps;
     }
 
     public Map<Long, AttributeManager> getAttributeManagers() {
@@ -111,6 +114,10 @@ public class AdventureData implements Serializable {
         return player;
     }
 
+    public Map<String, AdventureMap> getMaps() {
+        return maps;
+    }
+
     public static final class AdventureDataBuilder implements Builder<AdventureData> {
         private Map<Long, AttributeManager> attributeManagers;
         private Map<Long, EventManager> eventManagers;
@@ -126,11 +133,12 @@ public class AdventureData implements Serializable {
         private int currentTick;
         private int actionTicks;
         private Player player;
+        private Map<String, AdventureMap> maps;
 
         @Override
         public AdventureData build() {
             return new AdventureData(attributeManagers, eventManagers, items, features, areas, events, encounters,
-                    actors, entityKey, entityMap, currentState, currentTick, actionTicks, player);
+                    actors, entityKey, entityMap, currentState, currentTick, actionTicks, player, maps);
         }
         
         public AdventureDataBuilder attributeManagers(Map<Long, AttributeManager> attributeManagers) {
@@ -200,6 +208,11 @@ public class AdventureData implements Serializable {
 
         public AdventureDataBuilder player(Player player) {
             this.player = player;
+            return this;
+        }
+
+        public AdventureDataBuilder maps(Map<String, AdventureMap> maps) {
+            this.maps = maps;
             return this;
         }
     }

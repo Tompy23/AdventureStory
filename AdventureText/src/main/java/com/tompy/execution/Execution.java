@@ -25,8 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tompy.directive.Direction.DIRECTION_SOUTH;
-
 public class Execution {
     private static final int CREATE_NEW_GAME = 1;
     private static final int LOAD_EXISTING_GAME = 2;
@@ -106,8 +104,7 @@ public class Execution {
         ui.println();
 
         adventure = adventureFactory.create();
-        adventure.init(player, entityService, new ExitBuilderFactoryImpl(),
-                new AdventureMapBuilderFactoryImpl(), ui);
+        adventure.init(player, entityService, new ExitBuilderFactoryImpl(), new AdventureMapBuilderFactoryImpl(), ui, adventure.getPropertiesFilename());
 
         stateFactory = new AdventureStateFactoryImpl(player, adventure, entityService);
 
@@ -139,8 +136,9 @@ public class Execution {
 
                 player = adventureData.getPlayer();
                 adventure = adventureFactory.create();
-                adventure.init(player, entityService, new ExitBuilderFactoryImpl(),
-                        new AdventureMapBuilderFactoryImpl(), ui);
+                adventure
+                        .init(player, entityService, new ExitBuilderFactoryImpl(), new AdventureMapBuilderFactoryImpl(),
+                                ui, adventure.getPropertiesFilename());
 
                 stateFactory = new AdventureStateFactoryImpl(player, adventure, entityService);
                 ui.init(System.in, System.out, new CommandFactoryImpl());
@@ -158,7 +156,7 @@ public class Execution {
                 return 7;
             }
         }
-    return 0;
+        return 0;
 
     }
 

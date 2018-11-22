@@ -43,7 +43,7 @@ public interface Adventure extends StateMachine, Clock, Serializable {
      *
      */
     void init(Player player, EntityService entityService, ExitBuilderFactory exitBuilderFactory,
-            AdventureMapBuilderFactory mapBuilderFactory, UserIO userInput);
+            AdventureMapBuilderFactory mapBuilderFactory, UserIO userInput, String propertiesFilename);
 
     /**
      *
@@ -62,6 +62,12 @@ public interface Adventure extends StateMachine, Clock, Serializable {
      * @return
      */
     Direction getEntryDirection();
+
+    /**
+     *
+     * @return
+     */
+    String getPropertiesFilename();
 
     /**
      * Set the state factory for the adventure
