@@ -2,6 +2,7 @@ package com.tompy.entity.area;
 
 import com.tompy.adventure.Adventure;
 import com.tompy.command.Command;
+import com.tompy.common.Coordinates;
 import com.tompy.directive.Direction;
 import com.tompy.entity.Actor.Actor;
 import com.tompy.entity.Entity;
@@ -133,4 +134,11 @@ public interface Area extends Compartment {
      * @return
      */
     List<Actor> getAllActors();
+
+    /**
+     * Get the coordinates for the area
+     *
+     * @return
+     */
+    Coordinates getCoordinates();
 }

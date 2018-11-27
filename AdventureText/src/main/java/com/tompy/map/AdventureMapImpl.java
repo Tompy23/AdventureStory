@@ -1,13 +1,21 @@
 package com.tompy.map;
 
+import com.tompy.adventure.Adventure;
 import com.tompy.common.Coordinates;
 import com.tompy.common.Coordinates2DImpl;
+import com.tompy.player.Player;
 import com.tompy.response.Response;
 import com.tompy.response.Responsive;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class AdventureMapImpl extends Responsive implements AdventureMap {
+public class AdventureMapImpl extends Responsive implements AdventureMap, Serializable {
+    private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = LogManager.getLogger(AdventureMapImpl.class);
+
     private final char[] mapChars;
     private final int width;
     private final int height;
@@ -15,6 +23,7 @@ public class AdventureMapImpl extends Responsive implements AdventureMap {
     private Coordinates displayLowerRight;
     private Map<Character, String> legendMap = new HashMap<>();
     private Map<Character, String> legendExtend = new HashMap<>();
+    private List<MapOverlay> overlays;
 
     private AdventureMapImpl(int height, int width) {
         this.height = height;
@@ -22,6 +31,7 @@ public class AdventureMapImpl extends Responsive implements AdventureMap {
         this.displayUpperLeft = new Coordinates2DImpl(0, 0);
         this.displayLowerRight = new Coordinates2DImpl(width - 1, height - 1);
         this.mapChars = new char[height * width];
+        this.overlays = new ArrayList<>();
         for (int i = 0; i < height * width; i++) {
             mapChars[i] = '.';
         }
@@ -34,6 +44,7 @@ public class AdventureMapImpl extends Responsive implements AdventureMap {
         this.displayUpperLeft = new Coordinates2DImpl(0, 0);
         this.displayLowerRight = new Coordinates2DImpl(width - 1, height - 1);
         this.mapChars = Arrays.copyOf(map, map.length);
+        this.overlays = new ArrayList<>();
     }
 
     public static AdventureMapBuilder createBuilder() {
@@ -43,6 +54,17 @@ public class AdventureMapImpl extends Responsive implements AdventureMap {
     @Override
     public AdventureMap addLegendExt(char letter, String label) {
         legendExtend.put(letter, label);
+        return this;
+    }
+
+    @Override
+    public AdventureMap removeLegendExt(char letter) {
+        for (char key: legendExtend.keySet()) {
+            if (key == letter) {
+                legendExtend.remove(key);
+                break;
+            }
+        }
         return this;
     }
 
@@ -84,20 +106,21 @@ public class AdventureMapImpl extends Responsive implements AdventureMap {
     }
 
     @Override
-    public List<Response> display() {
-        return display(this.displayUpperLeft, this.displayLowerRight);
+    public List<Response> display(Player player, Adventure adventure) {
+        return display(player, adventure, this.displayUpperLeft, this.displayLowerRight);
     }
 
     @Override
-    public List<Response> display(Coordinates upperLeft, Coordinates lowerRight) {
+    public List<Response> display(Player player, Adventure adventure, Coordinates upperLeft, Coordinates lowerRight) {
         List<Response> returnValue = new ArrayList<>();
         SortedSet<Character> legendChars = new TreeSet<>();
+        char[] overlayedMap = applyOverlays(player, adventure);
         int lineLength = lowerRight.getX() - upperLeft.getX() + 1;
         if (coordinateWithinMap(upperLeft) && coordinateWithinMap(lowerRight)) {
             for (int j = upperLeft.getY(); j <= lowerRight.getY(); j++) {
                 char[] line = new char[lineLength];
                 for (int i = 0; i < lineLength; i++) {
-                    char c = mapChars[(i + upperLeft.getX()) + (width * j)];
+                    char c = overlayedMap[(i + upperLeft.getX()) + (width * j)];
                     line[i] = c;
                     legendChars.add(c);
                 }
@@ -118,10 +141,34 @@ public class AdventureMapImpl extends Responsive implements AdventureMap {
         return returnValue;
     }
 
+    private char[] applyOverlays(Player player, Adventure adventure) {
+        char[] returnValue = mapChars;
+        for (MapOverlay overlay : overlays) {
+            returnValue = overlay.overlay(Arrays.copyOf(returnValue, returnValue.length), height, width, player, adventure);
+        }
+        return returnValue;
+    }
+
     @Override
     public void resetDisplay() {
         this.displayUpperLeft = new Coordinates2DImpl(0, 0);
         this.displayLowerRight = new Coordinates2DImpl(width - 1, height - 1);
+    }
+
+    @Override
+    public void addOverlay(MapOverlay overlay) {
+        if (!overlays.contains(overlay)) {
+            overlay.whenAdd(this);
+            overlays.add(overlay);
+        }
+    }
+
+    @Override
+    public void removeOverlay(MapOverlay overlay) {
+        if (overlays.contains(overlay)) {
+            overlay.whenRemove(this);
+            overlays.remove(overlay);
+        }
     }
 
     private boolean coordinateWithinMap(Coordinates coordinate) {
