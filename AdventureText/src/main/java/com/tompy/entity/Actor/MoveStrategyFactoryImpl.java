@@ -22,6 +22,8 @@ public class MoveStrategyFactoryImpl implements MoveStrategyFactory {
         switch (type) {
             case MOVE_RANDOM:
                 return new MoveRandomImpl(actor, player, adventure);
+            case MOVE_FOLLOW:
+                return new MoveFollowImpl(actor, player, adventure);
         }
         return null;
     }
