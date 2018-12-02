@@ -42,7 +42,9 @@ Add Maps.  Simple command "map", which then shows an ASCII art map.  Each "Area"
             but the underlying map in the map manager does.
       Release a Story (<-goal)
 
-1.2+ - No plans at this time.  Possible technical updates and bug fixes.  No new stories.  Maybe more things.
+DONE - NO RELEASE
+
+1.2 - Further development... Adding bigger stuff is more fun than little stuff.
 
 2.0 - Game elements!  There is no design work completed at this time.  This is merely an idea.
 
