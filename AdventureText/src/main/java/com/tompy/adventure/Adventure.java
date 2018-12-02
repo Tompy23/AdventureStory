@@ -64,6 +64,13 @@ public interface Adventure extends StateMachine, Clock, Serializable {
     Direction getEntryDirection();
 
     /**
+     * get the starting state of the adventure (usually Explore)
+     *
+     * @return
+     */
+    AdventureState getStartingState();
+
+    /**
      *
      * @return
      */

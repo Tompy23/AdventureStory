@@ -123,6 +123,15 @@ public abstract class AdventureImpl extends AdventureHelper implements Adventure
     }
 
     @Override
+    public AdventureState getStartingState() {
+        if (stateFactory != null) {
+            return stateFactory.getExploreState();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public void load(AdventureData data) {
         // TODO - disperse the data... create EntityService, et al.
 

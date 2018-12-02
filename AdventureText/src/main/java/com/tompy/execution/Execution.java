@@ -18,6 +18,8 @@ import com.tompy.player.PlayerImpl;
 import com.tompy.state.AdventureState;
 import com.tompy.state.AdventureStateFactory;
 import com.tompy.state.AdventureStateFactoryImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Execution {
+    private static final Logger LOGGER = LogManager.getLogger(Execution.class);
     private static final int CREATE_NEW_GAME = 1;
     private static final int LOAD_EXISTING_GAME = 2;
     private static final int END_GAME = 1;
@@ -52,15 +55,17 @@ public class Execution {
         int startValue = 0;
         switch (start().intValue()) {
             case CREATE_NEW_GAME:
+                LOGGER.info("Starting new game");
                 create(adventureFactory);
                 break;
             case LOAD_EXISTING_GAME:
+                LOGGER.info("Loading existing game");
                 startValue = load(adventureFactory);
                 break;
         }
 
         if (startValue == 0) {
-            //LOGGER.info("Player [{}] enters the adventure", player.getName());
+            LOGGER.info("Player [{}] enters the adventure", player.getName());
 
             ui.println(String.format("%s, you are about to enter a world of adventure... ", player.getName()));
 
@@ -70,15 +75,15 @@ public class Execution {
 
             switch (end().intValue()) {
                 case END_GAME:
+                    LOGGER.info("Ending game");
                     return 0;
-                case LOAD_EXISTING_GAME:
+                case SAVE_GAME:
+                    LOGGER.info("Saving game");
                     return save();
             }
-        } else {
-            return startValue;
         }
 
-        return 0;
+        return startValue;
     }
 
     private Long start() {
@@ -104,7 +109,8 @@ public class Execution {
         ui.println();
 
         adventure = adventureFactory.create();
-        adventure.init(player, entityService, new ExitBuilderFactoryImpl(), new AdventureMapBuilderFactoryImpl(), ui, adventure.getPropertiesFilename());
+        adventure.init(player, entityService, new ExitBuilderFactoryImpl(), new AdventureMapBuilderFactoryImpl(), ui,
+                adventure.getPropertiesFilename());
 
         stateFactory = new AdventureStateFactoryImpl(player, adventure, entityService);
 
