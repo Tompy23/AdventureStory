@@ -152,6 +152,7 @@ public class Execution {
                 fis.close();
 
                 startRoom = player.getArea().getName();
+                // TODO Do we want to set this back to Explore?  Or will the Loader pull it in correctly?
                 adventureState = stateFactory.getExploreState();
                 entryDirection = null;
             } catch (IOException ioe) {
